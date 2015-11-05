@@ -34,9 +34,9 @@
 ## Compile [LiteSQL](http://sourceforge.net/projects/litesql)
 
 [LiteSQL](http://sourceforge.net/projects/litesql) must be compiled with:
- * [CYOSP](http://sourceforge.net/u/cyosp/profile/) commit: [[7b03c1] Add double to float conversion ](http://sourceforge.net/p/litesql/litesql/ci/7b03c1c739981af4378e16bf61d4da62c8827638).
+ * [CYOSP](http://sourceforge.net/u/cyosp/profile/) commit: [[7b03c1] Add double to float conversion ](http://sourceforge.net/p/litesql/litesql/ci/7b03c1c739981af4378e16bf61d4da62c8827638)
  * [eXpat](http://expat.sourceforge.net/)
- * [SQLite 3](https://www.sqlite.org/)
+ * [SQLite](http://www.sqlite.org/)
 
 Steps to build [LiteSQL](http://sourceforge.net/projects/litesql) are:
 
@@ -67,7 +67,7 @@ make
 # HTML documentation is now available in this folder:
 #   ~/src/litesql/litesql-litesql-7b03c1c739981af4378e16bf61d4da62c8827638/docs/doxygen/docs/doxygen/html
 
-# Install what as been built
+# Install what has been built
 sudo make install
 # Load new libraries installed into /usr/local/lib
 sudo ldconfig
