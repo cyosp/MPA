@@ -22,7 +22,7 @@
 | Library                                                           | Version                          |
 |:------------------------------------------------------------------|:---------------------------------|
 | [Boost](http://www.boost.org/)                                    | 1.59.0 (to compile from sources) |
-| [Libmicrohttpd](http://www.gnu.org/software/libmicrohttpd/) (MHD) | 0.9.40 (to compile from sources) |
+| [Libmicrohttpd](http://www.gnu.org/software/libmicrohttpd/) (MHD) | 0.9.46 (to compile from sources) |
 | [LiteSQL](http://sourceforge.net/projects/litesql)                | 0.3.17 (to compile from sources) |
 
 * Client side
@@ -100,4 +100,32 @@ sudo apt-get install libicu-dev libbz2-dev
 
 # Build from sources in 64 bits and install
 sudo ./b2 architecture=x86 address-model=64 variant=release toolset=gcc link=shared threading=multi runtime-link=shared install >> b2.log
+```
+
+## Compile [Libmicrohttpd](http://www.gnu.org/software/libmicrohttpd/)
+
+Steps to build [Libmicrohttpd](http://www.gnu.org/software/libmicrohttpd/) are:
+
+```bash
+# Create directory which will host sources
+mkdir -p ~/src/libmicrohttpd
+# Move into this directory
+cd ~/src/libmicrohttpd
+# Get sources
+wget http://ftp.gnu.org/gnu/libmicrohttpd/libmicrohttpd-0.9.46.tar.gz
+# Uncompress sources
+tar -xzvf  libmicrohttpd-0.9.46.tar.gz
+# Move into uncompressed directory
+cd libmicrohttpd-0.9.46
+
+# Configure for 64 bits build whose result is stored inside config.log
+./configure --build=x86_64-pc-linux-gnu "CFLAGS=-m64" "CXXFLAGS=-m64" "LDFLAGS=-m64"
+
+# Build from sources
+make
+
+# Install what has been built
+sudo make install
+# Load new libraries installed into /usr/local/lib
+sudo ldconfig
 ```
