@@ -21,7 +21,7 @@
 
 | Library                                                           | Version                          |
 |:------------------------------------------------------------------|:---------------------------------|
-| [Boost](http://www.boost.org/)                                    | 1.56.0 (to compile from sources) |
+| [Boost](http://www.boost.org/)                                    | 1.59.0 (to compile from sources) |
 | [Libmicrohttpd](http://www.gnu.org/software/libmicrohttpd/) (MHD) | 0.9.40 (to compile from sources) |
 | [LiteSQL](http://sourceforge.net/projects/litesql)                | 0.3.17 (to compile from sources) |
 
@@ -71,4 +71,33 @@ make
 sudo make install
 # Load new libraries installed into /usr/local/lib
 sudo ldconfig
+```
+## Compile [Boost](http://www.boost.org/)
+
+[Boost](http://www.boost.org/) must be compiled as a shared library and with:
+ * [International Components for Unicode](http://site.icu-project.org/)
+ * [Python](https://www.python.org/)
+ * [GCC](http://gcc.gnu.org/)
+
+Steps to build [Boost](http://www.boost.org/) are:
+
+```bash
+# Create directory which will host sources
+mkdir -p ~/src/boost
+# Move into this directory
+cd ~/src/boost
+# Get sources
+wget http://sourceforge.net/projects/boost/files/boost/1.59.0/boost_1_59_0.tar.bz2
+# Uncompress sources
+tar -xjvf  boost_1_59_0.tar.bz2
+# Move into uncompressed directory
+cd boost_1_59_0
+# Add missing packages for compilation
+sudo apt-get install libicu-dev libbz2-dev
+
+# Configure for build
+./bootstrap.sh --with-libraries=all --with-icu=/usr/lib/x86_64-linux-gnu/icu --with-python=/usr/bin/python --prefix=/usr/local
+
+# Build from sources in 64 bits and install
+sudo ./b2 architecture=x86 address-model=64 variant=release toolset=gcc link=shared threading=multi runtime-link=shared install >> b2.log
 ```
