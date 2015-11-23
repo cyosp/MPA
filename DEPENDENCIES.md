@@ -27,9 +27,12 @@
 
 * Client side
 
-| Library          | Version          |
-|:-----------------|:-----------------|
-| **TO COMPLETE ** | **TO COMPLETE ** |
+| Library                              | Version          |
+|:-------------------------------------|:-----------------|
+| [Bootstrap](http://getbootstrap.com) | 3.3.5            |
+| [jQuery](http://jquery.com)          | 2.1.4            |
+
+
 
 ## Compile [LiteSQL](http://sourceforge.net/projects/litesql)
 
