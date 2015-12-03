@@ -9,7 +9,7 @@
 
 #include <iostream>
 #include <libgen.h> // => dirname
-#include <com/cyosp/rest/Platform.h>	// signal function
+#include <com/cyosp/rest/platform.h>	// signal function
 #include <string>
 
 using std::cout;
