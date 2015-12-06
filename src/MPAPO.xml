@@ -1,0 +1,131 @@
+<?xml version="1.0"?>
+<!DOCTYPE database SYSTEM "litesql.dtd">
+<database name="MPAPO" namespace="mpapo" include="com/cyosp/mpa/MPAPOInclude.hpp">
+
+	<object name="MPAO">
+		<field name="version" type="integer"/>
+		<method name="initializeVersion"/>
+		<method name="updateVersion"/>
+		<method name="isCorrectVersion" returntype="bool">
+			<param type="int" name="versionToCheck"/>
+		</method>
+	</object>
+
+	<object name="User" inherits="MPAO">
+		<field name="isAdmin" type="boolean"/>			
+		<field name="login" type="string" length="32" />
+		<field name="password" type="string" length="32" />
+		<field name="pwdErrNbr" type="integer" />
+		<method name="setIsAdmin">
+			<param type="bool" name="isAdmin"/>
+		</method>
+		<method name="setLogin">
+			<param type="string" name="login"/>
+		</method>
+		<method name="setPassword">
+			<param type="string" name="password"/>
+		</method>
+		<method name="addPwdErr"/>
+		<method name="resetPwdErr"/>
+	</object>
+
+	<object name="Account" inherits="MPAO">			
+		<field name="name" type="string" length="256" />
+		<field name="balance" type="float" />
+		<method name="setName">
+			<param type="string" name="name"/>
+		</method>
+		<method name="addToBalance">
+			<param type="float" name="balance"/>
+		</method>
+	</object>
+	
+	<object name="Category" inherits="MPAO">
+		<field name="name" type="string" length="64" />
+		<field name="amount" type="float" />
+		<method name="setName">
+			<param type="int" name="accountId"/>
+			<param type="string" name="name"/>
+		</method>
+		<method name="setAmount">
+			<param type="float" name="amount"/>
+		</method>
+		<method name="addToAmount">
+			<param type="float" name="amount"/>
+		</method>
+	</object>
+	
+	<object name="Provider" inherits="MPAO">
+		<field name="name" type="string" length="64" />
+		<field name="amount" type="float" />
+		<method name="setName">
+			<param type="int" name="accountId"/>
+			<param type="string" name="name"/>
+		</method>
+		<method name="setAmount">
+			<param type="float" name="amount"/>
+		</method>
+		<method name="addToAmount">
+			<param type="float" name="amount"/>
+		</method>
+	</object>
+
+	<object name="Operation" inherits="MPAO">
+		<!-- TODO: set to date format -->
+		<field name="date" type="string" length="10"/>
+		<field name="amount" type="float"/>
+		<field name="accountBalance" type="float"/>
+		<method name="setDate">
+			<param type="string" name="date"/>
+		</method>
+		<method name="setAmount">
+			<param type="float" name="amount"/>
+		</method>
+		<method name="setAccountBalance">
+			<param type="float" name="amount"/>
+		</method>
+	</object>
+	
+	<object name="SubOperation" inherits="MPAO">
+		<field name="amount" type="float" />
+		<field name="note" type="string" length="1024" />
+		<method name="setAmount">
+			<param type="float" name="amount"/>
+		</method>
+		<method name="setNote">
+			<param type="string" name="name"/>
+		</method>
+	</object>
+	
+	<!-- ************* -->
+	<!-- * Relations * -->
+	<!-- ************* -->
+	<relation>
+		<relate object="Account" limit="one" handle="categories" />
+		<relate object="Category" limit="many" handle="account"/>
+	</relation>
+	
+	<relation>
+		<relate object="Account" limit="one" handle="providers" />
+		<relate object="Provider" limit="many" handle="account"/>
+	</relation>
+	
+	<relation>
+		<relate object="Account" limit="one" handle="operations" />
+		<relate object="Operation" limit="many" handle="account"/>
+	</relation>
+	
+	<relation>
+		<relate object="Operation" limit="many" handle="provider" />
+		<relate object="Provider" limit="one" handle="operations"/>
+	</relation>
+	
+	<relation>
+		<relate object="Operation" limit="one" handle="subOperations" />
+		<relate object="SubOperation" limit="many" handle="operation"/>
+	</relation>
+	<relation>
+		<relate object="SubOperation" limit="many" handle="category" />
+		<relate object="Category" limit="one" handle="subOperations"/>
+	</relation>
+</database>
