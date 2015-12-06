@@ -1,0 +1,12 @@
+/* font-size: 10vw; */
+/* Doesn't work ! => @screen-md */
+
+.trueResult
+{
+	color: green;
+}
+
+.falseResult
+{
+	color: red;
+}

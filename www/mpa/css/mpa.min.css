@@ -1,0 +1,79 @@
+/* font-size: 10vw; */
+/* Doesn't work ! => @screen-md */
+
+#mpaAccountName
+{
+	width: 100%
+}
+
+.full
+{
+	width: 100%
+}
+
+
+/* Order is important : max size to min size */
+@media all and (max-width: 768px)
+{
+	body
+	{
+		font-size: 20px;
+	}
+}
+
+/*
+@media all and (max-width: 540px)
+{
+	body
+	{
+		font-size: 20px;
+	}
+}*/
+
+.odd
+{
+	background-color: #f8f8f8;
+}
+
+/* *********** */
+/* Sign in CSS */
+/* *********** */
+
+body {
+  padding-top: 40px;
+  padding-bottom: 40px;
+}
+
+.form-signin
+{
+  max-width: 330px;
+  padding: 15px;
+  margin: 0 auto;
+}
+
+.form-signin .checkbox
+{
+  font-weight: normal;
+}
+
+.form-signin input[type="email"]
+{
+  margin-bottom: -1px;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.form-signin input[type="password"]
+{
+  margin-bottom: 10px;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+
+/* ********** */
+/* Amount CSS */
+/* ********** */
+.amountNegativeSign
+{
+	color: red;
+}

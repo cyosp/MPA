@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="fr">
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>MPA - Page administrateur</title>
+    <!-- Path are relatives to URL and not to file system path -->
+   	<script src="js/jquery.min.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+	<script src="js/mpa.common.min.js"></script>
+	<script src="js/mpa.login.min.js"></script>
+	
+	<link href="css/mpa.login.min.css" rel="stylesheet">
+	<link href="css/bootstrap.min.css" rel="stylesheet">
+
+	<script>
+		function load()
+		{
+			$( "#mpaLogin" ).val( getParameterByName("login") );
+			// TODO : better, it's a temporary solution
+			var errMsg = getParameterByName("errMsg");
+			if( errMsg != "" ) alert( errMsg ); 
+		}
+	</script>
+  </head>
+  <body onload="load()">
+    <div class="container">
+      <form class="form-signin" role="form" action="adminRegister/action" method="POST">
+        <h2 class="form-signin-heading">Enregistrer l'admin</h2>
+        <input id="mpaLogin" name="login" class="form-control" placeholder="E-mail" required="" autofocus="" type="">
+        <input id="inputPassword" name="pwd" class="form-control" placeholder="Mot de passe" required="" type="password">
+        <input id="inputPasswordConfirm" name="pwdCheck" class="form-control" placeholder="Confirmer mot de passe" required="" type="password">
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Valider</button>
+      </form>
+    </div>
+	</body>
+</html>
