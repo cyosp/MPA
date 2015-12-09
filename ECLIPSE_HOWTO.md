@@ -72,3 +72,25 @@
 	OR
  * Select *MPA* project
  * In *Project* Eclipse menu select *Build Project*
+
+## Configure Eclipse in order to run a Bash script
+
+ * In *Run* Eclipse menu select *External Tools*
+	* And select *External Tools Configuration...*
+		* Select *Program* and *New launch configuration* icon in the top left window
+		* In field *Name:* replace *New_configuration* by *Bash*
+		* In *Main* tab:
+			* Field *Location: * put */bin/bash* value
+			* Field *Arguments:* put *${resource_loc}* value
+		* Click *Apply* and *Close* buttons
+
+	* Select *Organize Favorites...*
+		* Click *Add..* button
+		* Check *Bash*
+		* And click *OK* button twice
+
+## Run a Bash script
+
+ * Select a Bash script
+ * In *Run* Eclipse menu select *External Tools*
+ * And choose the *Bash* subentry
