@@ -267,69 +267,11 @@ int HTTPHandler::url_handler(void *cls, struct MHD_Connection *connection,
 				string session = isSessionRegistered( * con_info->datas );
 				bool isAdmin = isSessionAdmin( session );
 				// Session is not registered
-				if( session.empty() )
+				if( session.empty() && urlString != "/mpa/res/users/login" )
 				{
 					MPA_LOG_TRIVIAL(info,"Request without token");
 
-					if( urlString == "/login/action" )
-					{
-						//TODO : Check if arg exist before to take value
-						string login = con_info->datas->find("login")->second;
-						string pwd = con_info->datas->find("pwd")->second;
-
-						MPA_LOG_TRIVIAL(info,"User login: " + login);
-
-						respdata = "<html><head><meta http-equiv='refresh' content='0; url=../";
-						try
-						{
-							mpapo::User user = MPA::getInstance()->getUser( login );
-							if( user.pwdErrNbr < MPA::PWD_SECURITY_ERROR_NBR )
-							{
-								if( user.password.value().compare(pwd ) == 0 )
-								{
-									// Reset password error because password used is correct
-									if( user.pwdErrNbr != 0 )
-									{
-										user.resetPwdErr();
-										user.update();
-									}
-									MPA_LOG_TRIVIAL(info,"User is authenticated");
-									string token = registerNewSession( user.isAdmin );
-									respdata += "mpa/accounts/?token=" + token;
-								}
-								else
-								{
-									// Message for fail2ban or same program
-									MPA_LOG_TRIVIAL(info,"Account: " + user.login + " has password failed for IP request: " + remoteIP );
-
-									// Register this password error
-									user.addPwdErr();
-									user.update();
-
-									// TODO : manage URL encoding
-									respdata += "?errMsg="+MPA::getErrMsg( 7 )+"&login="+login;
-								}
-							}
-							else
-							{
-								// Message for fail2ban or same program
-								MPA_LOG_TRIVIAL(error,"Account: " + user.login + " blocked for IP request: " + remoteIP );
-
-								// TODO : manage URL encoding
-								respdata += "?errMsg="+MPA::getErrMsg( 11 )+"&login="+login;
-							}
-						}
-						catch (NotFound & e)
-						{
-							MPA_LOG_TRIVIAL(trace,"User authentication fails due to login error");
-							// TODO : manage URL encoding
-							respdata += "?errMsg="+MPA::getErrMsg( 6 );
-						}
-
-						respdata += "'/></head></html>";
-
-					}
-					else if( urlString == "/adminRegister/action" )
+					if( urlString == "/adminRegister/action" )
 					{
 						MPA_LOG_TRIVIAL(info,"Registrer administrator");
 
@@ -385,7 +327,7 @@ int HTTPHandler::url_handler(void *cls, struct MHD_Connection *connection,
 				}
 				else
 				{
-					MPA_LOG_TRIVIAL(info,"Request with valid token");
+					MPA_LOG_TRIVIAL(info,"Request with valid token or login");
 
 					bool canContinue = false;
 

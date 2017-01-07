@@ -30,6 +30,15 @@ bool MPAO::areParametersOk()
 	{
 		switch (actionType)
 		{
+			case NONE:
+				ret = false;
+				break;
+			case LOGIN:
+				ret = arePostLoginParametersOk();
+				break;
+			case LOGOUT:
+				ret = arePostLogoutParametersOk();
+				break;
 			case ADD:
 				ret = arePostAddParametersOk();
 				break;
@@ -43,6 +52,16 @@ bool MPAO::areParametersOk()
 	}
 
 	return ret;
+}
+
+bool MPAO::arePostLoginParametersOk()
+{
+	return false;
+}
+
+bool MPAO::arePostLogoutParametersOk()
+{
+	return false;
 }
 
 bool MPAO::arePostDeleteParametersOk()
@@ -65,6 +84,16 @@ bool MPAO::arePostUpdateParametersOk()
 	return ret;
 }
 
+string MPAO::executePostLoginRequest(ptree & root)
+{
+	return MPAO::DEFAULT_JSON_ID;
+}
+
+string MPAO::executePostLogoutRequest(ptree & root)
+{
+	return MPAO::DEFAULT_JSON_ID;
+}
+
 string MPAO::executeRequest(ptree & root)
 {
 	string ret = "";
@@ -74,6 +103,17 @@ string MPAO::executeRequest(ptree & root)
 	{
 		switch (actionType)
 		{
+			case NONE:
+				ret = "";
+				break;
+			case LOGIN:
+				MPA_LOG_TRIVIAL(trace," Execute post login request");
+				ret = executePostLoginRequest( root );
+				break;
+			case LOGOUT:
+				MPA_LOG_TRIVIAL(trace," Execute post logout request");
+				ret = executePostLogoutRequest( root );
+				break;
 			case ADD:
 				MPA_LOG_TRIVIAL(trace," Execute post add request");
 				ret = executePostAddRequest( root );

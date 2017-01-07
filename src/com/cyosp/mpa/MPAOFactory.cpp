@@ -33,6 +33,7 @@ MPAOFactory::MPAOFactory()
 //	/mpa/res/accounts/10/categories
 //	/mpa/res/infos
 // POST
+//	/mpa/res/login
 //	/mpa/res/users/0/add
 //	/mpa/res/users/0/del
 //	/mpa/res/users/10/upd?version=1&
@@ -50,7 +51,7 @@ mpa::MPAO * MPAOFactory::getMPAO(HttpRequestType requestType, const string& url,
 	// Decode URL
 	//
 
-	ActionType actionType = ADD;
+	ActionType actionType = NONE;
 	vector<std::pair<string, int> > urlPairs;
 
 	boost::smatch matches;
@@ -70,15 +71,26 @@ mpa::MPAO * MPAOFactory::getMPAO(HttpRequestType requestType, const string& url,
 			{
 				MPA_LOG_TRIVIAL(trace, "Action type: " + matches[2]);
 
-				if (matches[2] == "add")
+				// Remove URL action type
+				urlToAnalyse = matches[1];
+
+				if (matches[2] == "login")
+				{
+					actionType = LOGIN;
+
+					// Update URL in order to be compliant to the standard others
+					urlToAnalyse = "/login/0";
+				}
+				else if (matches[2] == "logout")
+					actionType = LOGOUT;
+				else if (matches[2] == "add")
 					actionType = ADD;
 				else if (matches[2] == "del")
 					actionType = DELETE;
 				else if (matches[2] == "upd")
 					actionType = UPDATE;
 
-				// Remove URL action type
-				urlToAnalyse = matches[1];
+
 				const boost::regex urlPairRegex("^/([a-z]+)/([0-9]+)(.*)$");
 				// Fill vector starting by the beginning of URL
 				while (boost::regex_match(urlToAnalyse, matches, urlPairRegex))
@@ -93,6 +105,8 @@ mpa::MPAO * MPAOFactory::getMPAO(HttpRequestType requestType, const string& url,
 
 					urlPairs.push_back(std::pair<string, int>(name, id));
 				}
+
+				MPA_LOG_TRIVIAL(trace, "End URL analyze");
 			}
 			else MPA_LOG_TRIVIAL(trace, "URL doesn't match action type");
 		}
@@ -143,9 +157,10 @@ mpa::MPAO * MPAOFactory::getMPAO(HttpRequestType requestType, const string& url,
 
 			MPA_LOG_TRIVIAL(trace, "Last identifier: " + lastIdentifier );
 
-			if( lastIdentifier == "accounts" )			ret = new Account( requestType , actionType, argvals , isAdmin, urlPairs );
-			else if ( lastIdentifier == "users" )			ret = new User( requestType , actionType , argvals , isAdmin, urlPairs );
-			else if ( lastIdentifier == "infos" )			ret = new Info( requestType , actionType , argvals , isAdmin, urlPairs );
+			if( lastIdentifier == "login" )				ret = new Login( requestType , actionType, argvals , isAdmin, urlPairs );
+			else if( lastIdentifier == "accounts" )		ret = new Account( requestType , actionType, argvals , isAdmin, urlPairs );
+			else if ( lastIdentifier == "users" )		ret = new User( requestType , actionType , argvals , isAdmin, urlPairs );
+			else if ( lastIdentifier == "infos" )		ret = new Info( requestType , actionType , argvals , isAdmin, urlPairs );
 			else if ( lastIdentifier == "categories" )	ret = new Category( requestType , actionType , argvals , isAdmin, urlPairs );
 			else if ( lastIdentifier == "providers" )	ret = new Provider( requestType , actionType , argvals , isAdmin, urlPairs );
 			else if ( lastIdentifier == "operations" )	ret = new Operation( requestType , actionType , argvals , isAdmin, urlPairs );
