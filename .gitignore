@@ -28,3 +28,4 @@
 *.app
 /Debug/
 /Release/
+/node_modules/
