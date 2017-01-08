@@ -29,7 +29,7 @@ In order to have a test environment ready to use you must:
 Before to launch tests you must check MPA:
 
 * Is running on the test machine
-* Can be reached using: http://localhost:8080
-* Login: `cyosp` with password `CYOSP1` is defined
+* Can be reached using: *http://localhost:8080*
+* Login: *cyosp* with password *CYOSP1* is defined
 
 If all is OK, you can execute `npm test` to run MPA server test suite
