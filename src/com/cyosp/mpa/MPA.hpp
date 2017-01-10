@@ -37,6 +37,7 @@ static const int MSG_OK = 0;
 static const int MSG_DEL_IMPOSSIBLE_OPERATIONS = 22;
 static const int MSG_DEL_IMPOSSIBLE_PROVIDERS = 23;
 static const int MSG_DEL_IMPOSSIBLE_CATEGORIES = 24;
+static const int MSG_NO_SYSTEM_ACCOUNT = 25;
 
 class MPA
 {

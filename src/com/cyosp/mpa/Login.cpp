@@ -48,47 +48,57 @@ string Login::executePostLoginRequest(ptree & root)
 	string login = argvals.find("login")->second;
 	string pwd   = argvals.find("pwd")->second;
 
-	try
+	// There is an administrator user defined
+	if( MPA::getInstance()->isAdminRegistered() )
 	{
-		mpapo::User user = MPA::getInstance()->getUser( login );
-		if( user.pwdErrNbr < MPA::PWD_SECURITY_ERROR_NBR )
+		try
 		{
-			if( user.password.value().compare( pwd ) == 0 )
+			mpapo::User user = MPA::getInstance()->getUser( login );
+			if( user.pwdErrNbr < MPA::PWD_SECURITY_ERROR_NBR )
 			{
-				// Reset password error because password used is correct
-				if( user.pwdErrNbr != 0 )
+				if( user.password.value().compare( pwd ) == 0 )
 				{
-					user.resetPwdErr();
-					user.update();
+					// Reset password error because password used is correct
+					if( user.pwdErrNbr != 0 )
+					{
+						user.resetPwdErr();
+						user.update();
+					}
+					MPA_LOG_TRIVIAL(info,"User is authenticated");
+					ret = HTTPHandler::registerNewSession( user.isAdmin );
 				}
-				MPA_LOG_TRIVIAL(info,"User is authenticated");
-				ret = HTTPHandler::registerNewSession( user.isAdmin );
+				else
+				{
+					// TODO : Message for fail2ban or same program using remote IP
+					MPA_LOG_TRIVIAL(info,"Account: " + user.login + " has password failed" );
+
+					// Register this password error
+					user.addPwdErr();
+					user.update();
+
+					ret = MPA::getErrMsg( 7 );
+				}
 			}
 			else
 			{
 				// TODO : Message for fail2ban or same program using remote IP
-				MPA_LOG_TRIVIAL(info,"Account: " + user.login + " has password failed" );
+				MPA_LOG_TRIVIAL(error,"Account: " + user.login + " blocked" );
 
-				// Register this password error
-				user.addPwdErr();
-				user.update();
-
-				ret = MPA::getErrMsg( 7 );
+				ret = MPA::getErrMsg( 11 );
 			}
 		}
-		else
+		catch (NotFound & e)
 		{
-			// TODO : Message for fail2ban or same program using remote IP
-			MPA_LOG_TRIVIAL(error,"Account: " + user.login + " blocked" );
+			MPA_LOG_TRIVIAL(trace,"User authentication fails due to login error");
 
-			ret = MPA::getErrMsg( 11 );
+			ret = MPA::getErrMsg( 6 );
 		}
 	}
-	catch (NotFound & e)
+	else
 	{
-		MPA_LOG_TRIVIAL(trace,"User authentication fails due to login error");
+		MPA_LOG_TRIVIAL(trace, "Administrator account is not defined" );
 
-		ret = MPA::getErrMsg( 6 );
+		ret = MPA::getErrMsg( MSG_NO_SYSTEM_ACCOUNT );
 	}
 
 	return ret;

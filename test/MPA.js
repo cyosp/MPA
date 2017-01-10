@@ -31,14 +31,14 @@ describe( "MPA API" , function()
 					var data = JSON.parse( response.text );
 					
 					// Check response is 200
-		   			expect(response.statusCode).to.equal(200);
+		   			expect( response.statusCode ).to.equal(200);
 		   			
 					// Check JSON contains id property
 					assert.property( data , 'id' );
 		
 					// Get token
-					token = parseInt( data.id );
-		
+					token = data.id;
+
 					// End test
 		    		done();
 				}
@@ -48,7 +48,7 @@ describe( "MPA API" , function()
 		it( "token is a number" , function( done )
 		{
 			// Check token is a number
-			assert.isNumber( token , 'token value' );
+			expect( token , 'token is not a number' ).to.be.not.NaN;
 			
 			// End test
 			done();
