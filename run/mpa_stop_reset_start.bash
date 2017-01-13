@@ -8,6 +8,6 @@ $HOME_SCRIPT/mpa_reset.bash \
 && \
 sleep 1 \
 && \
-$HOME_SCRIPT/mpa_admin_start.bash
+$HOME_SCRIPT/mpa_start.bash
 
 exit $?
