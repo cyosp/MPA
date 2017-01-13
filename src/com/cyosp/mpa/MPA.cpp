@@ -104,16 +104,16 @@ void MPA::initDatabase( string dbFilePath )
 	// Update database scheme if needed
 	if( getMPAPO().needsUpgrade() )	getMPAPO().upgrade();
 
-	vector<mpapo::User> adminUsers = getAdminUsers();
+	/*vector<mpapo::User> adminUsers = getAdminUsers();
 	if( adminUsers.size() == 0 )
 	{
 		mpapo->~Database();
 		throw string( "Database started in normal mode without administrator user set in database");
 	}
-	else	registerAdmin();
+	else	registerAdmin();*/
 }
 
-void MPA::initDatabase( string dbFilePath , string adminLogin )
+/*void MPA::initDatabase( string dbFilePath , string adminLogin )
 {
 	// using SQLite3 as backend
 	mpapo = new MPAPO( "sqlite3" , "database=" + dbFilePath );
@@ -136,7 +136,7 @@ void MPA::initDatabase( string dbFilePath , string adminLogin )
 		mpapo->~Database();
 		throw string( "Database started with admin login whereas there is already one registered" );
 	}
-}
+}*/
 
 void MPA::initWWWFilePath( string wwwFilePath )
 {
