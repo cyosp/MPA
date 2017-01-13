@@ -34,13 +34,13 @@ MPAOFactory::MPAOFactory()
 //	/mpa/res/infos
 // POST
 //	/mpa/res/login
-//	/mpa/res/users/0/add
+//	/mpa/res/users/add
 //	/mpa/res/users/0/del
-//	/mpa/res/users/10/upd?version=1&
-//	/mpa/res/accounts/0/add
+//	/mpa/res/users/10/upd?version=1
+//	/mpa/res/accounts/add
 //	/mpa/res/accounts/20/del?version=1
 //	/mpa/res/accounts/20/upd?version=1
-//	/mpa/res/accounts/20/categories/0/add
+//	/mpa/res/accounts/20/categories/add
 //	/mpa/res/accounts/20/categories/30/del?version=1
 mpa::MPAO * MPAOFactory::getMPAO(HttpRequestType requestType, const string& url,
 		const map<string, string>& argvals, bool isAdmin)
@@ -84,7 +84,12 @@ mpa::MPAO * MPAOFactory::getMPAO(HttpRequestType requestType, const string& url,
 				else if (matches[2] == "logout")
 					actionType = LOGOUT;
 				else if (matches[2] == "add")
+				{
 					actionType = ADD;
+
+					// Update URL in order to be compliant to the standard others
+					urlToAnalyse += "/0";
+				}
 				else if (matches[2] == "del")
 					actionType = DELETE;
 				else if (matches[2] == "upd")
