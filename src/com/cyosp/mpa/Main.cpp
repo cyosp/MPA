@@ -35,12 +35,12 @@ int main(int argc, char * const *argv)
 	string dbFilePath = argv[2];
 	string logFilePath = argv[3];
 
-	string adminLogin = "";
+	/*string adminLogin = "";
 	if( argc == 5 )
 	{
 		adminLogin = argv[4];
 		cout << "Admin login: " << adminLogin << endl;
-	}
+	}*/
 
 	// Get program absolute path
 	char programAbsoluteFilePath[1024];
@@ -66,8 +66,8 @@ int main(int argc, char * const *argv)
 		MPA * mpa = MPA::getInstance();
 		mpa->setDebugMode(debugMode);
 		mpa->initLogFilePath( logFilePath );
-		if( argc == 5 )			mpa->initDatabase( dbFilePath , adminLogin );
-		else if( argc == 4 )	mpa->initDatabase( dbFilePath );
+		/*if( argc == 5 )			mpa->initDatabase( dbFilePath , adminLogin );
+		else if( argc == 4 )	*/mpa->initDatabase( dbFilePath );
 		mpa->initWWWFilePath( wwwFilePath );
 
 		canContinue = true;
