@@ -81,7 +81,9 @@ string User::executePostAddRequest(ptree & root)
 {
 	string ret = MPAO::DEFAULT_JSON_ID;
 
-	if( isAdmin )
+	bool isAdminRegistered = MPA::getInstance()->isAdminRegistered();
+
+	if( isAdmin || ! isAdminRegistered )
 	{
 		string login = argvals.find("login")->second;
 		string pwd = argvals.find("password")->second;
@@ -91,9 +93,9 @@ string User::executePostAddRequest(ptree & root)
 			if( ! MPA::getInstance()->existUser( login ) )
 			{
 				if( MPA::isSecurePwd( pwd ))
-					{
+				{
 					mpapo::User user( MPA::getInstance()->getMPAPO() );
-					user = MPA::getInstance()->addUser( false , login , pwd );
+					user = MPA::getInstance()->addUser( ! isAdminRegistered , login , pwd );
 
 					// Get account ID
 					ret = string( user.id );
