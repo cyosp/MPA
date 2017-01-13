@@ -53,8 +53,6 @@ struct addResult
 const string MPA::version = "In progress";
 const string MPA::startMsg = "Starting MPA " + version;
 
-const string MPA::DEFAULT_ADMIN_PWD = "mpa";
-
 // Security constraints
 const int MPA::PWD_SECURITY_MIN_SIZE = 6;
 const int MPA::PWD_SECURITY_UPPER_CASE_NBR = 1;
@@ -234,7 +232,7 @@ mpapo::User & MPA::addUser(bool isAdmin, string login , string password)
 
 	MPA_LOG_TRIVIAL(info,"User added, id=" + (* ret).id.value());
 
-	if( isAdmin && password != DEFAULT_ADMIN_PWD )	registerAdmin();
+	if( isAdmin )	registerAdmin();
 
 	return * ret;
 }

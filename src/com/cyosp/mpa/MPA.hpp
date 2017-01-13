@@ -46,8 +46,6 @@ class MPA
 		const static string version;
 		const static string startMsg;
 
-		const static string DEFAULT_ADMIN_PWD;
-
 		const static int PWD_SECURITY_MIN_SIZE;
 		const static int PWD_SECURITY_UPPER_CASE_NBR;
 		const static int PWD_SECURITY_DIGIT_NBR;
