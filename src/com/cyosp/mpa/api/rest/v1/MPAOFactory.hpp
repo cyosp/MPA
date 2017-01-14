@@ -26,7 +26,7 @@ using std::string;
 #include "com/cyosp/mpa/MPAO.hpp"
 #include "com/cyosp/mpa/Operation.hpp"
 #include "com/cyosp/mpa/Provider.hpp"
-#include "com/cyosp/mpa/User.hpp"
+#include "com/cyosp/mpa/api/rest/v1/User.hpp"
 
 namespace mpa
 {

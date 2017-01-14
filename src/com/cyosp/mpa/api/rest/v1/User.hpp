@@ -12,10 +12,10 @@
 #include "com/cyosp/mpa/MPA.hpp"
 #include "com/cyosp/mpa/MPAO.hpp"
 
-namespace mpa
+namespace mpa_api_rest_v1
 {
 
-class User : public MPAO
+class User : public mpa::MPAO
 {
 
 protected:

@@ -5,9 +5,9 @@
  *      Author: cyosp
  */
 
-#include <com/cyosp/mpa/User.hpp>
+#include <com/cyosp/mpa/api/rest/v1/User.hpp>
 
-namespace mpa
+namespace mpa_api_rest_v1
 {
 
 User::User( HttpRequestType httpRequestType, ActionType actionType, const map<string, string>& argvals, bool isAdmin, vector<std::pair<string, int> > urlPairs ) : MPAO( httpRequestType, actionType, argvals , isAdmin, urlPairs )
@@ -134,7 +134,7 @@ string User::executePostUpdateRequest(ptree & root)
 	if( isAdmin )
 	{
 		//TODO
-		mpapo::Account account = Account::renameAccount( urlPairs[0].second , atoi( argvals.find("version")->second ) , argvals.find("name")->second );
+		mpapo::Account account = mpa::Account::renameAccount( urlPairs[0].second , atoi( argvals.find("version")->second ) , argvals.find("name")->second );
 		ret = urlPairs[0].second ;
 
 		// Generate Json output

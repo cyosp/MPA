@@ -56,13 +56,13 @@ mpa::MPAO * MPAOFactory::getMPAO(HttpRequestType requestType, const string& url,
 
 	boost::smatch matches;
 
-	const boost::regex startUrl("^/mpa/(res|res-adm)(/.*)$");
+	const boost::regex startUrl("^/api/rest/v1(/.*)$");
 	if (boost::regex_match(url, matches, startUrl))
 	{
 		MPA_LOG_TRIVIAL(trace, "Match with start URL");
 
 		// Remove start of URL
-		string urlToAnalyse = matches[2];
+		string urlToAnalyse = matches[1];
 
 		if( requestType == POST )
 		{
@@ -164,7 +164,7 @@ mpa::MPAO * MPAOFactory::getMPAO(HttpRequestType requestType, const string& url,
 
 			if( lastIdentifier == "login" )				ret = new mpa_api_rest_v1::Login( requestType , actionType, argvals , isAdmin, urlPairs );
 			else if( lastIdentifier == "accounts" )		ret = new Account( requestType , actionType, argvals , isAdmin, urlPairs );
-			else if ( lastIdentifier == "users" )		ret = new User( requestType , actionType , argvals , isAdmin, urlPairs );
+			else if ( lastIdentifier == "users" )		ret = new mpa_api_rest_v1::User( requestType , actionType , argvals , isAdmin, urlPairs );
 			else if ( lastIdentifier == "infos" )		ret = new Info( requestType , actionType , argvals , isAdmin, urlPairs );
 			else if ( lastIdentifier == "categories" )	ret = new Category( requestType , actionType , argvals , isAdmin, urlPairs );
 			else if ( lastIdentifier == "providers" )	ret = new Provider( requestType , actionType , argvals , isAdmin, urlPairs );
