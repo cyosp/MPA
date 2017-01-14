@@ -1,3 +1,5 @@
+// 2017-01-15 V 1.1.1
+// - Update to new URL API
 // 2017-01-13 V 1.1.0
 // - Manage register administrator account
 // 2017-01-08 V 1.0.0
@@ -25,7 +27,7 @@ describe( "MPA API" , function()
 		it( "returns user identifier" , function( done )
 		{
 			chai.request( host )
-				.post( "/mpa/res/users/add" )
+				.post( "/api/rest/v1/users/add" )
 				.set( 'content-type', 'application/x-www-form-urlencoded' )
 				.send( {login: adminLogin , password: adminPwd , passwordConfirm: adminPwd } )
 			.end( function( error , response , body )
@@ -70,7 +72,7 @@ describe( "MPA API" , function()
 		it( "returns token" , function( done )
 		{
 			chai.request( host )
-				.post( "/mpa/res/users/login" )
+				.post( "/api/rest/v1/users/login" )
 				.set( 'content-type', 'application/x-www-form-urlencoded' )
 				.send( {login: adminLogin , pwd: adminPwd } )
 			.end( function( error , response , body )
