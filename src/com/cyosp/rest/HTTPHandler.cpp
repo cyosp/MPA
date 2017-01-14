@@ -85,7 +85,7 @@ int HTTPHandler::url_handler(void *cls, struct MHD_Connection *connection,
 				if( urlString == "/" )
 				{
 					string filePath = MPA::getInstance()->getWWWFilePath() + urlString;
-					if( ! MPA::getInstance()->isAdminRegistered() )	filePath += "mpa/admin/register";
+					if( ! MPA::getInstance()->isAdminRegistered() )	filePath += "users";
 					else											filePath += "login";
 
 					MPA_LOG_TRIVIAL(debug,string( basename( filePath.c_str() ) ) );
@@ -94,7 +94,8 @@ int HTTPHandler::url_handler(void *cls, struct MHD_Connection *connection,
 
 					ret = serveFile( filePath , & con_cls , & response );
 				}
-				else if( ! boost::starts_with(url, "/mpa/") )
+				// Serve www folder
+				else if( ! boost::starts_with(url, "/api/") )
 				{
 					string filePath = MPA::getInstance()->getWWWFilePath() + urlString;
 					// Serve file
@@ -109,7 +110,7 @@ int HTTPHandler::url_handler(void *cls, struct MHD_Connection *connection,
 			}
 			else
 			{
-				if( boost::starts_with(url, "/mpa/res-adm") )
+				/*if( boost::starts_with(url, "/mpa/res-adm") )
 				{
 					MPA_LOG_TRIVIAL(trace,"JSON request to serve");
 
@@ -119,7 +120,7 @@ int HTTPHandler::url_handler(void *cls, struct MHD_Connection *connection,
 
 						MPA_LOG_TRIVIAL(trace,"callapi.getFactoryMPAObject: done");
 
-						*con_cls = 0; /* reset when done */
+						*con_cls = 0; // reset when done
 						val = MHD_lookup_connection_value(connection, MHD_GET_ARGUMENT_KIND, "q");
 
 						me = (char *) malloc(respdata.size() + 1);
@@ -135,7 +136,7 @@ int HTTPHandler::url_handler(void *cls, struct MHD_Connection *connection,
 						}
 					}
 				}
-				else if( urlString == "/mpa/disconnect" )
+				else */if( urlString == "/disconnect" )
 				{
 					deleteSession( session );
 
@@ -153,9 +154,11 @@ int HTTPHandler::url_handler(void *cls, struct MHD_Connection *connection,
 					ret = MHD_HTTP_OK;
 
 				}
-				else if( boost::starts_with(url, "/mpa/res/") )
+				else if( boost::starts_with(url, "/api/rest/") )
 				{
 					MPA_LOG_TRIVIAL(trace,"JSON request to serve");
+
+					// TODO Manage switch for API versions
 
 					HTTPHandler::getFactoryMPAObject( GET , url, url_args, isAdmin , respdata);
 
@@ -267,7 +270,7 @@ int HTTPHandler::url_handler(void *cls, struct MHD_Connection *connection,
 				string session = isSessionRegistered( * con_info->datas );
 				bool isAdmin = isSessionAdmin( session );
 				// Session is not registered
-				if( session.empty() && urlString != "/mpa/res/users/login" )
+				if( session.empty() && urlString != "/api/rest/v1/users/add" && urlString != "/api/rest/v1/users/login" )
 				{
 					MPA_LOG_TRIVIAL(info,"Request without token");
 
@@ -288,7 +291,7 @@ int HTTPHandler::url_handler(void *cls, struct MHD_Connection *connection,
 
 						if( adminUser.login.value().compare(login) == 0 )
 						{
-							if( adminUser.password.value().compare(MPA::DEFAULT_ADMIN_PWD) == 0 && pwd.compare(pwdCheck) == 0 )
+							if( /*adminUser.password.value().compare(MPA::DEFAULT_ADMIN_PWD) == 0 &&*/ pwd.compare(pwdCheck) == 0 )
 							{
 								if( MPA::isSecurePwd(pwd ) )
 								{
@@ -331,7 +334,7 @@ int HTTPHandler::url_handler(void *cls, struct MHD_Connection *connection,
 
 					bool canContinue = false;
 
-					if( boost::starts_with(url, "/mpa/res-adm") )
+					/*if( boost::starts_with(url, "/mpa/res-adm") )
 					{
 						MPA_LOG_TRIVIAL(info,"Ask for admin request");
 						if( isAdmin )
@@ -340,7 +343,7 @@ int HTTPHandler::url_handler(void *cls, struct MHD_Connection *connection,
 							canContinue = true;
 						}
 					}
-					else canContinue = true;
+					else */canContinue = true;
 
 					if( canContinue )	HTTPHandler::getFactoryMPAObject( POST , url, *con_info->datas, isAdmin , respdata );
 				}

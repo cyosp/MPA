@@ -14,7 +14,7 @@
 
 #include "com/cyosp/mpa/MPA.hpp"
 #include "com/cyosp/mpa/MPAO.hpp"
-#include "com/cyosp/mpa/MPAOFactory.hpp"
+#include "com/cyosp/mpa/api/rest/v1/MPAOFactory.hpp"
 
 using namespace mpa;
 

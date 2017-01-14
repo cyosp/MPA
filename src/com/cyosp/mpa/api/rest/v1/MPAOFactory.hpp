@@ -18,7 +18,7 @@ using std::string;
 
 #include <vector>
 
-#include "com/cyosp/mpa/Login.hpp"
+#include "com/cyosp/mpa/api/rest/v1/Login.hpp"
 #include "com/cyosp/mpa/Category.hpp"
 #include "com/cyosp/mpa/Account.hpp"
 #include "com/cyosp/mpa/Info.hpp"

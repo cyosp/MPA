@@ -5,7 +5,7 @@
  *      Author: cyosp
  */
 
-#include <com/cyosp/mpa/MPAOFactory.hpp>
+#include <com/cyosp/mpa/api/rest/v1/MPAOFactory.hpp>
 
 namespace mpa
 {
@@ -162,7 +162,7 @@ mpa::MPAO * MPAOFactory::getMPAO(HttpRequestType requestType, const string& url,
 
 			MPA_LOG_TRIVIAL(trace, "Last identifier: " + lastIdentifier );
 
-			if( lastIdentifier == "login" )				ret = new Login( requestType , actionType, argvals , isAdmin, urlPairs );
+			if( lastIdentifier == "login" )				ret = new mpa_api_rest_v1::Login( requestType , actionType, argvals , isAdmin, urlPairs );
 			else if( lastIdentifier == "accounts" )		ret = new Account( requestType , actionType, argvals , isAdmin, urlPairs );
 			else if ( lastIdentifier == "users" )		ret = new User( requestType , actionType , argvals , isAdmin, urlPairs );
 			else if ( lastIdentifier == "infos" )		ret = new Info( requestType , actionType , argvals , isAdmin, urlPairs );
