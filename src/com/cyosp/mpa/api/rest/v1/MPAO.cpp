@@ -5,9 +5,9 @@
  *      Author: cyosp
  */
 
-#include <com/cyosp/mpa/MPAO.hpp>
+#include <com/cyosp/mpa/api/rest/v1/MPAO.hpp>
 
-namespace mpa
+namespace mpa_api_rest_v1
 {
 
 string MPAO::DEFAULT_JSON_ID = "-1";

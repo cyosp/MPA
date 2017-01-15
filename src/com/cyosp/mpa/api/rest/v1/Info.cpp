@@ -5,9 +5,9 @@
  *      Author: cyosp
  */
 
-#include <com/cyosp/mpa/Info.hpp>
+#include <com/cyosp/mpa/api/rest/v1/Info.hpp>
 
-namespace mpa
+namespace mpa_api_rest_v1
 {
 
 Info::Info(HttpRequestType httpRequestType, ActionType actionType,

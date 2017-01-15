@@ -7,7 +7,7 @@
 
 #include <com/cyosp/mpa/api/rest/v1/MPAOFactory.hpp>
 
-namespace mpa
+namespace mpa_api_rest_v1
 {
 
 // Initialize static member
@@ -42,10 +42,10 @@ MPAOFactory::MPAOFactory()
 //	/mpa/res/accounts/20/upd?version=1
 //	/mpa/res/accounts/20/categories/add
 //	/mpa/res/accounts/20/categories/30/del?version=1
-mpa::MPAO * MPAOFactory::getMPAO(HttpRequestType requestType, const string& url,
+mpa_api_rest_v1::MPAO * MPAOFactory::getMPAO(HttpRequestType requestType, const string& url,
 		const map<string, string>& argvals, bool isAdmin)
 {
-	mpa::MPAO * ret = NULL;
+	mpa_api_rest_v1::MPAO * ret = NULL;
 
 	//
 	// Decode URL
@@ -163,12 +163,12 @@ mpa::MPAO * MPAOFactory::getMPAO(HttpRequestType requestType, const string& url,
 			MPA_LOG_TRIVIAL(trace, "Last identifier: " + lastIdentifier );
 
 			if( lastIdentifier == "login" )				ret = new mpa_api_rest_v1::Login( requestType , actionType, argvals , isAdmin, urlPairs );
-			else if( lastIdentifier == "accounts" )		ret = new Account( requestType , actionType, argvals , isAdmin, urlPairs );
+			else if( lastIdentifier == "accounts" )		ret = new mpa_api_rest_v1::Account( requestType , actionType, argvals , isAdmin, urlPairs );
 			else if ( lastIdentifier == "users" )		ret = new mpa_api_rest_v1::User( requestType , actionType , argvals , isAdmin, urlPairs );
-			else if ( lastIdentifier == "infos" )		ret = new Info( requestType , actionType , argvals , isAdmin, urlPairs );
-			else if ( lastIdentifier == "categories" )	ret = new Category( requestType , actionType , argvals , isAdmin, urlPairs );
-			else if ( lastIdentifier == "providers" )	ret = new Provider( requestType , actionType , argvals , isAdmin, urlPairs );
-			else if ( lastIdentifier == "operations" )	ret = new Operation( requestType , actionType , argvals , isAdmin, urlPairs );
+			else if ( lastIdentifier == "infos" )		ret = new mpa_api_rest_v1::Info( requestType , actionType , argvals , isAdmin, urlPairs );
+			else if ( lastIdentifier == "categories" )	ret = new mpa_api_rest_v1::Category( requestType , actionType , argvals , isAdmin, urlPairs );
+			else if ( lastIdentifier == "providers" )	ret = new mpa_api_rest_v1::Provider( requestType , actionType , argvals , isAdmin, urlPairs );
+			else if ( lastIdentifier == "operations" )	ret = new mpa_api_rest_v1::Operation( requestType , actionType , argvals , isAdmin, urlPairs );
 		}
 		else	MPA_LOG_TRIVIAL(info, MPA::getErrMsg( 21 ) );
 	}

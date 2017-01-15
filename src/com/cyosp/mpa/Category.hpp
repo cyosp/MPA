@@ -5,39 +5,23 @@
  *      Author: cyosp
  */
 
-#ifndef MPA_CATEGORY_HPP_
-#define MPA_CATEGORY_HPP_
+#ifndef MPA_API_CATEGORY_HPP_
+#define MPA_API_CATEGORY_HPP_
 
 #include "com/cyosp/helpers/StrUtil.hpp"
 
 #include "com/cyosp/mpa/Account.hpp"
 #include "com/cyosp/mpa/MPA.hpp"
-#include "com/cyosp/mpa/MPAO.hpp"
 #include "com/cyosp/mpa/MPAPO.hpp"
 
 namespace mpa
 {
 
-class Category: public MPAO
+class Category
 {
-private:
-	static vector<mpapo::Category> getCategories( int accountId );
-	void remove( int accountId , int categoryId , int version );
-
-protected:
-	bool areGetParametersOk();
-	bool arePostAddParametersOk();
-	bool arePostDeleteParametersOk();
-	bool arePostUpdateParametersOk();
-
-	string executeGetRequest(ptree & root);
-	string executePostAddRequest(ptree & root);
-	string executePostDeleteRequest(ptree & root);
-	string executePostUpdateRequest(ptree & root);
-
 public:
-	Category(HttpRequestType httpRequestType, ActionType actionType, const map<string, string>& argvals , bool isAdmin, vector<std::pair<string, int> > urlPairs );
-
+	static vector<mpapo::Category> getCategories( int accountId );
+	static void remove( int accountId , int categoryId , int version );
 	static int getCategoryId( int accountId , string categoryName );
 	static mpapo::Category getCategory( int accountId , string categoryName );
 	static mpapo::Category getCategory( int categoryId );
@@ -48,4 +32,4 @@ public:
 
 } /* namespace mpa */
 
-#endif /* MPA_CATEGORY_HPP_ */
+#endif

@@ -1,24 +1,24 @@
 /*
- * Login.cpp
+ * Logout.cpp
  *
- *  Created on: 2017-01-04
+ *  Created on: 2017-01-14
  *      Author: CYOSP
  */
 
-#include <com/cyosp/mpa/api/rest/v1/Login.hpp>
+#include <com/cyosp/mpa/api/rest/v1/Logout.hpp>
 
 namespace mpa_api_rest_v1
 {
 
-Login::Login( HttpRequestType httpRequestType, ActionType actionType , const map<string, string>& argvals, bool isAdmin, vector<std::pair<string, int> > urlPairs ) : MPAO( httpRequestType, actionType, argvals, isAdmin, urlPairs )
+Logout::Logout( HttpRequestType httpRequestType, ActionType actionType , const map<string, string>& argvals, bool isAdmin, vector<std::pair<string, int> > urlPairs ) : MPAO( httpRequestType, actionType, argvals, isAdmin, urlPairs )
 {}
 
-bool Login::areGetParametersOk()
+bool Logout::areGetParametersOk()
 {
 	return false;
 }
 
-bool Login::arePostLoginParametersOk()
+bool Logout::arePostLogoutParametersOk()
 {
 	bool ret = false;
 
@@ -28,20 +28,20 @@ bool Login::arePostLoginParametersOk()
 	return ret;
 }
 
-bool Login::arePostAddParametersOk()
+bool Logout::arePostAddParametersOk()
 {
 	return false;
 }
 
 
-string Login::executeGetRequest(ptree & root)
+string Logout::executeGetRequest(ptree & root)
 {
 	string ret = MPAO::DEFAULT_JSON_ID;
 
 	return ret;
 }
 
-string Login::executePostLoginRequest(ptree & root)
+string Logout::executePostLogoutRequest(ptree & root)
 {
 	string ret = MPAO::DEFAULT_JSON_ID;
 
@@ -104,21 +104,21 @@ string Login::executePostLoginRequest(ptree & root)
 	return ret;
 }
 
-string Login::executePostAddRequest(ptree & root)
+string Logout::executePostAddRequest(ptree & root)
 {
 	string ret = MPAO::DEFAULT_JSON_ID;
 
 	return ret;
 }
 
-string Login::executePostDeleteRequest(ptree & root)
+string Logout::executePostDeleteRequest(ptree & root)
 {
 	string ret = MPAO::DEFAULT_JSON_ID;
 
 	return ret;
 }
 
-string Login::executePostUpdateRequest(ptree & root)
+string Logout::executePostUpdateRequest(ptree & root)
 {
 	//MPA_LOG_TRIVIAL( trace , "Start" );
 
@@ -127,7 +127,7 @@ string Login::executePostUpdateRequest(ptree & root)
 	return ret;
 }
 
-Login::~Login()
+Logout::~Logout()
 {
 }
 

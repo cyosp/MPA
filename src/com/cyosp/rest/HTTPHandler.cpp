@@ -587,9 +587,9 @@ void HTTPHandler::getFactoryMPAObject(HttpRequestType requestType, const string&
 	MPA_LOG_TRIVIAL(trace,requestType + " URL to manage: " + url);
 
 
-	MPAOFactory * mpaofactory = MPAOFactory::getInstance();
+	mpa_api_rest_v1::MPAOFactory * mpaofactory = mpa_api_rest_v1::MPAOFactory::getInstance();
 
-	mpa::MPAO * mpao = mpaofactory->getMPAO(requestType,url,argvals,isAdmin);
+	mpa_api_rest_v1::MPAO * mpao = mpaofactory->getMPAO(requestType,url,argvals,isAdmin);
 	if( mpao != NULL )
 	{
 		//

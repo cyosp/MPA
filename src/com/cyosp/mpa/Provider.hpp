@@ -12,32 +12,16 @@
 
 #include "com/cyosp/mpa/Account.hpp"
 #include "com/cyosp/mpa/MPA.hpp"
-#include "com/cyosp/mpa/MPAO.hpp"
 #include "com/cyosp/mpa/MPAPO.hpp"
 
 namespace mpa
 {
 
-class Provider: public MPAO
+class Provider
 {
-private:
-	static vector<mpapo::Provider> getProviders( int accountId );
-	void remove( int accountId , int providerId , int version );
-
-protected:
-	bool areGetParametersOk();
-	bool arePostAddParametersOk();
-	bool arePostDeleteParametersOk();
-	bool arePostUpdateParametersOk();
-
-	string executeGetRequest(ptree & root);
-	string executePostAddRequest(ptree & root);
-	string executePostDeleteRequest(ptree & root);
-	string executePostUpdateRequest(ptree & root);
-
 public:
-	Provider(HttpRequestType httpRequestType, ActionType actionType, const map<string, string>& argvals , bool isAdmin, vector<std::pair<string, int> > urlPairs );
-
+	static vector<mpapo::Provider> getProviders( int accountId );
+	static void remove( int accountId , int providerId , int version );
 	static int getProviderId( int accountId , string providerName );
 	static mpapo::Provider getProvider( int accountId , string providerName );
 	static mpapo::Provider getProvider( int providerId );
@@ -46,6 +30,6 @@ public:
 	virtual ~Provider();
 };
 
-} /* namespace mpa */
+}
 
-#endif /* INCLUDES_MPA_PROVIDER_HPP_ */
+#endif

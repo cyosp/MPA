@@ -5,8 +5,8 @@
  *      Author: cyosp
  */
 
-#ifndef INCLUDES_MPA_MPAO_HPP_
-#define INCLUDES_MPA_MPAO_HPP_
+#ifndef INCLUDES_MPA_API_REST_V1_MPAO_HPP_
+#define INCLUDES_MPA_API_REST_V1_MPAO_HPP_
 
 #include "com/cyosp/mpa/MPA.hpp"
 
@@ -25,7 +25,7 @@ using std::vector;
 enum HttpRequestType { GET, POST };
 enum ActionType { NONE, LOGIN, LOGOUT, ADD, DELETE, UPDATE };
 
-namespace mpa
+namespace mpa_api_rest_v1
 {
 
 class MPAO
@@ -69,4 +69,4 @@ public:
 
 } /* namespace mpa */
 
-#endif /* INCLUDES_MPA_MPAO_HPP_ */
+#endif

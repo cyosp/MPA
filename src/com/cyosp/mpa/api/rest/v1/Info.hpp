@@ -5,13 +5,13 @@
  *      Author: cyosp
  */
 
-#ifndef INCLUDES_MPA_INFO_HPP_
-#define INCLUDES_MPA_INFO_HPP_
+#ifndef INCLUDES_MPA_API_REST_V1_INFO_HPP_
+#define INCLUDES_MPA_API_REST_V1_INFO_HPP_
 
 #include "com/cyosp/mpa/MPA.hpp"
-#include "com/cyosp/mpa/MPAO.hpp"
+#include "com/cyosp/mpa/api/rest/v1/MPAO.hpp"
 
-namespace mpa
+namespace mpa_api_rest_v1
 {
 
 class Info: public MPAO
@@ -38,4 +38,4 @@ public:
 
 } /* namespace mpa */
 
-#endif /* INCLUDES_MPA_INFO_HPP_ */
+#endif

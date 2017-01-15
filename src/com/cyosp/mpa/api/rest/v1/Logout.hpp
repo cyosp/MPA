@@ -1,39 +1,41 @@
 /*
- * Login.hpp
+ * Logout.hpp
  *
- *  Created on: 2017-01-04
+ *  Created on: 2017-01-14
  *      Author: CYOSP
  */
 
-#ifndef INCLUDES_MPA_API_REST_V1_LOGIN_HPP_
-#define INCLUDES_MPA_API_REST_V1_LOGIN_HPP_
+#ifndef INCLUDES_MPA_API_REST_V1_LOGOUT_HPP_
+#define INCLUDES_MPA_API_REST_V1_LOGOUT_HPP_
 
 #include "com/cyosp/mpa/MPA.hpp"
 #include "com/cyosp/mpa/api/rest/v1/MPAO.hpp"
 #include "com/cyosp/rest/HTTPHandler.hpp"
 
+using namespace mpa;
+
 namespace mpa_api_rest_v1
 {
 
-class Login: public MPAO
+class Logout: public MPAO
 {
 
 	protected:
 
 		bool areGetParametersOk();
-		bool arePostLoginParametersOk();
+		bool arePostLogoutParametersOk();
 		bool arePostAddParametersOk();
 
 		string executeGetRequest(ptree & root);
-		string executePostLoginRequest(ptree & root);
+		string executePostLogoutRequest(ptree & root);
 		string executePostAddRequest(ptree & root);
 		string executePostDeleteRequest(ptree & root);
 		string executePostUpdateRequest(ptree & root);
 
 	public:
-		Login( HttpRequestType httpRequestType, ActionType actionType, const map<string, string>& argvals, bool isAdmin, vector<std::pair<string, int> > urlPairs );
+		Logout( HttpRequestType httpRequestType, ActionType actionType, const map<string, string>& argvals, bool isAdmin, vector<std::pair<string, int> > urlPairs );
 
-	virtual ~Login();
+	virtual ~Logout();
 };
 
 } /* namespace mpa */

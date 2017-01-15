@@ -5,7 +5,7 @@
  *      Author: cyosp
  */
 
-#include "com/cyosp/mpa/Category.hpp"
+#include <com/cyosp/mpa/Category.hpp>
 
 namespace mpapo
 {
@@ -38,135 +38,6 @@ void Category::addToAmount( float amount )
 
 namespace mpa
 {
-
-Category::Category(HttpRequestType httpRequestType, ActionType actionType,
-		const map<string, string>& argvals, bool isAdmin,
-		vector<std::pair<string, int> > urlPairs) :
-		MPAO(httpRequestType, actionType, argvals, isAdmin, urlPairs)
-{}
-
-bool Category::areGetParametersOk()
-{
-	bool ret = true;
-	return ret;
-}
-
-bool Category::arePostAddParametersOk()
-{
-	bool ret = false;
-
-	if( argvals.find("name") != argvals.end() ) ret = true;
-
-	return ret;
-}
-
-bool Category::arePostDeleteParametersOk()
-{
-	bool ret = MPAO::arePostDeleteParametersOk();
-
-	return ret;
-}
-
-bool Category::arePostUpdateParametersOk()
-{
-	bool ret = MPAO::arePostUpdateParametersOk();
-
-	if( ret )
-	{
-		if (argvals.find("name") != argvals.end() ) ret = true;
-	}
-
-	return ret;
-}
-
-string Category::executeGetRequest(ptree & root)
-{
-	string ret = MPAO::DEFAULT_JSON_ID;
-
-	//MPA_LOG_TRIVIAL(trace, "" );
-
-	int accountId = urlPairs[0].second;
-
-	ptree categoriesChildren;
-
-	vector<mpapo::Category> accounts = getCategories( accountId );
-	for (vector<mpapo::Category>::iterator it = accounts.begin(); it != accounts.end(); it++)
-	{
-		ptree categoryPtree;
-		categoryPtree.put("id", (*it).id);
-		categoryPtree.put("version", (*it).version);
-		categoryPtree.put("name", (*it).name);
-		categoryPtree.put("amount", StrUtil::float2string((*it).amount));
-
-		categoriesChildren.push_back(std::make_pair("", categoryPtree));
-	}
-
-	root.add_child("categories", categoriesChildren);
-
-	return ret;
-}
-
-string Category::executePostAddRequest(ptree & root)
-{
-	string ret = MPAO::DEFAULT_JSON_ID;
-
-	int accountId = urlPairs[0].second;
-	string categoryName = argvals.find("name")->second;
-
-	//MPA_LOG_TRIVIAL(trace,"");
-
-	mpapo::Category category = getCategory( accountId , categoryName );
-
-	//MPA_LOG_TRIVIAL(trace,"");
-
-	// Get account ID
-	ret = string( category.id );
-
-	MPA_LOG_TRIVIAL(trace,"Category ID added: " + ret);
-
-	// Generate Json output
-	root.push_back(make_pair("version", category.version ));
-	root.push_back(make_pair("amount", category.amount ));
-
-	return ret;
-}
-
-string Category::executePostDeleteRequest(ptree & root)
-{
-	string ret = MPAO::DEFAULT_JSON_ID;
-
-	int accountId = urlPairs[0].second;
-	int categoryId = urlPairs[1].second;
-	int categoryVersion = atoi( argvals.find("version")->second );
-
-	remove( accountId , categoryId , categoryVersion );
-
-	return ret;
-}
-
-string Category::executePostUpdateRequest(ptree & root)
-{
-	//MPA_LOG_TRIVIAL( trace , "Start" );
-
-	string ret = MPAO::DEFAULT_JSON_ID;
-
-	int accountId = urlPairs[0].second;
-	int categoryId = urlPairs[1].second;
-	int categoryVersion = atoi( argvals.find("version")->second );
-	string categoryNewName = argvals.find("name")->second;
-
-	mpapo::Category category = rename( accountId , categoryId , categoryVersion , categoryNewName );
-	ret = StrUtil::int2string( categoryId );
-
-	// Generate Json output
-	root.push_back(make_pair("version", StrUtil::int2string( category.version ) ));
-
-	//MPA_LOG_TRIVIAL( trace , "End" );
-
-	return ret;
-}
-
-
 // Return 0 if doesn't exist, Category ID otherwise
 int Category::getCategoryId( int accountId , string categoryName )
 {
@@ -206,7 +77,7 @@ mpapo::Category Category::getCategory( int accountId , string categoryName )
 		category.setAmount( 0 );
 		category.update();
 
-		Account::getAccount( accountId ).categories().link(category);
+		mpa::Account::getAccount( accountId ).categories().link(category);
 		MPA::getInstance()->getMPAPO().commit();
 
 		categoryId = category.id;
@@ -218,7 +89,7 @@ mpapo::Category Category::getCategory( int accountId , string categoryName )
 // Get categories following an account identified by ID
 vector<mpapo::Category> Category::getCategories( int accountId )
 {
-	return Account::getAccount( accountId ).categories().get().all();
+	return mpa::Account::getAccount( accountId ).categories().get().all();
 }
 
 mpapo::Category Category::getCategory( int categoryId )
@@ -239,7 +110,7 @@ void Category::remove( int accountId , int categoryId , int version )
 			if( category.subOperations().get().all().size() > 0 ) throw MPA::getErrMsg( MSG_DEL_IMPOSSIBLE_OPERATIONS );
 
 			MPA::getInstance()->getMPAPO().begin();
-			Account::getAccount( accountId ).categories().unlink( category );
+			mpa::Account::getAccount( accountId ).categories().unlink( category );
 			category.del();
 			MPA::getInstance()->getMPAPO().commit();
 		}
@@ -284,3 +155,4 @@ Category::~Category()
 }
 
 } /* namespace mpa */
+

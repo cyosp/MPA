@@ -7,7 +7,6 @@
 
 #include <com/cyosp/mpa/SubOperation.hpp>
 
-
 namespace mpapo
 {
 
@@ -22,12 +21,3 @@ void SubOperation::setNote( string note )
 }
 
 }
-
-namespace mpa
-{
-
-SubOperation::~SubOperation()
-{
-}
-
-} /* namespace mpa */

@@ -10,33 +10,16 @@
 
 #include "com/cyosp/mpa/Category.hpp"
 #include "com/cyosp/mpa/MPA.hpp"
-#include "com/cyosp/mpa/MPAO.hpp"
 #include "com/cyosp/mpa/MPAPO.hpp"
 
 namespace mpa
 {
 
-class Account: public MPAO
+class Account
 {
-	private:
-		mpapo::Account & addAccount( string accountName );
-		bool delAccount( int id , int version );
-
-	protected:
-
-		bool areGetParametersOk();
-		bool arePostAddParametersOk();
-		bool arePostDeleteParametersOk();
-		bool arePostUpdateParametersOk();
-
-		string executeGetRequest(ptree & root);
-		string executePostAddRequest(ptree & root);
-		string executePostDeleteRequest(ptree & root);
-		string executePostUpdateRequest(ptree & root);
-
 	public:
-		Account( HttpRequestType httpRequestType, ActionType actionType, const map<string, string>& argvals, bool isAdmin, vector<std::pair<string, int> > urlPairs );
-
+		static mpapo::Account & addAccount( string accountName );
+		static bool delAccount( int id , int version );
 		static bool isAccountAlreadyExisting( string accountName );
 		static vector<mpapo::Account> getAccounts();
 		static mpapo::Account getAccount( int id );
@@ -47,4 +30,4 @@ class Account: public MPAO
 
 } /* namespace mpa */
 
-#endif /* INCLUDES_MPA_ACCOUNT_HPP_ */
+#endif
