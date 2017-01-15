@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!DOCTYPE database SYSTEM "litesql.dtd">
-<database name="MPAPO" namespace="mpapo" include="com/cyosp/mpa/MPAPOInclude.hpp">
+<database name="MPAPO" namespace="mpapo" include="com/cyosp/mpa/po/MPAPOInclude.hpp">
 
 	<object name="MPAO">
 		<field name="version" type="integer"/>
