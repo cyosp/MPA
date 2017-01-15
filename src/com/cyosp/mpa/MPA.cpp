@@ -13,7 +13,7 @@
 #include <iostream>     // std::cout
 
 #include "litesql.hpp"
-#include "com/cyosp/mpa/MPAPO.hpp"
+#include "com/cyosp/mpa/po/MPAPO.hpp"
 // no name collisions expected
 using namespace litesql;
 using namespace mpapo;

@@ -7,26 +7,6 @@
 
 #include <com/cyosp/mpa/Operation.hpp>
 
-namespace mpapo
-{
-
-void Operation::setDate( string date )
-{
-	this->date = date;
-}
-
-void Operation::setAmount( float amount )
-{
-	this->amount = amount;
-}
-
-void Operation::setAccountBalance( float balance )
-{
-	this->accountBalance = balance;
-}
-
-}
-
 namespace mpa
 {
 

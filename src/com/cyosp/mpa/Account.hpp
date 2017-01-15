@@ -10,7 +10,6 @@
 
 #include "com/cyosp/mpa/Category.hpp"
 #include "com/cyosp/mpa/MPA.hpp"
-#include "com/cyosp/mpa/MPAPO.hpp"
 
 namespace mpa
 {

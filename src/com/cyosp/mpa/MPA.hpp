@@ -14,7 +14,7 @@
 
 
 #include "litesql.hpp"
-#include "com/cyosp/mpa/MPAPO.hpp"
+#include "com/cyosp/mpa/po/MPAPO.hpp"
 #include "com/cyosp/helpers/StrUtil.hpp"
 // no name collisions expected
 using namespace litesql;

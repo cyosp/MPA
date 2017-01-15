@@ -1,4 +1,4 @@
-#include "com/cyosp/mpa/MPAPO.hpp"
+#include "com/cyosp/mpa/po/MPAPO.hpp"
 namespace mpapo {
 using namespace litesql;
 AccountCategoryRelation::Row::Row(const litesql::Database& db, const litesql::Record& rec)

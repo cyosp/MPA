@@ -12,7 +12,7 @@
 
 #include "com/cyosp/mpa/Account.hpp"
 #include "com/cyosp/mpa/MPA.hpp"
-#include "com/cyosp/mpa/MPAPO.hpp"
+#include "com/cyosp/mpa/po/MPAPO.hpp"
 
 namespace mpa
 {

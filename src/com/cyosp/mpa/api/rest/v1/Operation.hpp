@@ -13,7 +13,7 @@
 #include "com/cyosp/mpa/Account.hpp"
 #include "com/cyosp/mpa/MPA.hpp"
 #include "com/cyosp/mpa/api/rest/v1/MPAO.hpp"
-#include "com/cyosp/mpa/MPAPO.hpp"
+#include "com/cyosp/mpa/po/MPAPO.hpp"
 #include "com/cyosp/mpa/Provider.hpp"
 #include "com/cyosp/mpa/Operation.hpp"
 #include "com/cyosp/mpa/Category.hpp"

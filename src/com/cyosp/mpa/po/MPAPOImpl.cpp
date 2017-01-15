@@ -5,7 +5,7 @@
  *      Author: cyosp
  */
 
-#include "com/cyosp/mpa/MPAPO.hpp"
+#include "com/cyosp/mpa/po/MPAPO.hpp"
 
 #include "com/cyosp/mpa/MPA.hpp"
 #include <boost/log/trivial.hpp>

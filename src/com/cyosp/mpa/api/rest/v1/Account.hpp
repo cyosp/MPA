@@ -12,7 +12,7 @@
 #include "com/cyosp/mpa/Category.hpp"
 #include "com/cyosp/mpa/MPA.hpp"
 #include "com/cyosp/mpa/api/rest/v1/MPAO.hpp"
-#include "com/cyosp/mpa/MPAPO.hpp"
+#include "com/cyosp/mpa/po/MPAPO.hpp"
 
 
 namespace mpa_api_rest_v1

@@ -1,7 +1,7 @@
 #ifndef mpapo_hpp
 #define mpapo_hpp
 #include "litesql.hpp"
-#include "com/cyosp/mpa/MPAPOInclude.hpp"
+#include "com/cyosp/mpa/po/MPAPOInclude.hpp"
 namespace mpapo {
 class MPAO;
 class User;
