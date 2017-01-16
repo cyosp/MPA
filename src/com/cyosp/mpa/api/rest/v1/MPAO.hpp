@@ -23,7 +23,7 @@ using std::string;
 using std::vector;
 
 enum HttpRequestType { GET, POST };
-enum ActionType { NONE, LOGIN, LOGOUT, ADD, DELETE, UPDATE };
+enum ActionType { NONE, LOGIN, ADD, DELETE, UPDATE };
 
 namespace mpa_api_rest_v1
 {
@@ -45,14 +45,12 @@ protected:
 
 	virtual bool areGetParametersOk() = 0;
 	virtual bool arePostLoginParametersOk();
-	virtual bool arePostLogoutParametersOk();
 	virtual bool arePostAddParametersOk() = 0;
 	virtual bool arePostDeleteParametersOk();
 	virtual bool arePostUpdateParametersOk();
 
 	virtual string executeGetRequest(ptree & root) = 0;
 	virtual string executePostLoginRequest(ptree & root);
-	virtual string executePostLogoutRequest(ptree & root);
 	virtual string executePostAddRequest(ptree & root) = 0;
 	virtual string executePostDeleteRequest(ptree & root) = 0;
 	virtual string executePostUpdateRequest(ptree & root) = 0;

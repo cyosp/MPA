@@ -81,8 +81,6 @@ mpa_api_rest_v1::MPAO * MPAOFactory::getMPAO(HttpRequestType requestType, const 
 					// Update URL in order to be compliant to the standard others
 					urlToAnalyse = "/login/0";
 				}
-				else if (matches[2] == "logout")
-					actionType = LOGOUT;
 				else if (matches[2] == "add")
 				{
 					actionType = ADD;
