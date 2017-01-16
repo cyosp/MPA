@@ -1,7 +1,7 @@
 #ifndef __MPA_FILEHELPER__
 #define __MPA_FILEHELPER__
 
-#include <com/cyosp/mpa/MPA.hpp>
+#include <com/cyosp/mpa/core/MPA.hpp>
 #include <iostream>
 #include <string>
 #include <sys/stat.h>

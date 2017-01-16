@@ -5,7 +5,7 @@
  *      Author: cyosp
  */
 
-#include <com/cyosp/mpa/Provider.hpp>
+#include <com/cyosp/mpa/core/Provider.hpp>
 
 namespace mpa
 {

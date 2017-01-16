@@ -7,7 +7,7 @@
 
 #include "com/cyosp/mpa/po/MPAPO.hpp"
 
-#include "com/cyosp/mpa/MPA.hpp"
+#include "com/cyosp/mpa/core/MPA.hpp"
 #include <boost/log/trivial.hpp>
 
 void mpapo::MPAO::initializeVersion()

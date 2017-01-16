@@ -10,9 +10,9 @@
 
 #include "com/cyosp/helpers/StrUtil.hpp"
 
-#include "com/cyosp/mpa/Provider.hpp"
-#include "com/cyosp/mpa/Account.hpp"
-#include "com/cyosp/mpa/MPA.hpp"
+#include "com/cyosp/mpa/core/Provider.hpp"
+#include "com/cyosp/mpa/core/Account.hpp"
+#include "com/cyosp/mpa/core/MPA.hpp"
 #include "com/cyosp/mpa/api/rest/v1/MPAO.hpp"
 #include "com/cyosp/mpa/po/MPAPO.hpp"
 

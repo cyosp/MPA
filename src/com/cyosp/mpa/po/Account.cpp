@@ -5,7 +5,7 @@
  *      Author: cyosp
  */
 
-#include "com/cyosp/mpa/Account.hpp"
+#include "com/cyosp/mpa/core/Account.hpp"
 
 namespace mpapo
 {

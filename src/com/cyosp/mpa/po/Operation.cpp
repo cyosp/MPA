@@ -5,7 +5,7 @@
  *      Author: cyosp
  */
 
-#include <com/cyosp/mpa/Operation.hpp>
+#include <com/cyosp/mpa/core/Operation.hpp>
 
 namespace mpapo
 {

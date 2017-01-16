@@ -22,7 +22,7 @@ using std::string;
 
 #include <boost/function_output_iterator.hpp>
 
-#include <com/cyosp/mpa/MPA.hpp>
+#include <com/cyosp/mpa/core/MPA.hpp>
 
 class NetHelper
 {

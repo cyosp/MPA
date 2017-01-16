@@ -5,7 +5,7 @@
  *      Author: cyosp
  */
 
-#include <com/cyosp/mpa/Category.hpp>
+#include <com/cyosp/mpa/core/Category.hpp>
 
 namespace mpapo
 {

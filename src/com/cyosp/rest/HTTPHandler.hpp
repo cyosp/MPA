@@ -12,7 +12,7 @@
 
 #include "com/cyosp/json/JSONHelper.hpp"
 
-#include "com/cyosp/mpa/MPA.hpp"
+#include "com/cyosp/mpa/core/MPA.hpp"
 #include "com/cyosp/mpa/api/rest/v1/MPAO.hpp"
 #include "com/cyosp/mpa/api/rest/v1/MPAOFactory.hpp"
 

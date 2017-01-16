@@ -8,9 +8,9 @@
 #ifndef INCLUDES_MPA_API_REST_V1_ACCOUNT_HPP_
 #define INCLUDES_MPA_API_REST_V1_ACCOUNT_HPP_
 
-#include "com/cyosp/mpa/Account.hpp"
-#include "com/cyosp/mpa/Category.hpp"
-#include "com/cyosp/mpa/MPA.hpp"
+#include "com/cyosp/mpa/core/Account.hpp"
+#include "com/cyosp/mpa/core/Category.hpp"
+#include "com/cyosp/mpa/core/MPA.hpp"
 #include "com/cyosp/mpa/api/rest/v1/MPAO.hpp"
 #include "com/cyosp/mpa/po/MPAPO.hpp"
 

@@ -22,7 +22,7 @@ using std::string;
 #include "com/cyosp/mpa/api/rest/v1/Category.hpp"
 #include "com/cyosp/mpa/api/rest/v1/Account.hpp"
 #include "com/cyosp/mpa/api/rest/v1/Info.hpp"
-#include "com/cyosp/mpa/MPA.hpp"
+#include "com/cyosp/mpa/core/MPA.hpp"
 #include "com/cyosp/mpa/api/rest/v1/MPAO.hpp"
 #include "com/cyosp/mpa/api/rest/v1/Operation.hpp"
 #include "com/cyosp/mpa/api/rest/v1/Provider.hpp"

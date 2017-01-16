@@ -8,8 +8,8 @@
 #ifndef INCLUDES_MPA_ACCOUNT_HPP_
 #define INCLUDES_MPA_ACCOUNT_HPP_
 
-#include "com/cyosp/mpa/Category.hpp"
-#include "com/cyosp/mpa/MPA.hpp"
+#include "com/cyosp/mpa/core/Category.hpp"
+#include "com/cyosp/mpa/core/MPA.hpp"
 
 namespace mpa
 {

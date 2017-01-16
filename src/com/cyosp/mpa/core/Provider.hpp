@@ -10,8 +10,8 @@
 
 #include "com/cyosp/helpers/StrUtil.hpp"
 
-#include "com/cyosp/mpa/Account.hpp"
-#include "com/cyosp/mpa/MPA.hpp"
+#include "com/cyosp/mpa/core/Account.hpp"
+#include "com/cyosp/mpa/core/MPA.hpp"
 #include "com/cyosp/mpa/po/MPAPO.hpp"
 
 namespace mpa

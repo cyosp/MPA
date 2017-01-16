@@ -8,7 +8,7 @@
 #ifndef INCLUDES_MPA_API_REST_V1_MPAO_HPP_
 #define INCLUDES_MPA_API_REST_V1_MPAO_HPP_
 
-#include "com/cyosp/mpa/MPA.hpp"
+#include "com/cyosp/mpa/core/MPA.hpp"
 
 #include <boost/property_tree/ptree.hpp>
 using boost::property_tree::ptree;

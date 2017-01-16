@@ -5,7 +5,7 @@
  *      Author: cyosp
  */
 
-#include <com/cyosp/mpa/MPA.hpp>
+#include <com/cyosp/mpa/core/MPA.hpp>
 
 #include <vector>
 #include <string>
