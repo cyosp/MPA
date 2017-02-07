@@ -20,16 +20,14 @@
 
 	* In tab *Tool Settings*
 		* Select *Miscellaneous* in *GCC C++ Compiler*
-			* Add *-m64* in *Other flags*
-		* Select *Miscellaneous* in *GCC C++ Linker*
-			* Add *-m64* in *Linker flags*
+			* Add *-Wno-deprecated-declarations -Wno-unused-but-set-variable* in *Other flags*
 
  * Deploy *C/C++ General* and select *Paths and Symbols*
 
 	* -----------
 	* In tab *Includes* and language *GNU C++*
 	* Click *Add* button
-	* Enter */usr/local/include/boost* in *Directory:*
+	* Enter */usr/lib/x86_64-linux-gnu* in *Directory:*
 	* And *OK*
 	* -----------
 	* Click *Add* button
