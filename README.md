@@ -8,7 +8,7 @@ My Personal Accounts (MPA) is a Web Application to manage personal accounts in a
 
 Server building environnement is:
  * Eclipse IDE with CDT
- * Debian GNU Linux Jessie x86_64
+ * Debian GNU Linux Stretch x86_64
 
 ## TESTS
 
@@ -20,7 +20,7 @@ Tests are driven using [node.js](https://nodejs.org).
 
 In order to have a test environment ready to use you must:
 
- 1. Install [node.js](https://nodejs.org)
+ 1. Install [node.js](https://nodejs.org) or use `sudo apt-get install npm nodejs-legacy`
  2. Move into MPA GitHub directory
  3. Run: `npm install --save` to install locally dependencies
 
