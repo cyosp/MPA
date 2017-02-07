@@ -1,0 +1,8 @@
+--- Makefile.am.ORI	2014-07-28 14:26:57.000000000 +0200
++++ Makefile.am	2017-02-05 16:08:36.682396073 +0100
+@@ -15,4 +15,4 @@
+ 
+ $(srcdir)/exampledatabase.cpp \
+ $(srcdir)/exampledatabase.hpp: $(srcdir)/exampledatabase.xml
+-	litesql-gen -t c++ $(srcdir)/exampledatabase.xml  
++	../generator/litesql-gen -t c++ $(srcdir)/exampledatabase.xml  

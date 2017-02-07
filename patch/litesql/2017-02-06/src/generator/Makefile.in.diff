@@ -1,0 +1,11 @@
+--- Makefile.in.ORI	2017-02-03 23:22:31.458659000 +0100
++++ Makefile.in	2017-02-05 15:55:13.365443736 +0100
+@@ -157,7 +157,7 @@
+ CXXLD = $(CXX)
+ CXXLINK = $(LIBTOOL) $(AM_V_lt) --tag=CXX $(AM_LIBTOOLFLAGS) \
+ 	$(LIBTOOLFLAGS) --mode=link $(CXXLD) $(AM_CXXFLAGS) \
+-	$(CXXFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o $@
++	$(CXXFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -lexpat -o $@
+ AM_V_CXXLD = $(am__v_CXXLD_@AM_V@)
+ am__v_CXXLD_ = $(am__v_CXXLD_@AM_DEFAULT_V@)
+ am__v_CXXLD_0 = @echo "  CXXLD   " $@;
