@@ -200,8 +200,8 @@ string Operation::executePostAddRequest(ptree & root)
 	MPA_LOG_TRIVIAL(trace,"Category ID added: " + ret);
 
 	// Generate Json output
-	root.push_back(make_pair("version", operation.version ));
-	root.push_back(make_pair("accountBalance", operation.accountBalance ));
+	root.push_back(BoostHelper::make_pair("version", operation.version ));
+	root.push_back(BoostHelper::make_pair("accountBalance", operation.accountBalance ));
 
 	return ret;
 }

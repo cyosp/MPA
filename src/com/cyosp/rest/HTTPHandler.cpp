@@ -2,9 +2,6 @@
 
 int HTTPHandler::shouldNotExit = 1;
 
-// TODO : protect in multithread
-map<string, bool> * HTTPHandler::tokenList = new map<string, bool>;
-
 // Manage SIGTERM
 void HTTPHandler::handle_sig_term( int signalNumber )
 {
@@ -479,7 +476,7 @@ string HTTPHandler::isSessionRegistered( const map<string, string>& argvals )
 
 
 	// Check first if there is a token
-	bool sessionRegistered = ( argvals.find("token") != argvals.end() );
+	/*2017-01-17bool sessionRegistered = ( argvals.find("token") != argvals.end() );
 
 	if( sessionRegistered )
 	{
@@ -493,7 +490,7 @@ string HTTPHandler::isSessionRegistered( const map<string, string>& argvals )
 	}
 
 	if( ret.empty() )	MPA_LOG_TRIVIAL(trace,"false");
-	else				MPA_LOG_TRIVIAL(trace,"true");
+	else				MPA_LOG_TRIVIAL(trace,"true");*/
 
 	return ret;
 }
@@ -508,9 +505,9 @@ string HTTPHandler::registerNewSession( bool isAdmin )
 	strm << rawtime;
 	ret = strm.str();
 
-	MPA_LOG_TRIVIAL(trace,tokenList->size());
-	tokenList->insert( std::pair<string,bool>(ret , isAdmin) );
-	MPA_LOG_TRIVIAL(trace,tokenList->size());
+	//2017-01-17MPA_LOG_TRIVIAL(trace,tokenList->size());
+	//2017-01-17tokenList->insert( std::pair<string,bool>(ret , isAdmin) );
+	//2017-01-17MPA_LOG_TRIVIAL(trace,tokenList->size());
 
 	MPA_LOG_TRIVIAL(info,"Add token: " + ret + " which is admin: " + StrUtil::bool2string( isAdmin ) );
 
@@ -522,12 +519,12 @@ bool HTTPHandler::deleteSession( string token )
 {
 	bool ret = false;
 
-	if( tokenList->find( token ) != tokenList->end() )
+	/*if( tokenList->find( token ) != tokenList->end() )
 	{
 		tokenList->erase( tokenList->find( token ) );
 
 		ret = true;
-	}
+	}*/
 
 	return ret;
 }
@@ -536,10 +533,10 @@ bool HTTPHandler::isSessionAdmin(string token)
 {
 	bool ret = false;
 
-	if( tokenList->find( token ) != tokenList->end() )
+	/*if( tokenList->find( token ) != tokenList->end() )
 	{
 		ret = tokenList->find( token )->second;
-	}
+	}*/
 
 	return ret;
 }
@@ -613,10 +610,12 @@ void HTTPHandler::getFactoryMPAObject(HttpRequestType requestType, const string&
 	}
 	else id = MPA::getErrMsg(5);
 
+
+
 	// Add id
-	root.push_front(make_pair("id", id ));
+	root.push_front( BoostHelper::make_pair( "id", id ) );
 	// Add is administrator information
-	root.push_back( make_pair( "isAdmin" , StrUtil::bool2string( isAdmin ) ) );
+	root.push_back( BoostHelper::make_pair( "isAdmin" , StrUtil::bool2string( isAdmin ) ) );
 
 	// JSON response
 	MPA_LOG_TRIVIAL(trace,"Start JSON generation");

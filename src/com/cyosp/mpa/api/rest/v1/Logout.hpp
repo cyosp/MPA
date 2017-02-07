@@ -23,11 +23,9 @@ class Logout: public MPAO
 	protected:
 
 		bool areGetParametersOk();
-		bool arePostLogoutParametersOk();
 		bool arePostAddParametersOk();
 
 		string executeGetRequest(ptree & root);
-		string executePostLogoutRequest(ptree & root);
 		string executePostAddRequest(ptree & root);
 		string executePostDeleteRequest(ptree & root);
 		string executePostUpdateRequest(ptree & root);

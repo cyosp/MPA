@@ -8,6 +8,8 @@
 #ifndef INCLUDES_MPA_API_REST_V1_USER_HPP_
 #define INCLUDES_MPA_API_REST_V1_USER_HPP_
 
+#include "com/cyosp/helpers/BoostHelper.hpp"
+
 #include "com/cyosp/mpa/api/rest/v1/Account.hpp"
 #include "com/cyosp/mpa/core/MPA.hpp"
 #include "com/cyosp/mpa/api/rest/v1/MPAO.hpp"

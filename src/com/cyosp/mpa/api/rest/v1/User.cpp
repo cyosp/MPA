@@ -103,7 +103,7 @@ string User::executePostAddRequest(ptree & root)
 					MPA_LOG_TRIVIAL(trace,"User ID added: " + ret);
 
 					// Generate Json output
-					root.push_back(make_pair("version", user.version ));
+					root.push_back(BoostHelper::make_pair("version", user.version ));
 				}
 				else ret = MPA::getErrMsg(9);
 			}
@@ -138,7 +138,7 @@ string User::executePostUpdateRequest(ptree & root)
 		ret = urlPairs[0].second ;
 
 		// Generate Json output
-		root.push_back(make_pair("version", StrUtil::int2string( account.version ) ));
+		root.push_back(BoostHelper::make_pair("version", StrUtil::int2string( account.version ) ));
 	}
 
 	return ret;

@@ -97,8 +97,8 @@ string Provider::executePostAddRequest(ptree & root)
 	MPA_LOG_TRIVIAL(trace,"Provider ID added: " + ret);
 
 	// Generate Json output
-	root.push_back(make_pair("version", provider.version ));
-	root.push_back(make_pair("amount", provider.amount ));
+	root.push_back(BoostHelper::make_pair("version", provider.version ));
+	root.push_back(BoostHelper::make_pair("amount", provider.amount ));
 
 	return ret;
 }
@@ -131,7 +131,7 @@ string Provider::executePostUpdateRequest(ptree & root)
 	ret = StrUtil::int2string( providerId );
 
 	// Generate Json output
-	root.push_back(make_pair("version", StrUtil::int2string( provider.version ) ));
+	root.push_back(BoostHelper::make_pair("version", StrUtil::int2string( provider.version ) ));
 
 	//MPA_LOG_TRIVIAL( trace , "End" );
 

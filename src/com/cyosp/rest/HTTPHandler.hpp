@@ -9,6 +9,7 @@
 #define INCLUDES_HTTPHANDLER_HPP_
 
 #include "com/cyosp/helpers/StrUtil.hpp"
+#include "com/cyosp/helpers/BoostHelper.hpp"
 
 #include "com/cyosp/json/JSONHelper.hpp"
 
@@ -89,7 +90,7 @@ class HTTPHandler
 {
 private :
 	static int shouldNotExit;
-	static map<string, bool> * tokenList;
+	//static map<string, bool> * tokenList;
 
 public:
 	static void handle_sig_term(int signo);

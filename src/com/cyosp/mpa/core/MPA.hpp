@@ -111,6 +111,8 @@ class MPA
 		MPAPO * mpapo;
 		// WWW file path
 		string wwwFilePath;
+
+		static map<string, bool> * tokenList;
 };
 
 #endif /* MPA_HPP_ */

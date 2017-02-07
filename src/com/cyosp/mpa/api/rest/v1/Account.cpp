@@ -87,8 +87,8 @@ string Account::executePostAddRequest(ptree & root)
 	MPA_LOG_TRIVIAL(trace,"Account ID added: " + ret);
 
 	// Generate Json output
-	root.push_back(make_pair("version", account.version ));
-	root.push_back(make_pair("balance", account.balance ));
+	root.push_back(BoostHelper::make_pair("version", account.version ));
+	root.push_back(BoostHelper::make_pair("balance", account.balance ));
 
 	return ret;
 }
@@ -116,7 +116,7 @@ string Account::executePostUpdateRequest(ptree & root)
 	ret = StrUtil::int2string( accountId );
 
 	// Generate Json output
-	root.push_back(make_pair("version", StrUtil::int2string( account.version ) ));
+	root.push_back(BoostHelper::make_pair("version", StrUtil::int2string( account.version ) ));
 
 	//MPA_LOG_TRIVIAL( trace , "End" );
 

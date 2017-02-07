@@ -59,6 +59,10 @@ const int MPA::PWD_SECURITY_UPPER_CASE_NBR = 1;
 const int MPA::PWD_SECURITY_DIGIT_NBR = 1;
 const int MPA::PWD_SECURITY_ERROR_NBR = 3;
 
+// TODO : protect in multithread
+map<string, bool> * MPA::tokenList = new map<string, bool>;
+
+
 // Initialize static member
 MPA * MPA::mpa = NULL;
 

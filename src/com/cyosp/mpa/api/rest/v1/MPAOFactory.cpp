@@ -27,7 +27,7 @@ MPAOFactory::MPAOFactory()
 
 // Return NULL if URL is bad
 // GET
-//	/mpa/res-adm/users
+//	/mpa/res/logout
 //	/mpa/res/accounts
 //	/mpa/res/accounts/10
 //	/mpa/res/accounts/10/categories

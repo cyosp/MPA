@@ -96,8 +96,8 @@ string Category::executePostAddRequest(ptree & root)
 	MPA_LOG_TRIVIAL(trace,"Category ID added: " + ret);
 
 	// Generate Json output
-	root.push_back(make_pair("version", category.version ));
-	root.push_back(make_pair("amount", category.amount ));
+	root.push_back(BoostHelper::make_pair("version", category.version ));
+	root.push_back(BoostHelper::make_pair("amount", category.amount ));
 
 	return ret;
 }
@@ -130,7 +130,7 @@ string Category::executePostUpdateRequest(ptree & root)
 	ret = StrUtil::int2string( categoryId );
 
 	// Generate Json output
-	root.push_back(make_pair("version", StrUtil::int2string( category.version ) ));
+	root.push_back(BoostHelper::make_pair("version", StrUtil::int2string( category.version ) ));
 
 	//MPA_LOG_TRIVIAL( trace , "End" );
 
