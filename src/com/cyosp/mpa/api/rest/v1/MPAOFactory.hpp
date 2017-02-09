@@ -51,7 +51,7 @@ public:
 
 	map<string, Token> & getTokenList();
 	string isSessionRegistered(const map<string, string>& argvals);
-	string registerNewSession( bool isAdmin );
+	Token & registerNewToken( mpapo::User );
 	bool deleteSession( string token );
 	bool isSessionAdmin(string token);
 

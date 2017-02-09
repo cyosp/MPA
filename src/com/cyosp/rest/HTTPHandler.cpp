@@ -298,7 +298,7 @@ int HTTPHandler::url_handler(void *cls, struct MHD_Connection *connection,
 									adminUser.update();
 									MPA::getInstance()->registerAdmin();
 
-									string token = mpa_api_rest_v1::MPAOFactory::getInstance()->registerNewSession( true );
+									string token = mpa_api_rest_v1::MPAOFactory::getInstance()->registerNewToken( MPA::getInstance()->getUser( adminUser.login.value() ) ).getValue();
 
 									respdata = "<html><head><meta http-equiv='refresh' content='0; url=../mpa/admin/users/?token=" + token + "'/></head></html>";
 								}

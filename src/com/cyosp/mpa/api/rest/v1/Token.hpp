@@ -9,6 +9,7 @@
 #define INCLUDES_MPA_API_REST_V1_TOKEN_HPP_
 
 #include "com/cyosp/mpa/core/MPA.hpp"
+#include "com/cyosp/mpa/po/MPAPO.hpp"
 
 namespace mpa_api_rest_v1
 {
@@ -17,13 +18,18 @@ namespace mpa_api_rest_v1
 	{
 		private:
 			// Created timestamp
-			int created;
+			time_t created;
 			// Last token use value
-			int updated;
+			time_t updated;
 			// Token value
 			string value;
+			//
+			mpapo::User * user;
+
 
 		public:
+			Token( mpapo::User & user );
+			string & getValue();
 
 	};
 

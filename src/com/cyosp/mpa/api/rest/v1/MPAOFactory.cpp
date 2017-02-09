@@ -209,24 +209,19 @@ string MPAOFactory::isSessionRegistered( const map<string, string>& argvals )
 	return ret;
 }
 
-string MPAOFactory::registerNewSession( bool isAdmin )
+Token & MPAOFactory::registerNewToken( mpapo::User user )
 {
-	string ret;
-
-	time_t rawtime;
-	time( &rawtime );
-	std::stringstream strm;
-	strm << rawtime;
-	ret = strm.str();
-
-	//2017-01-17MPA_LOG_TRIVIAL(trace,tokenList->size());
-	//2017-01-17tokenList->insert( std::pair<string,bool>(ret , isAdmin) );
-	//2017-01-17MPA_LOG_TRIVIAL(trace,tokenList->size());
-
-	MPA_LOG_TRIVIAL(info,"Add token: " + ret + " which is admin: " + StrUtil::bool2string( isAdmin ) );
+	Token * token = new Token( user );
 
 
-	return ret;
+	MPA_LOG_TRIVIAL(trace,tokenList->size());
+	tokenList->insert( std::pair<string,Token>(token->getValue() , * token) );
+	MPA_LOG_TRIVIAL(trace,tokenList->size());
+
+	MPA_LOG_TRIVIAL(info,"Add token: " + token->getValue() + " which is admin: " + StrUtil::bool2string( user.isAdmin ) );
+
+
+	return * token;
 }
 
 bool MPAOFactory::deleteSession( string token )
