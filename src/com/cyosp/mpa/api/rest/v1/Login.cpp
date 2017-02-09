@@ -65,7 +65,7 @@ string Login::executePostLoginRequest(ptree & root)
 						user.update();
 					}
 					MPA_LOG_TRIVIAL(info,"User is authenticated");
-					ret = HTTPHandler::registerNewSession( user.isAdmin );
+					ret = MPAOFactory::getInstance()->registerNewSession( user.isAdmin );
 				}
 				else
 				{

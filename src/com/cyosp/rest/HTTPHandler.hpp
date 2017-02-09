@@ -90,7 +90,6 @@ class HTTPHandler
 {
 private :
 	static int shouldNotExit;
-	//static map<string, bool> * tokenList;
 
 public:
 	static void handle_sig_term(int signo);
@@ -107,10 +106,6 @@ public:
 	static int on_client_connect (void *cls, const struct sockaddr *addr, socklen_t addrlen);
 
 	static int serveFile( string filePath , void ***con_cls , MHD_Response **response );
-	static string isSessionRegistered(const map<string, string>& argvals);
-	static string registerNewSession( bool isAdmin );
-	static bool deleteSession( string token );
-	static bool isSessionAdmin(string token);
 
 	static void getFactoryMPAObject(HttpRequestType requestType, const string& url, const map<string, string>& argvals, bool isAdmin, string& response );
 };

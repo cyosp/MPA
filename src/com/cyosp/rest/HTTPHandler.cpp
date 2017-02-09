@@ -74,8 +74,8 @@ int HTTPHandler::url_handler(void *cls, struct MHD_Connection *connection,
 		{
 			MPA_LOG_TRIVIAL(debug,"Parameters are ok");
 
-			string session = isSessionRegistered( url_args );
-			bool isAdmin = isSessionAdmin( session );
+			string session = mpa_api_rest_v1::MPAOFactory::getInstance()->isSessionRegistered( url_args );
+			bool isAdmin = mpa_api_rest_v1::MPAOFactory::getInstance()->isSessionAdmin( session );
 			// Session is not registered
 			if( session.empty() )
 			{
@@ -135,7 +135,7 @@ int HTTPHandler::url_handler(void *cls, struct MHD_Connection *connection,
 				}
 				else */if( urlString == "/disconnect" )
 				{
-					deleteSession( session );
+					mpa_api_rest_v1::MPAOFactory::getInstance()->deleteSession( session );
 
 
 					respdata = "<html><head><meta http-equiv='refresh' content='0; url=..'/></head></html>";
@@ -264,8 +264,8 @@ int HTTPHandler::url_handler(void *cls, struct MHD_Connection *connection,
 
 				MPA_LOG_TRIVIAL(trace,it->first + " => " + it->second);
 
-				string session = isSessionRegistered( * con_info->datas );
-				bool isAdmin = isSessionAdmin( session );
+				string session = mpa_api_rest_v1::MPAOFactory::getInstance()->isSessionRegistered( * con_info->datas );
+				bool isAdmin = mpa_api_rest_v1::MPAOFactory::getInstance()->isSessionAdmin( session );
 				// Session is not registered
 				if( session.empty() && urlString != "/api/rest/v1/users/add" && urlString != "/api/rest/v1/users/login" )
 				{
@@ -298,7 +298,7 @@ int HTTPHandler::url_handler(void *cls, struct MHD_Connection *connection,
 									adminUser.update();
 									MPA::getInstance()->registerAdmin();
 
-									string token = registerNewSession( true );
+									string token = mpa_api_rest_v1::MPAOFactory::getInstance()->registerNewSession( true );
 
 									respdata = "<html><head><meta http-equiv='refresh' content='0; url=../mpa/admin/users/?token=" + token + "'/></head></html>";
 								}
@@ -467,79 +467,6 @@ int HTTPHandler::iterate_post(void *coninfo_cls, enum MHD_ValueKind kind,
 
 // access => #include <unistd.h>
 //if( access( "/home/cyosp/tmp/litesql/litesql-src-0.3.17/src/examples/example.db", F_OK ) != -1 ) => file exists
-
-string HTTPHandler::isSessionRegistered( const map<string, string>& argvals )
-{
-	string ret = "";
-
-	MPA_LOG_TRIVIAL(trace,"argument number: " + StrUtil::int2string( argvals.size() ));
-
-
-	// Check first if there is a token
-	/*2017-01-17bool sessionRegistered = ( argvals.find("token") != argvals.end() );
-
-	if( sessionRegistered )
-	{
-		MPA_LOG_TRIVIAL(trace,"true");
-
-		string tokenToSearch = argvals.find("token")->second;
-		MPA_LOG_TRIVIAL(trace,"Token to search: " + tokenToSearch);
-
-		if( tokenList->find( tokenToSearch ) != tokenList->end() )	ret = tokenToSearch;
-
-	}
-
-	if( ret.empty() )	MPA_LOG_TRIVIAL(trace,"false");
-	else				MPA_LOG_TRIVIAL(trace,"true");*/
-
-	return ret;
-}
-
-string HTTPHandler::registerNewSession( bool isAdmin )
-{
-	string ret;
-
-	time_t rawtime;
-	time( &rawtime );
-	std::stringstream strm;
-	strm << rawtime;
-	ret = strm.str();
-
-	//2017-01-17MPA_LOG_TRIVIAL(trace,tokenList->size());
-	//2017-01-17tokenList->insert( std::pair<string,bool>(ret , isAdmin) );
-	//2017-01-17MPA_LOG_TRIVIAL(trace,tokenList->size());
-
-	MPA_LOG_TRIVIAL(info,"Add token: " + ret + " which is admin: " + StrUtil::bool2string( isAdmin ) );
-
-
-	return ret;
-}
-
-bool HTTPHandler::deleteSession( string token )
-{
-	bool ret = false;
-
-	/*if( tokenList->find( token ) != tokenList->end() )
-	{
-		tokenList->erase( tokenList->find( token ) );
-
-		ret = true;
-	}*/
-
-	return ret;
-}
-
-bool HTTPHandler::isSessionAdmin(string token)
-{
-	bool ret = false;
-
-	/*if( tokenList->find( token ) != tokenList->end() )
-	{
-		ret = tokenList->find( token )->second;
-	}*/
-
-	return ret;
-}
 
 int HTTPHandler::serveFile( string filePath , void ***con_cls , MHD_Response **response )
 {

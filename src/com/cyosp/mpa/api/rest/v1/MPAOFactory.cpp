@@ -26,11 +26,6 @@ MPAOFactory::MPAOFactory()
 	tokenList = new map<string, Token>();
 }
 
-map<string, Token> & MPAOFactory::getTokenList()
-{
-	return * tokenList;
-}
-
 // Return NULL if URL is bad
 // GET
 //	/mpa/res/logout
@@ -181,5 +176,84 @@ mpa_api_rest_v1::MPAO * MPAOFactory::getMPAO(HttpRequestType requestType, const 
 
 	return ret;
 }
+
+map<string, Token> & MPAOFactory::getTokenList()
+{
+	return * tokenList;
+}
+
+string MPAOFactory::isSessionRegistered( const map<string, string>& argvals )
+{
+	string ret = "";
+
+	MPA_LOG_TRIVIAL(trace,"argument number: " + StrUtil::int2string( argvals.size() ));
+
+
+	// Check first if there is a token
+	/*2017-01-17bool sessionRegistered = ( argvals.find("token") != argvals.end() );
+
+	if( sessionRegistered )
+	{
+		MPA_LOG_TRIVIAL(trace,"true");
+
+		string tokenToSearch = argvals.find("token")->second;
+		MPA_LOG_TRIVIAL(trace,"Token to search: " + tokenToSearch);
+
+		if( tokenList->find( tokenToSearch ) != tokenList->end() )	ret = tokenToSearch;
+
+	}
+
+	if( ret.empty() )	MPA_LOG_TRIVIAL(trace,"false");
+	else				MPA_LOG_TRIVIAL(trace,"true");*/
+
+	return ret;
+}
+
+string MPAOFactory::registerNewSession( bool isAdmin )
+{
+	string ret;
+
+	time_t rawtime;
+	time( &rawtime );
+	std::stringstream strm;
+	strm << rawtime;
+	ret = strm.str();
+
+	//2017-01-17MPA_LOG_TRIVIAL(trace,tokenList->size());
+	//2017-01-17tokenList->insert( std::pair<string,bool>(ret , isAdmin) );
+	//2017-01-17MPA_LOG_TRIVIAL(trace,tokenList->size());
+
+	MPA_LOG_TRIVIAL(info,"Add token: " + ret + " which is admin: " + StrUtil::bool2string( isAdmin ) );
+
+
+	return ret;
+}
+
+bool MPAOFactory::deleteSession( string token )
+{
+	bool ret = false;
+
+	/*if( tokenList->find( token ) != tokenList->end() )
+	{
+		tokenList->erase( tokenList->find( token ) );
+
+		ret = true;
+	}*/
+
+	return ret;
+}
+
+bool MPAOFactory::isSessionAdmin(string token)
+{
+	bool ret = false;
+
+	/*if( tokenList->find( token ) != tokenList->end() )
+	{
+		ret = tokenList->find( token )->second;
+	}*/
+
+	return ret;
+}
+
 
 } /* namespace mpa */

@@ -50,6 +50,11 @@ public:
 	static mpa_api_rest_v1::MPAO * getMPAO( HttpRequestType requestType, const string& url, const map<string, string>& argvals, bool isAdmin );
 
 	map<string, Token> & getTokenList();
+	string isSessionRegistered(const map<string, string>& argvals);
+	string registerNewSession( bool isAdmin );
+	bool deleteSession( string token );
+	bool isSessionAdmin(string token);
+
 };
 
 } /* namespace mpa */
