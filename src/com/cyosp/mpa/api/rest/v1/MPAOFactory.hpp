@@ -27,6 +27,7 @@ using std::string;
 #include "com/cyosp/mpa/api/rest/v1/Operation.hpp"
 #include "com/cyosp/mpa/api/rest/v1/Provider.hpp"
 #include "com/cyosp/mpa/api/rest/v1/User.hpp"
+#include "com/cyosp/mpa/api/rest/v1/Token.hpp"
 
 namespace mpa_api_rest_v1
 {
@@ -39,12 +40,16 @@ private:
 	static MPAOFactory * mpaofactory;
 	MPAOFactory();
 
+	map<string, Token> * tokenList;
+
 public:
 
 	// Singleton method
 	static MPAOFactory * getInstance();
 
 	static mpa_api_rest_v1::MPAO * getMPAO( HttpRequestType requestType, const string& url, const map<string, string>& argvals, bool isAdmin );
+
+	map<string, Token> & getTokenList();
 };
 
 } /* namespace mpa */

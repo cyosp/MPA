@@ -23,6 +23,12 @@ MPAOFactory * MPAOFactory::getInstance()
 
 MPAOFactory::MPAOFactory()
 {
+	tokenList = new map<string, Token>();
+}
+
+map<string, Token> & MPAOFactory::getTokenList()
+{
+	return * tokenList;
 }
 
 // Return NULL if URL is bad
