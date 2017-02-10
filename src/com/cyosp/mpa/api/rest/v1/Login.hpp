@@ -31,7 +31,7 @@ class Login: public MPAO
 		string executePostUpdateRequest(ptree & root);
 
 	public:
-		Login( HttpRequestType httpRequestType, ActionType actionType, const map<string, string>& argvals, bool isAdmin, vector<std::pair<string, int> > urlPairs );
+		Login( HttpRequestType httpRequestType, ActionType actionType, const map<string, string>& argvals, vector<std::pair<string, int> > urlPairs );
 
 	virtual ~Login();
 };

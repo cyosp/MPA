@@ -10,7 +10,7 @@
 namespace mpa_api_rest_v1
 {
 
-Login::Login( HttpRequestType httpRequestType, ActionType actionType , const map<string, string>& argvals, bool isAdmin, vector<std::pair<string, int> > urlPairs ) : MPAO( httpRequestType, actionType, argvals, isAdmin, urlPairs )
+Login::Login( HttpRequestType httpRequestType, ActionType actionType , const map<string, string>& argvals, vector<std::pair<string, int> > urlPairs ) : MPAO( httpRequestType, actionType, argvals, urlPairs )
 {}
 
 bool Login::areGetParametersOk()
@@ -64,8 +64,12 @@ string Login::executePostLoginRequest(ptree & root)
 						user.resetPwdErr();
 						user.update();
 					}
-					MPA_LOG_TRIVIAL(info,"User is authenticated");
-					ret = MPAOFactory::getInstance()->registerNewToken( user ).getValue();
+
+					// Create and register token
+					Token token = Token( user );
+					MPAOFactory::getInstance()->getTokenList().insert( std::pair<string,Token>(token.getValue(), token) );
+
+					ret = token.getValue();
 				}
 				else
 				{

@@ -35,7 +35,7 @@ class Account: public MPAO
 		string executePostUpdateRequest(ptree & root);
 
 	public:
-		Account( HttpRequestType httpRequestType, ActionType actionType, const map<string, string>& argvals, bool isAdmin, vector<std::pair<string, int> > urlPairs );
+		Account( HttpRequestType httpRequestType, ActionType actionType, const map<string, string>& argvals, vector<std::pair<string, int> > urlPairs );
 
 	virtual ~Account();
 };

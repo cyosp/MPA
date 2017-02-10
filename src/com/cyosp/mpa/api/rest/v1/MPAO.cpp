@@ -12,12 +12,11 @@ namespace mpa_api_rest_v1
 
 string MPAO::DEFAULT_JSON_ID = "-1";
 
-MPAO::MPAO( HttpRequestType httpRequestType , ActionType actionType, const map<string, string>& argvals, bool isAdmin, vector<std::pair<string, int> > urlPairs)
+MPAO::MPAO( HttpRequestType httpRequestType , ActionType actionType, const map<string, string>& argvals, vector<std::pair<string, int> > urlPairs)
 {
 	this->httpRequestType = httpRequestType;
 	this->actionType = actionType;
 	this->argvals = argvals;
-	this->isAdmin = isAdmin;
 	this->urlPairs = urlPairs;
 }
 

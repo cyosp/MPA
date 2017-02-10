@@ -34,7 +34,7 @@ namespace mpa_api_rest_v1
 			string executePostUpdateRequest(ptree & root);
 
 		public:
-			Provider(HttpRequestType httpRequestType, ActionType actionType, const map<string, string>& argvals , bool isAdmin, vector<std::pair<string, int> > urlPairs );
+			Provider(HttpRequestType httpRequestType, ActionType actionType, const map<string, string>& argvals, vector<std::pair<string, int> > urlPairs );
 
 			virtual ~Provider();
 	};

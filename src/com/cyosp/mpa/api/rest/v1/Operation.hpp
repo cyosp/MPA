@@ -36,7 +36,7 @@ protected:
 	string executePostUpdateRequest(ptree & root);
 
 public:
-	Operation(HttpRequestType httpRequestType, ActionType actionType, const map<string, string>& argvals , bool isAdmin, vector<std::pair<string, int> > urlPairs );
+	Operation(HttpRequestType httpRequestType, ActionType actionType, const map<string, string>& argvals, vector<std::pair<string, int> > urlPairs );
 
 	virtual ~Operation();
 };

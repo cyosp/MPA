@@ -111,12 +111,14 @@ describe( "MPA API" , function()
 	
 	describe( "Logout" , function()
 	{
+		var logoutId;
+
 		it( "log out" , function( done )
 		{
 			chai.request( host )
-				.get( "/api/rest/v1/users/logout" )
+				.get( "/api/rest/v1/users/logout?token=" + token )
 				.set( 'content-type', 'application/x-www-form-urlencoded' )
-				.send( {login: adminLogin , pwd: adminPwd } )
+				.send()
 			.end( function( error , response , body )
 			{
 				if( error )	done( error );
@@ -130,8 +132,8 @@ describe( "MPA API" , function()
 					// Check JSON contains id property
 					assert.property( data , 'id' );
 		
-					// Get token
-					token = data.id;
+					// Get id
+					logoutId = data.id;
 
 					// End test
 		    		done();
@@ -139,10 +141,9 @@ describe( "MPA API" , function()
 		  	});
 		});
 	
-		it( "token is a number" , function( done )
+		it( "id is equal to 0" , function( done )
 		{
-			// Check token is a number
-			expect( token , 'token is not a number' ).to.be.not.NaN;
+			expect( logoutId , 'id is not equal to 0' ).to.be.equal( "0" );
 			
 			// End test
 			done();

@@ -13,6 +13,8 @@
 #include "com/cyosp/mpa/api/rest/v1/Account.hpp"
 #include "com/cyosp/mpa/core/MPA.hpp"
 #include "com/cyosp/mpa/api/rest/v1/MPAO.hpp"
+#include "com/cyosp/mpa/api/rest/v1/Token.hpp"
+#include "com/cyosp/mpa/api/rest/v1/MPAOFactory.hpp"
 
 namespace mpa_api_rest_v1
 {
@@ -35,7 +37,7 @@ protected:
 	bool isObjectAlreadyExisting( string objectName );
 
 public:
-	User( HttpRequestType httpRequestType, ActionType actionType, const map<string, string>& argvals , bool isAdmin, vector<std::pair<string, int> > urlPairs );
+	User( HttpRequestType httpRequestType, ActionType actionType, const map<string, string>& argvals, vector<std::pair<string, int> > urlPairs );
 
 	virtual ~User();
 };

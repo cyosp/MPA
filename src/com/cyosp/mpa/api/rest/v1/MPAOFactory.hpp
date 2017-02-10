@@ -28,6 +28,7 @@ using std::string;
 #include "com/cyosp/mpa/api/rest/v1/Provider.hpp"
 #include "com/cyosp/mpa/api/rest/v1/User.hpp"
 #include "com/cyosp/mpa/api/rest/v1/Token.hpp"
+#include "com/cyosp/mpa/api/rest/v1/Logout.hpp"
 
 namespace mpa_api_rest_v1
 {
@@ -47,14 +48,9 @@ public:
 	// Singleton method
 	static MPAOFactory * getInstance();
 
-	static mpa_api_rest_v1::MPAO * getMPAO( HttpRequestType requestType, const string& url, const map<string, string>& argvals, bool isAdmin );
+	static mpa_api_rest_v1::MPAO * getMPAO( HttpRequestType requestType, const string& url, const map<string, string>& argvals );
 
 	map<string, Token> & getTokenList();
-	string isSessionRegistered(const map<string, string>& argvals);
-	Token & registerNewToken( mpapo::User );
-	bool deleteSession( string token );
-	bool isSessionAdmin(string token);
-
 };
 
 } /* namespace mpa */

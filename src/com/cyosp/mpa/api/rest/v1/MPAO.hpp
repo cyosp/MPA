@@ -40,7 +40,6 @@ private:
 protected:
 	ActionType actionType;
 	map<string, string> argvals;
-	bool isAdmin;
 	vector<std::pair<string, int> > urlPairs;
 
 	virtual bool areGetParametersOk() = 0;
@@ -56,7 +55,7 @@ protected:
 	virtual string executePostUpdateRequest(ptree & root) = 0;
 
 public:
-	MPAO( HttpRequestType httpRequestType, ActionType actionType , const map<string, string>& argvals, bool isAdmin, vector<std::pair<string, int> > urlPairs );
+	MPAO( HttpRequestType httpRequestType, ActionType actionType , const map<string, string>& argvals, vector<std::pair<string, int> > urlPairs );
 
 	bool areParametersOk();
 

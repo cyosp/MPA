@@ -11,9 +11,9 @@ namespace mpa_api_rest_v1
 {
 
 Provider::Provider(HttpRequestType httpRequestType, ActionType actionType,
-		const map<string, string>& argvals, bool isAdmin,
+		const map<string, string>& argvals,
 		vector<std::pair<string, int> > urlPairs) :
-		MPAO(httpRequestType, actionType, argvals, isAdmin, urlPairs)
+		MPAO(httpRequestType, actionType, argvals, urlPairs)
 {}
 
 bool Provider::areGetParametersOk()

@@ -30,6 +30,7 @@ namespace mpa_api_rest_v1
 		public:
 			Token( mpapo::User & user );
 			string & getValue();
+			mpapo::User & getUser();
 
 	};
 

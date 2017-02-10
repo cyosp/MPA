@@ -107,7 +107,7 @@ public:
 
 	static int serveFile( string filePath , void ***con_cls , MHD_Response **response );
 
-	static void getFactoryMPAObject(HttpRequestType requestType, const string& url, const map<string, string>& argvals, bool isAdmin, string& response );
+	static void getFactoryMPAObject(HttpRequestType requestType, const string& url, const map<string, string>& argvals, string& response );
 };
 
 #endif /* HTTPHANDLER_HPP_ */

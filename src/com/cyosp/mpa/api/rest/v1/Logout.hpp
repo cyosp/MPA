@@ -31,7 +31,7 @@ class Logout: public MPAO
 		string executePostUpdateRequest(ptree & root);
 
 	public:
-		Logout( HttpRequestType httpRequestType, ActionType actionType, const map<string, string>& argvals, bool isAdmin, vector<std::pair<string, int> > urlPairs );
+		Logout( HttpRequestType httpRequestType, ActionType actionType, const map<string, string>& argvals, vector<std::pair<string, int> > urlPairs );
 
 	virtual ~Logout();
 };

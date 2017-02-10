@@ -32,4 +32,9 @@ string & Token::getValue()
 	return value;
 }
 
+mpapo::User & Token::getUser()
+{
+	return * user;
+}
+
 } /* namespace mpa */

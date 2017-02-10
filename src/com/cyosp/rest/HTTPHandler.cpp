@@ -74,10 +74,10 @@ int HTTPHandler::url_handler(void *cls, struct MHD_Connection *connection,
 		{
 			MPA_LOG_TRIVIAL(debug,"Parameters are ok");
 
-			string session = mpa_api_rest_v1::MPAOFactory::getInstance()->isSessionRegistered( url_args );
-			bool isAdmin = mpa_api_rest_v1::MPAOFactory::getInstance()->isSessionAdmin( session );
+			//string token = mpa_api_rest_v1::MPAOFactory::getInstance()->isTokenRegistered( url_args );
+			//bool isAdmin = mpa_api_rest_v1::MPAOFactory::getInstance()->isTokenAdmin( token );
 			// Session is not registered
-			if( session.empty() )
+			/*if( token.empty() )
 			{
 				if( urlString == "/" )
 				{
@@ -106,7 +106,7 @@ int HTTPHandler::url_handler(void *cls, struct MHD_Connection *connection,
 				}
 			}
 			else
-			{
+			{*/
 				/*if( boost::starts_with(url, "/mpa/res-adm") )
 				{
 					MPA_LOG_TRIVIAL(trace,"JSON request to serve");
@@ -133,9 +133,9 @@ int HTTPHandler::url_handler(void *cls, struct MHD_Connection *connection,
 						}
 					}
 				}
-				else */if( urlString == "/disconnect" )
+				else *//*if( urlString == "/disconnect" )
 				{
-					mpa_api_rest_v1::MPAOFactory::getInstance()->deleteSession( session );
+					//mpa_api_rest_v1::MPAOFactory::getInstance()->deleteToken( token );
 
 
 					respdata = "<html><head><meta http-equiv='refresh' content='0; url=..'/></head></html>";
@@ -151,17 +151,17 @@ int HTTPHandler::url_handler(void *cls, struct MHD_Connection *connection,
 					ret = MHD_HTTP_OK;
 
 				}
-				else if( boost::starts_with(url, "/api/rest/") )
+				else */if( boost::starts_with(url, "/api/rest/") )
 				{
 					MPA_LOG_TRIVIAL(trace,"JSON request to serve");
 
 					// TODO Manage switch for API versions
 
-					HTTPHandler::getFactoryMPAObject( GET , url, url_args, isAdmin , respdata);
+					HTTPHandler::getFactoryMPAObject( GET , url, url_args , respdata);
 
 					MPA_LOG_TRIVIAL(trace,"callapi.getFactoryMPAObject: done");
 
-					*con_cls = 0; /* reset when done */
+					*con_cls = 0; // reset when done
 					val = MHD_lookup_connection_value(connection, MHD_GET_ARGUMENT_KIND, "q");
 
 					me = (char *) malloc(respdata.size() + 1);
@@ -187,7 +187,7 @@ int HTTPHandler::url_handler(void *cls, struct MHD_Connection *connection,
 					// Serve file
 					ret = serveFile( filePath , &con_cls , &response );
 				}
-			}
+			//}
 		}
 		else
 		{
@@ -264,72 +264,72 @@ int HTTPHandler::url_handler(void *cls, struct MHD_Connection *connection,
 
 				MPA_LOG_TRIVIAL(trace,it->first + " => " + it->second);
 
-				string session = mpa_api_rest_v1::MPAOFactory::getInstance()->isSessionRegistered( * con_info->datas );
-				bool isAdmin = mpa_api_rest_v1::MPAOFactory::getInstance()->isSessionAdmin( session );
+				//string session = mpa_api_rest_v1::MPAOFactory::getInstance()->isTokenRegistered( * con_info->datas );
+				//bool isAdmin = mpa_api_rest_v1::MPAOFactory::getInstance()->isTokenAdmin( session );
 				// Session is not registered
-				if( session.empty() && urlString != "/api/rest/v1/users/add" && urlString != "/api/rest/v1/users/login" )
-				{
-					MPA_LOG_TRIVIAL(info,"Request without token");
+				//if( session.empty() && urlString != "/api/rest/v1/users/add" && urlString != "/api/rest/v1/users/login" )
+				//{
+				//	MPA_LOG_TRIVIAL(info,"Request without token");
 
-					if( urlString == "/adminRegister/action" )
-					{
-						MPA_LOG_TRIVIAL(info,"Registrer administrator");
+				//	if( urlString == "/adminRegister/action" )
+				//	{
+				//		MPA_LOG_TRIVIAL(info,"Registrer administrator");
 
 						//TODO : verify if arg exist before to take value
-						string login = con_info->datas->find("login")->second;
-						string pwd = con_info->datas->find("pwd")->second;
-						string pwdCheck = con_info->datas->find("pwdCheck")->second;
+				//		string login = con_info->datas->find("login")->second;
+				//		string pwd = con_info->datas->find("pwd")->second;
+				//		string pwdCheck = con_info->datas->find("pwdCheck")->second;
 
-						mpapo::User adminUser = MPA::getInstance()->getAdminUsers()[0];
+				//		mpapo::User adminUser = MPA::getInstance()->getAdminUsers()[0];
 
-						MPA_LOG_TRIVIAL(trace,"Administrator login: " + adminUser.login.value());
-						MPA_LOG_TRIVIAL(trace,"Administrator password: " + adminUser.password.value());
+				//		MPA_LOG_TRIVIAL(trace,"Administrator login: " + adminUser.login.value());
+				//		MPA_LOG_TRIVIAL(trace,"Administrator password: " + adminUser.password.value());
 
 
-						if( adminUser.login.value().compare(login) == 0 )
-						{
-							if( /*adminUser.password.value().compare(MPA::DEFAULT_ADMIN_PWD) == 0 &&*/ pwd.compare(pwdCheck) == 0 )
-							{
-								if( MPA::isSecurePwd(pwd ) )
-								{
-									MPA_LOG_TRIVIAL(info,"Administrator can be registered");
+				//		if( adminUser.login.value().compare(login) == 0 )
+				//		{
+				//			if( /*adminUser.password.value().compare(MPA::DEFAULT_ADMIN_PWD) == 0 &&*/ pwd.compare(pwdCheck) == 0 )
+				//			{
+				//				if( MPA::isSecurePwd(pwd ) )
+				//				{
+				//					MPA_LOG_TRIVIAL(info,"Administrator can be registered");
 
-									adminUser.setPassword(pwd);
-									adminUser.update();
-									MPA::getInstance()->registerAdmin();
+				//					adminUser.setPassword(pwd);
+				//					adminUser.update();
+				//					MPA::getInstance()->registerAdmin();
 
-									string token = mpa_api_rest_v1::MPAOFactory::getInstance()->registerNewToken( MPA::getInstance()->getUser( adminUser.login.value() ) ).getValue();
+									//string token = mpa_api_rest_v1::MPAOFactory::getInstance()->registerNewToken( MPA::getInstance()->getUser( adminUser.login.value() ) ).getValue();
 
-									respdata = "<html><head><meta http-equiv='refresh' content='0; url=../mpa/admin/users/?token=" + token + "'/></head></html>";
-								}
-								else
-								{
+									//respdata = "<html><head><meta http-equiv='refresh' content='0; url=../mpa/admin/users/?token=" + token + "'/></head></html>";
+				//				}
+				//				else
+				//				{
 									// TODO : manage URL encoding
-									MPA_LOG_TRIVIAL(trace,"Password security is too low");
-									respdata = "<html><head><meta http-equiv='refresh' content='0; url=../?errMsg="+MPA::getErrMsg( 9 )+"&login="+login + "'/></head></html>";
-								}
-							}
-							else
-							{
+				//					MPA_LOG_TRIVIAL(trace,"Password security is too low");
+				//					respdata = "<html><head><meta http-equiv='refresh' content='0; url=../?errMsg="+MPA::getErrMsg( 9 )+"&login="+login + "'/></head></html>";
+				//				}
+				//			}
+				//			else
+				//			{
 								// Not managed : adminUser.password.value().compare(MPA::DEFAULT_ADMIN_PWD)
 								// TODO : manage URL encoding
-								MPA_LOG_TRIVIAL(trace,"Password doesn't match");
-								respdata = "<html><head><meta http-equiv='refresh' content='0; url=../?errMsg="+MPA::getErrMsg( 8 )+"&login="+login + "'/></head></html>";
-							}
-						}
-						else
-						{
-							MPA_LOG_TRIVIAL(trace,"Register administrator fails");
-							// TODO : manage URL encoding
-							respdata = "<html><head><meta http-equiv='refresh' content='0; url=../?errMsg="+MPA::getErrMsg( 6 )+"&login="+login + "'/></head></html>";
-						}
-					}
-				}
-				else
-				{
-					MPA_LOG_TRIVIAL(info,"Request with valid token or login");
+				//				MPA_LOG_TRIVIAL(trace,"Password doesn't match");
+				//				respdata = "<html><head><meta http-equiv='refresh' content='0; url=../?errMsg="+MPA::getErrMsg( 8 )+"&login="+login + "'/></head></html>";
+				//			}
+				//		}
+				//		else
+				//		{
+				//			MPA_LOG_TRIVIAL(trace,"Register administrator fails");
+				//			// TODO : manage URL encoding
+				//			respdata = "<html><head><meta http-equiv='refresh' content='0; url=../?errMsg="+MPA::getErrMsg( 6 )+"&login="+login + "'/></head></html>";
+				//		}
+				//	}
+				//}
+				//else
+				//{
+				//	MPA_LOG_TRIVIAL(info,"Request with valid token or login");
 
-					bool canContinue = false;
+				//	bool canContinue = false;
 
 					/*if( boost::starts_with(url, "/mpa/res-adm") )
 					{
@@ -340,10 +340,12 @@ int HTTPHandler::url_handler(void *cls, struct MHD_Connection *connection,
 							canContinue = true;
 						}
 					}
-					else */canContinue = true;
+				else *///canContinue = true;
 
-					if( canContinue )	HTTPHandler::getFactoryMPAObject( POST , url, *con_info->datas, isAdmin , respdata );
-				}
+				//	if( canContinue )	HTTPHandler::getFactoryMPAObject( POST , url, *con_info->datas, isAdmin , respdata );
+				//}
+
+				HTTPHandler::getFactoryMPAObject( POST , url, *con_info->datas , respdata );
 
 				*con_cls = 0; /* reset when done */
 				val = MHD_lookup_connection_value(connection, MHD_GET_ARGUMENT_KIND, "q");
@@ -503,7 +505,7 @@ int HTTPHandler::serveFile( string filePath , void ***con_cls , MHD_Response **r
 	return ret;
 }
 
-void HTTPHandler::getFactoryMPAObject(HttpRequestType requestType, const string& url, const map<string, string>& argvals, bool isAdmin, string& response)
+void HTTPHandler::getFactoryMPAObject(HttpRequestType requestType, const string& url, const map<string, string>& argvals, string& response)
 {
 	string id = "-1";
 	ptree root;
@@ -513,7 +515,7 @@ void HTTPHandler::getFactoryMPAObject(HttpRequestType requestType, const string&
 
 	mpa_api_rest_v1::MPAOFactory * mpaofactory = mpa_api_rest_v1::MPAOFactory::getInstance();
 
-	mpa_api_rest_v1::MPAO * mpao = mpaofactory->getMPAO(requestType,url,argvals,isAdmin);
+	mpa_api_rest_v1::MPAO * mpao = mpaofactory->getMPAO(requestType,url,argvals);
 	if( mpao != NULL )
 	{
 		//
@@ -542,7 +544,7 @@ void HTTPHandler::getFactoryMPAObject(HttpRequestType requestType, const string&
 	// Add id
 	root.push_front( BoostHelper::make_pair( "id", id ) );
 	// Add is administrator information
-	root.push_back( BoostHelper::make_pair( "isAdmin" , StrUtil::bool2string( isAdmin ) ) );
+	//root.push_back( BoostHelper::make_pair( "isAdmin" , StrUtil::bool2string( isAdmin ) ) );
 
 	// JSON response
 	MPA_LOG_TRIVIAL(trace,"Start JSON generation");

@@ -44,7 +44,7 @@ MPAOFactory::MPAOFactory()
 //	/mpa/res/accounts/20/categories/add
 //	/mpa/res/accounts/20/categories/30/del?version=1
 mpa_api_rest_v1::MPAO * MPAOFactory::getMPAO(HttpRequestType requestType, const string& url,
-		const map<string, string>& argvals, bool isAdmin)
+		const map<string, string>& argvals)
 {
 	mpa_api_rest_v1::MPAO * ret = NULL;
 
@@ -161,13 +161,14 @@ mpa_api_rest_v1::MPAO * MPAOFactory::getMPAO(HttpRequestType requestType, const 
 
 			MPA_LOG_TRIVIAL(trace, "Last identifier: " + lastIdentifier );
 
-			if( lastIdentifier == "login" )				ret = new mpa_api_rest_v1::Login( requestType , actionType, argvals , isAdmin, urlPairs );
-			else if( lastIdentifier == "accounts" )		ret = new mpa_api_rest_v1::Account( requestType , actionType, argvals , isAdmin, urlPairs );
-			else if ( lastIdentifier == "users" )		ret = new mpa_api_rest_v1::User( requestType , actionType , argvals , isAdmin, urlPairs );
-			else if ( lastIdentifier == "infos" )		ret = new mpa_api_rest_v1::Info( requestType , actionType , argvals , isAdmin, urlPairs );
-			else if ( lastIdentifier == "categories" )	ret = new mpa_api_rest_v1::Category( requestType , actionType , argvals , isAdmin, urlPairs );
-			else if ( lastIdentifier == "providers" )	ret = new mpa_api_rest_v1::Provider( requestType , actionType , argvals , isAdmin, urlPairs );
-			else if ( lastIdentifier == "operations" )	ret = new mpa_api_rest_v1::Operation( requestType , actionType , argvals , isAdmin, urlPairs );
+			if( lastIdentifier == "login" )				ret = new mpa_api_rest_v1::Login( requestType , actionType, argvals , urlPairs );
+			else if( lastIdentifier == "logout" )		ret = new mpa_api_rest_v1::Logout( requestType , actionType, argvals , urlPairs );
+			else if( lastIdentifier == "accounts" )		ret = new mpa_api_rest_v1::Account( requestType , actionType, argvals , urlPairs );
+			else if ( lastIdentifier == "users" )		ret = new mpa_api_rest_v1::User( requestType , actionType , argvals , urlPairs );
+			else if ( lastIdentifier == "infos" )		ret = new mpa_api_rest_v1::Info( requestType , actionType , argvals , urlPairs );
+			else if ( lastIdentifier == "categories" )	ret = new mpa_api_rest_v1::Category( requestType , actionType , argvals , urlPairs );
+			else if ( lastIdentifier == "providers" )	ret = new mpa_api_rest_v1::Provider( requestType , actionType , argvals , urlPairs );
+			else if ( lastIdentifier == "operations" )	ret = new mpa_api_rest_v1::Operation( requestType , actionType , argvals , urlPairs );
 		}
 		else	MPA_LOG_TRIVIAL(info, MPA::getErrMsg( 21 ) );
 	}
@@ -181,74 +182,5 @@ map<string, Token> & MPAOFactory::getTokenList()
 {
 	return * tokenList;
 }
-
-string MPAOFactory::isSessionRegistered( const map<string, string>& argvals )
-{
-	string ret = "";
-
-	MPA_LOG_TRIVIAL(trace,"argument number: " + StrUtil::int2string( argvals.size() ));
-
-
-	// Check first if there is a token
-	/*2017-01-17bool sessionRegistered = ( argvals.find("token") != argvals.end() );
-
-	if( sessionRegistered )
-	{
-		MPA_LOG_TRIVIAL(trace,"true");
-
-		string tokenToSearch = argvals.find("token")->second;
-		MPA_LOG_TRIVIAL(trace,"Token to search: " + tokenToSearch);
-
-		if( tokenList->find( tokenToSearch ) != tokenList->end() )	ret = tokenToSearch;
-
-	}
-
-	if( ret.empty() )	MPA_LOG_TRIVIAL(trace,"false");
-	else				MPA_LOG_TRIVIAL(trace,"true");*/
-
-	return ret;
-}
-
-Token & MPAOFactory::registerNewToken( mpapo::User user )
-{
-	Token * token = new Token( user );
-
-
-	MPA_LOG_TRIVIAL(trace,tokenList->size());
-	tokenList->insert( std::pair<string,Token>(token->getValue() , * token) );
-	MPA_LOG_TRIVIAL(trace,tokenList->size());
-
-	MPA_LOG_TRIVIAL(info,"Add token: " + token->getValue() + " which is admin: " + StrUtil::bool2string( user.isAdmin ) );
-
-
-	return * token;
-}
-
-bool MPAOFactory::deleteSession( string token )
-{
-	bool ret = false;
-
-	/*if( tokenList->find( token ) != tokenList->end() )
-	{
-		tokenList->erase( tokenList->find( token ) );
-
-		ret = true;
-	}*/
-
-	return ret;
-}
-
-bool MPAOFactory::isSessionAdmin(string token)
-{
-	bool ret = false;
-
-	/*if( tokenList->find( token ) != tokenList->end() )
-	{
-		ret = tokenList->find( token )->second;
-	}*/
-
-	return ret;
-}
-
 
 } /* namespace mpa */

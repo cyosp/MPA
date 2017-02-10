@@ -10,7 +10,7 @@
 namespace mpa_api_rest_v1
 {
 
-User::User( HttpRequestType httpRequestType, ActionType actionType, const map<string, string>& argvals, bool isAdmin, vector<std::pair<string, int> > urlPairs ) : MPAO( httpRequestType, actionType, argvals , isAdmin, urlPairs )
+User::User( HttpRequestType httpRequestType, ActionType actionType, const map<string, string>& argvals, vector<std::pair<string, int> > urlPairs ) : MPAO( httpRequestType, actionType, argvals, urlPairs )
 {}
 
 bool User::areGetParametersOk()
@@ -42,7 +42,11 @@ bool User::arePostUpdateParametersOk()
 	bool ret = false;
 
 	//TODO
-	if (argvals.find("name") != argvals.end() && argvals.find("version") != argvals.end() ) ret = true;
+	if(	! MPA::getInstance()->isAdminRegistered()
+			|| (		argvals.find("name") != argvals.end()
+					&&	argvals.find("version") != argvals.end()
+					&&	argvals.find("token") != argvals.end() )
+		) ret = true;
 
 	return ret;
 }
@@ -51,7 +55,10 @@ string User::executeGetRequest(ptree & root)
 {
 	string ret = MPAO::DEFAULT_JSON_ID;
 
-	if( isAdmin )
+	map<string, Token> tokenList = MPAOFactory::getInstance()->getTokenList();
+	map<string, Token>::iterator tokenIt = tokenList.find( argvals.find("token")->second );
+
+	if( tokenIt != tokenList.end() && tokenIt->second.getUser().isAdmin )
 	{
 		if( urlPairs.size() == 1 )
 		{
@@ -83,7 +90,10 @@ string User::executePostAddRequest(ptree & root)
 
 	bool isAdminRegistered = MPA::getInstance()->isAdminRegistered();
 
-	if( isAdmin || ! isAdminRegistered )
+	map<string, Token> tokenList = MPAOFactory::getInstance()->getTokenList();
+	map<string, Token>::iterator tokenIt = tokenList.find( argvals.find("token")->second );
+
+	if( ! isAdminRegistered || (tokenIt != tokenList.end() && tokenIt->second.getUser().isAdmin) )
 	{
 		string login = argvals.find("login")->second;
 		string pwd = argvals.find("password")->second;
@@ -110,6 +120,7 @@ string User::executePostAddRequest(ptree & root)
 			else	ret = MPA::getErrMsg(10);
 		}
 		else	ret = MPA::getErrMsg(8);
+
 	}
 
 	return ret;
@@ -119,7 +130,10 @@ string User::executePostDeleteRequest(ptree & root)
 {
 	string ret = MPAO::DEFAULT_JSON_ID;
 
-	if( isAdmin )
+	map<string, Token> tokenList = MPAOFactory::getInstance()->getTokenList();
+	map<string, Token>::iterator tokenIt = tokenList.find( argvals.find("token")->second );
+
+	if( tokenIt != tokenList.end() && tokenIt->second.getUser().isAdmin )
 	{
 		MPA::getInstance()->delUser( urlPairs[0].second, atoi( argvals.find("version")->second ) );
 	}
@@ -131,7 +145,10 @@ string User::executePostUpdateRequest(ptree & root)
 {
 	string ret = MPAO::DEFAULT_JSON_ID;
 
-	if( isAdmin )
+	map<string, Token> tokenList = MPAOFactory::getInstance()->getTokenList();
+	map<string, Token>::iterator tokenIt = tokenList.find( argvals.find("token")->second );
+
+	if( tokenIt != tokenList.end() && tokenIt->second.getUser().isAdmin )
 	{
 		//TODO
 		mpapo::Account account = mpa::Account::renameAccount( urlPairs[0].second , atoi( argvals.find("version")->second ) , argvals.find("name")->second );

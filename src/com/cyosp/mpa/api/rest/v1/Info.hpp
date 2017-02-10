@@ -31,7 +31,7 @@ protected:
 	bool isObjectAlreadyExisting( string objectName );
 
 public:
-	Info( HttpRequestType httpRequestType, ActionType actionType, const map<string, string>& argvals , bool isAdmin, vector<std::pair<string, int> > urlPairs );
+	Info( HttpRequestType httpRequestType, ActionType actionType, const map<string, string>& argvals, vector<std::pair<string, int> > urlPairs );
 
 	virtual ~Info();
 };

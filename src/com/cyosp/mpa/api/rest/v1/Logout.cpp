@@ -10,7 +10,7 @@
 namespace mpa_api_rest_v1
 {
 
-Logout::Logout( HttpRequestType httpRequestType, ActionType actionType , const map<string, string>& argvals, bool isAdmin, vector<std::pair<string, int> > urlPairs ) : MPAO( httpRequestType, actionType, argvals, isAdmin, urlPairs )
+Logout::Logout( HttpRequestType httpRequestType, ActionType actionType , const map<string, string>& argvals, vector<std::pair<string, int> > urlPairs ) : MPAO( httpRequestType, actionType, argvals, urlPairs )
 {}
 
 bool Logout::areGetParametersOk()
@@ -27,17 +27,17 @@ bool Logout::arePostAddParametersOk()
 	return false;
 }
 
-
 string Logout::executeGetRequest(ptree & root)
 {
 	string ret = MPAO::DEFAULT_JSON_ID;
 
-	/*if( tokenList->find( token ) != tokenList->end() )
-		{
-			tokenList->erase( tokenList->find( token ) );
-
-			ret = true;
-		}*/
+	map<string, Token> tokenList = MPAOFactory::getInstance()->getTokenList();
+	map<string, Token>::iterator tokenIt = tokenList.find( argvals.find("token")->second );
+	if( tokenIt != tokenList.end() )
+	{
+		tokenList.erase( tokenIt );
+		ret = "0";
+	}
 
 	return ret;
 }
