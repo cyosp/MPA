@@ -23,7 +23,7 @@ bool User::arePostAddParametersOk()
 {
 	bool ret = false;
 
-	MPA_LOG_TRIVIAL(trace, "isAdminRegistered" + StrUtil::bool2string( MPA::getInstance()->isAdminRegistered() ) );
+	MPA_LOG_TRIVIAL(trace, "isAdminRegistered " + StrUtil::bool2string( MPA::getInstance()->isAdminRegistered() ) );
 
 	if(	! MPA::getInstance()->isAdminRegistered()
 			|| (		argvals.find("login") != argvals.end()
