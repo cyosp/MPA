@@ -24,7 +24,11 @@ bool MPAO::areParametersOk()
 {
 	bool ret = false;
 
-	if( httpRequestType == GET ) ret = areGetParametersOk();
+	if( httpRequestType == GET )
+	{
+		MPA_LOG_TRIVIAL(trace," Execute check get parameters");
+		ret = areGetParametersOk();
+	}
 	else
 	{
 		switch (actionType)
@@ -33,15 +37,19 @@ bool MPAO::areParametersOk()
 				ret = false;
 				break;
 			case LOGIN:
+				MPA_LOG_TRIVIAL(trace," Execute check post login parameters");
 				ret = arePostLoginParametersOk();
 				break;
 			case ADD:
+				MPA_LOG_TRIVIAL(trace," Execute check post add parameters");
 				ret = arePostAddParametersOk();
 				break;
 			case DELETE:
+				MPA_LOG_TRIVIAL(trace," Execute check post delete parameters");
 				ret = arePostDeleteParametersOk();
 				break;
 			case UPDATE:
+				MPA_LOG_TRIVIAL(trace," Execute check post update parameters");
 				ret = arePostUpdateParametersOk();
 				break;
 		}

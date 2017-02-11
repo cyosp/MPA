@@ -23,7 +23,14 @@ bool User::arePostAddParametersOk()
 {
 	bool ret = false;
 
-	if( argvals.find("login") != argvals.end() && argvals.find("password") != argvals.end() && argvals.find("passwordConfirm") != argvals.end() ) ret = true;
+	MPA_LOG_TRIVIAL(trace, "isAdminRegistered" + StrUtil::bool2string( MPA::getInstance()->isAdminRegistered() ) );
+
+	if(	! MPA::getInstance()->isAdminRegistered()
+			|| (		argvals.find("login") != argvals.end()
+					&&	argvals.find("password") != argvals.end()
+					&&	argvals.find("passwordConfirm") != argvals.end()
+					&&	argvals.find("token") != argvals.end() )
+		) ret = true;
 
 	return ret;
 }
@@ -41,12 +48,7 @@ bool User::arePostUpdateParametersOk()
 {
 	bool ret = false;
 
-	//TODO
-	if(	! MPA::getInstance()->isAdminRegistered()
-			|| (		argvals.find("name") != argvals.end()
-					&&	argvals.find("version") != argvals.end()
-					&&	argvals.find("token") != argvals.end() )
-		) ret = true;
+	if(	argvals.find("name") != argvals.end() && argvals.find("version") != argvals.end() ) ret = true;
 
 	return ret;
 }
@@ -89,6 +91,7 @@ string User::executePostAddRequest(ptree & root)
 	string ret = MPAO::DEFAULT_JSON_ID;
 
 	bool isAdminRegistered = MPA::getInstance()->isAdminRegistered();
+
 
 	map<string, Token> tokenList = MPAOFactory::getInstance()->getTokenList();
 	map<string, Token>::iterator tokenIt = tokenList.find( argvals.find("token")->second );
