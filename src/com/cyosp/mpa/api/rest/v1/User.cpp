@@ -39,7 +39,8 @@ bool User::arePostDeleteParametersOk()
 {
 	bool ret = false;
 
-	if( argvals.find("version") != argvals.end() && argvals.find("id") != argvals.end() ) ret = true;
+	if(			argvals.find("version") != argvals.end()
+			&&	argvals.find("token") != argvals.end()		) ret = true;
 
 	return ret;
 }
@@ -48,7 +49,9 @@ bool User::arePostUpdateParametersOk()
 {
 	bool ret = false;
 
-	if(	argvals.find("name") != argvals.end() && argvals.find("version") != argvals.end() ) ret = true;
+	if(			argvals.find("name") != argvals.end()
+			&&	argvals.find("version") != argvals.end()
+			&&	argvals.find("token") != argvals.end()		) ret = true;
 
 	return ret;
 }
@@ -139,6 +142,7 @@ string User::executePostDeleteRequest(ptree & root)
 	if( tokenIt != tokenList.end() && tokenIt->second.getUser().isAdmin )
 	{
 		MPA::getInstance()->delUser( urlPairs[0].second, atoi( argvals.find("version")->second ) );
+		ret = "0";
 	}
 
 	return ret;

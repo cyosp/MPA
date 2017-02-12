@@ -36,7 +36,7 @@ MPAOFactory::MPAOFactory()
 // POST
 //	/mpa/res/login
 //	/mpa/res/users/add
-//	/mpa/res/users/0/del
+//	/mpa/res/users/0/del?version=0
 //	/mpa/res/users/10/upd?version=1
 //	/mpa/res/accounts/add
 //	/mpa/res/accounts/20/del?version=1
