@@ -23,7 +23,7 @@ chai.use( require('chai-json-schema') );
 var host = "http://localhost:8080";
 var adminLogin = "cyosp";
 var adminPwd = "CYOSP1";
-var token = null;
+var adminToken = null;
 
 describe( "MPA API" , function()
 {
@@ -102,11 +102,8 @@ describe( "MPA API" , function()
 					// Check response is 200
 		   			expect( response.statusCode ).to.equal(200);
 		   			
-					// Check JSON contains id property
-					assert.property( data , 'id' );
-		
-					// Get token
-					token = data.id;
+		   			// Get response data
+					userAdminData = data;
 
 					// End test
 		    		done();
@@ -116,8 +113,14 @@ describe( "MPA API" , function()
 	
 		it( "token is a number" , function( done )
 		{
+			// Check JSON contains id property
+			assert.property( userAdminData , 'id' );
+
+			// Get token
+			adminToken = userAdminData.id;
+			
 			// Check token is a number
-			expect( token , 'token is not a number' ).to.be.not.NaN;
+			expect( adminToken , 'token is not a number' ).to.be.not.NaN;
 			
 			// End test
 			done();
@@ -131,12 +134,14 @@ describe( "MPA API" , function()
 	
 	describe( "Create a user" , function()
 	{
+		var userData = null;
+		
 		it( "response code is equal to 200" , function( done )
 		{
 			chai.request( host )
 				.post( "/api/rest/v1/users/add" )
 				.set( 'content-type', 'application/x-www-form-urlencoded' )
-				.send( {login: userLogin , password: userPwd , passwordConfirm: userPwd, token: token } )
+				.send( {login: userLogin , password: userPwd , passwordConfirm: userPwd, token: adminToken } )
 			.end( function( error , response , body )
 			{
 				if( error )	done( error );
@@ -147,13 +152,8 @@ describe( "MPA API" , function()
 					// Check response is 200
 		   			expect( response.statusCode ).to.equal(200);
 		   			
-					// Check JSON contains id property
-					assert.property( data , 'id' );
-		
-					// Get token
-					userId = data.id;
-					// Get version
-					userVersion = data.version;
+		   			// Get response data
+		   			userData = data;
 
 					// End test
 		    		done();
@@ -162,6 +162,12 @@ describe( "MPA API" , function()
 		});
 		it( "identifier is a positive number" , function( done )
 		{
+			// Check JSON contains id property
+			assert.property( userData , 'id' );
+
+			// Get token
+			userId = userData.id;
+			
 			// Check user id is a number
 			expect( userId , 'identifier is not a number' ).to.be.not.NaN;
 			
@@ -175,6 +181,12 @@ describe( "MPA API" , function()
 		});
 		it( "version is equal to 0" , function( done )
 		{
+			// Check JSON contains version property
+			assert.property( userData , 'version' );
+			
+			// Get version
+			userVersion = userData.version;
+			
 			expect( userVersion , 'version is not equal to 0' ).to.be.equal( "0" );
 			
 			// End test
@@ -184,12 +196,14 @@ describe( "MPA API" , function()
 	
 	describe( "Delete user" , function()
 	{
+		var userData = null;
+		
 		it( "response code is equal to 200" , function( done )
 		{
 			chai.request( host )
 				.post( "/api/rest/v1/users/" + userId + "/del" )
 				.set( 'content-type', 'application/x-www-form-urlencoded' )
-				.send( {version: userVersion , token: token } )
+				.send( {version: userVersion , token: adminToken } )
 			.end( function( error , response , body )
 			{
 				if( error )	done( error );
@@ -200,11 +214,8 @@ describe( "MPA API" , function()
 					// Check response is 200
 		   			expect( response.statusCode ).to.equal(200);
 		   			
-					// Check JSON contains id property
-					assert.property( data , 'id' );
-		
-					// Get token
-					userId = data.id;
+		   			// get response data
+		   			userData = data;
 
 					// End test
 		    		done();
@@ -214,6 +225,12 @@ describe( "MPA API" , function()
 		
 		it( "execution code is equal to 0" , function( done )
 		{
+			// Check JSON contains id property
+			assert.property( userData , 'id' );
+
+			// Get token
+			userId = userData.id;
+			
 			expect( userId , 'execution code is not equal to 0' ).to.be.equal( "0" );
 			
 			// End test
@@ -223,12 +240,13 @@ describe( "MPA API" , function()
 	
 	describe( "Administrator logout" , function()
 	{
+		var userAdminData;
 		var logoutId;
 
 		it( "response code is equal to 200" , function( done )
 		{
 			chai.request( host )
-				.get( "/api/rest/v1/users/logout?token=" + token )
+				.get( "/api/rest/v1/users/logout?token=" + adminToken )
 				.set( 'content-type', 'application/x-www-form-urlencoded' )
 				.send()
 			.end( function( error , response , body )
@@ -241,11 +259,8 @@ describe( "MPA API" , function()
 					// Check response is 200
 		   			expect( response.statusCode ).to.equal(200);
 		   			
-					// Check JSON contains id property
-					assert.property( data , 'id' );
-		
-					// Get id
-					logoutId = data.id;
+		   			// Get response data
+		   			userAdminData = data;
 
 					// End test
 		    		done();
@@ -255,6 +270,12 @@ describe( "MPA API" , function()
 	
 		it( "execution code is equal to 0" , function( done )
 		{
+			// Check JSON contains id property
+			assert.property( userAdminData , 'id' );
+
+			// Get id
+			logoutId = userAdminData.id;
+
 			expect( logoutId , 'execution code is not equal to 0' ).to.be.equal( "0" );
 			
 			// End test
