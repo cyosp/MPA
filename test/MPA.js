@@ -1,3 +1,5 @@
+// 2017-02-14 V 1.5.0
+// - Add: Create an account
 // 2017-02-12 V 1.4.0
 // - Add: delete user
 // 2017-02-11 V 1.3.0
@@ -238,6 +240,76 @@ describe( "MPA API" , function()
 		});
 	});
 	
+	describe( "Create an account" , function()
+	{
+		var accountData = null;
+		var accountId = null;
+		
+		it( "response code is equal to 200" , function( done )
+		{
+			chai.request( host )
+				.post( "/api/rest/v1/accounts/add" )
+				.set( 'content-type', 'application/x-www-form-urlencoded' )
+				.send( {name: "MyBank", token: adminToken } )
+			.end( function( error , response , body )
+			{
+				if( error )	done( error );
+				else
+				{
+					var data = JSON.parse( response.text );
+
+					// Check response is 200
+		   			expect( response.statusCode ).to.equal(200);
+		   			
+		   			// Get response data
+		   			accountData = data;
+
+					// End test
+		    		done();
+				}
+		  	});
+		});
+		it( "identifier is a positive number" , function( done )
+		{
+			// Check JSON contains id property
+			assert.property( accountData , 'id' );
+
+			// Get id
+			accountId = accountData.id;
+			
+			// Check account id is a number
+			expect( accountId , 'identifier is not a number' ).to.be.not.NaN;
+			
+			accountId = parseInt( accountId );
+			
+			// Check account is a positive number
+			expect( Math.abs( accountId ) ).to.be.equal( accountId );
+			
+			// End test
+			done();
+		});
+		it( "version is equal to 0" , function( done )
+		{
+			// Check JSON contains version property
+			assert.property( accountData , 'version' );
+			
+			expect( accountData.version , 'version is not equal to 0' ).to.be.equal( "0" );
+			
+			// End test
+			done();
+		});
+		it( "balance is equal to 0" , function( done )
+		{
+			// Check JSON contains balance property
+			assert.property( accountData , 'balance' );
+			
+			expect( accountData.balance , 'balance is not equal to 0' ).to.be.equal( "0" );
+			
+			// End test
+			done();
+		});
+	});
+	
 	describe( "Administrator logout" , function()
 	{
 		var userAdminData;
@@ -267,7 +339,6 @@ describe( "MPA API" , function()
 				}
 		  	});
 		});
-	
 		it( "execution code is equal to 0" , function( done )
 		{
 			// Check JSON contains id property
