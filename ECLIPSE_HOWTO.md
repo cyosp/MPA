@@ -53,6 +53,7 @@
 		* boost_log
 		* boost_log_setup
 		* boost_locale
+		* boost_filesystem
 		* litesql
 		* litesql-util
 	* -----------
