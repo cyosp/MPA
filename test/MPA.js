@@ -1,3 +1,6 @@
+// 2017-02-23 V 1.6.0
+// - Add: Get list of locales
+// - User creation is now performed with a locale
 // 2017-02-14 V 1.5.0
 // - Add: Create an account
 // 2017-02-12 V 1.4.0
@@ -26,9 +29,68 @@ var host = "http://localhost:8080";
 var adminLogin = "cyosp";
 var adminPwd = "CYOSP1";
 var adminToken = null;
+var defaultLocale = "";
 
 describe( "MPA API" , function()
 {
+	describe( "Get list of locales" , function()
+	{
+		var localesData = null;
+		
+		it( "response code is equal to 200" , function( done )
+		{
+			chai.request( host )
+				.get( "/api/rest/v1/locales" )
+				.set( 'content-type', 'application/x-www-form-urlencoded' )
+				.send()
+			.end( function( error , response , body )
+			{
+				if( error )	done( error );
+				else
+				{
+					var data = JSON.parse( response.text );
+					
+					// Check response is 200
+		   			expect( response.statusCode ).to.equal(200);
+		
+					// Get response data
+		   			localesData = data;
+
+					// End test
+		    		done();
+				}
+		  	});
+		});
+		it( "locales is an non empty array" , function( done )
+		{
+			// Check JSON contains locales property
+			assert.property( localesData , 'locales' );
+			
+			// Check locales is an array
+			expect( localesData.locales , 'locales is not an array' ).to.be.instanceof(Array);
+			
+			// Check array is not empty
+			expect( localesData.locales , 'locales array is empty' ).to.be.not.empty;
+			
+			// End test
+			done();
+		});
+		it( "get first locale" , function( done )
+		{
+			// Check JSON contains name property
+			assert.property( localesData.locales[0] , 'name' );
+			
+			// Check locale name is not empty
+			expect( localesData.locales[0].name , 'locale name is empty' ).to.be.not.empty;
+			
+			// Get default locale
+			defaultLocale = localesData.locales[0].name;
+			
+			// End test
+			done();
+		});
+	});
+	
 	describe( "Register administrator account" , function()
 	{
 		var userAdminData = null;
@@ -38,7 +100,7 @@ describe( "MPA API" , function()
 			chai.request( host )
 				.post( "/api/rest/v1/users/add" )
 				.set( 'content-type', 'application/x-www-form-urlencoded' )
-				.send( {login: adminLogin , password: adminPwd , passwordConfirm: adminPwd } )
+				.send( {login: adminLogin , password: adminPwd , passwordConfirm: adminPwd, locale: defaultLocale } )
 			.end( function( error , response , body )
 			{
 				if( error )	done( error );
@@ -143,7 +205,7 @@ describe( "MPA API" , function()
 			chai.request( host )
 				.post( "/api/rest/v1/users/add" )
 				.set( 'content-type', 'application/x-www-form-urlencoded' )
-				.send( {login: userLogin , password: userPwd , passwordConfirm: userPwd, token: adminToken } )
+				.send( {login: userLogin , password: userPwd , passwordConfirm: userPwd, token: adminToken, locale: defaultLocale } )
 			.end( function( error , response , body )
 			{
 				if( error )	done( error );
