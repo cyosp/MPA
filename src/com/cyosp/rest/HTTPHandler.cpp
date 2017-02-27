@@ -521,6 +521,7 @@ void HTTPHandler::getFactoryMPAObject(HttpRequestType requestType, const string&
 		//
 		// Check URL parameters
 		//
+		MPA_LOG_TRIVIAL(trace,requestType + "  mpao->areParametersOk()");
 		if( mpao->areParametersOk() )
 		{
 			//
@@ -528,6 +529,7 @@ void HTTPHandler::getFactoryMPAObject(HttpRequestType requestType, const string&
 			//
 			try
 			{
+				MPA_LOG_TRIVIAL(trace,requestType + " mpao->executeRequest( root )");
 				id = mpao->executeRequest( root );
 			}
 			catch (string & e)
@@ -535,7 +537,7 @@ void HTTPHandler::getFactoryMPAObject(HttpRequestType requestType, const string&
 				id = e;
 			}
 		}
-		else	id = MPA::getErrMsg(3);
+		else	id = mpao->getBadParamsMsg();
 	}
 	else id = MPA::getErrMsg(5);
 
