@@ -178,6 +178,8 @@ public:
     static const std::string table__;
     static const litesql::FieldType IsAdmin;
     litesql::Field<bool> isAdmin;
+    static const litesql::FieldType Locale;
+    litesql::Field<std::string> locale;
     static const litesql::FieldType Login;
     litesql::Field<std::string> login;
     static const litesql::FieldType Password;
@@ -193,6 +195,7 @@ public:
     User(const User& obj);
     const User& operator=(const User& obj);
     virtual void setIsAdmin(bool isAdmin);
+    virtual void setLocale(string locale);
     virtual void setLogin(string login);
     virtual void setPassword(string password);
     virtual void addPwdErr();

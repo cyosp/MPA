@@ -12,12 +12,16 @@
 	</object>
 
 	<object name="User" inherits="MPAO">
-		<field name="isAdmin" type="boolean"/>			
+		<field name="isAdmin" type="boolean"/>
+		<field name="locale" type="string" length="5" />			
 		<field name="login" type="string" length="32" />
 		<field name="password" type="string" length="32" />
 		<field name="pwdErrNbr" type="integer" />
 		<method name="setIsAdmin">
 			<param type="bool" name="isAdmin"/>
+		</method>
+		<method name="setLocale">
+			<param type="string" name="locale"/>
 		</method>
 		<method name="setLogin">
 			<param type="string" name="login"/>

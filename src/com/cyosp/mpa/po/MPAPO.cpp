@@ -458,6 +458,7 @@ const litesql::FieldType User::Own::Id("id_",A_field_type_integer,"User_");
 const std::string User::type__("User");
 const std::string User::table__("User_");
 const litesql::FieldType User::IsAdmin("isAdmin_",A_field_type_boolean,table__);
+const litesql::FieldType User::Locale("locale_",A_field_type_string,table__);
 const litesql::FieldType User::Login("login_",A_field_type_string,table__);
 const litesql::FieldType User::Password("password_",A_field_type_string,table__);
 const litesql::FieldType User::PwdErrNbr("pwdErrNbr_",A_field_type_integer,table__);
@@ -468,30 +469,33 @@ void User::defaults() {
     pwdErrNbr = 0;
 }
 User::User(const litesql::Database& db)
-     : MPAO(db), isAdmin(IsAdmin), login(Login), password(Password), pwdErrNbr(PwdErrNbr) {
+     : MPAO(db), isAdmin(IsAdmin), locale(Locale), login(Login), password(Password), pwdErrNbr(PwdErrNbr) {
     defaults();
 }
 User::User(const litesql::Database& db, const litesql::Record& rec)
-     : MPAO(db, rec), isAdmin(IsAdmin), login(Login), password(Password), pwdErrNbr(PwdErrNbr) {
+     : MPAO(db, rec), isAdmin(IsAdmin), locale(Locale), login(Login), password(Password), pwdErrNbr(PwdErrNbr) {
     defaults();
-    size_t size = (rec.size() > 7) ? 7 : rec.size();
+    size_t size = (rec.size() > 8) ? 8 : rec.size();
     switch(size) {
-    case 7: pwdErrNbr = convert<const std::string&, int>(rec[6]);
+    case 8: pwdErrNbr = convert<const std::string&, int>(rec[7]);
         pwdErrNbr.setModified(false);
-    case 6: password = convert<const std::string&, std::string>(rec[5]);
+    case 7: password = convert<const std::string&, std::string>(rec[6]);
         password.setModified(false);
-    case 5: login = convert<const std::string&, std::string>(rec[4]);
+    case 6: login = convert<const std::string&, std::string>(rec[5]);
         login.setModified(false);
+    case 5: locale = convert<const std::string&, std::string>(rec[4]);
+        locale.setModified(false);
     case 4: isAdmin = convert<const std::string&, bool>(rec[3]);
         isAdmin.setModified(false);
     }
 }
 User::User(const User& obj)
-     : MPAO(obj), isAdmin(obj.isAdmin), login(obj.login), password(obj.password), pwdErrNbr(obj.pwdErrNbr) {
+     : MPAO(obj), isAdmin(obj.isAdmin), locale(obj.locale), login(obj.login), password(obj.password), pwdErrNbr(obj.pwdErrNbr) {
 }
 const User& User::operator=(const User& obj) {
     if (this != &obj) {
         isAdmin = obj.isAdmin;
+        locale = obj.locale;
         login = obj.login;
         password = obj.password;
         pwdErrNbr = obj.pwdErrNbr;
@@ -508,6 +512,9 @@ std::string User::insert(litesql::Record& tables, litesql::Records& fieldRecs, l
     fields.push_back(isAdmin.name());
     values.push_back(isAdmin);
     isAdmin.setModified(false);
+    fields.push_back(locale.name());
+    values.push_back(locale);
+    locale.setModified(false);
     fields.push_back(login.name());
     values.push_back(login);
     login.setModified(false);
@@ -533,6 +540,7 @@ void User::create() {
 void User::addUpdates(Updates& updates) {
     prepareUpdate(updates, table__);
     updateField(updates, table__, isAdmin);
+    updateField(updates, table__, locale);
     updateField(updates, table__, login);
     updateField(updates, table__, password);
     updateField(updates, table__, pwdErrNbr);
@@ -545,6 +553,7 @@ void User::addIDUpdates(Updates& updates) {
 void User::getFieldTypes(std::vector<litesql::FieldType>& ftypes) {
     MPAO::getFieldTypes(ftypes);
     ftypes.push_back(IsAdmin);
+    ftypes.push_back(Locale);
     ftypes.push_back(Login);
     ftypes.push_back(Password);
     ftypes.push_back(PwdErrNbr);
@@ -593,6 +602,7 @@ std::auto_ptr<User> User::upcast() const {
 std::auto_ptr<User> User::upcastCopy() const {
     User* np = new User(*this);
     np->isAdmin = isAdmin;
+    np->locale = locale;
     np->login = login;
     np->password = password;
     np->pwdErrNbr = pwdErrNbr;
@@ -605,6 +615,7 @@ std::ostream & operator<<(std::ostream& os, User o) {
     os << o.type.name() << " = " << o.type << std::endl;
     os << o.version.name() << " = " << o.version << std::endl;
     os << o.isAdmin.name() << " = " << o.isAdmin << std::endl;
+    os << o.locale.name() << " = " << o.locale << std::endl;
     os << o.login.name() << " = " << o.login << std::endl;
     os << o.password.name() << " = " << o.password << std::endl;
     os << o.pwdErrNbr.name() << " = " << o.pwdErrNbr << std::endl;
@@ -1570,7 +1581,7 @@ std::vector<litesql::Database::SchemaItem> MPAPO::getSchema() const {
         res.push_back(Database::SchemaItem("MPAO_seq","sequence",backend->getCreateSequenceSQL("MPAO_seq")));
     }
     res.push_back(Database::SchemaItem("MPAO_","table","CREATE TABLE MPAO_ (id_ " + rowIdType + ",type_ " + backend->getSQLType(A_field_type_string,"") + "" +",version_ " + backend->getSQLType(A_field_type_integer,"") + "" +")"));
-    res.push_back(Database::SchemaItem("User_","table","CREATE TABLE User_ (id_ " + rowIdType + ",isAdmin_ " + backend->getSQLType(A_field_type_boolean,"") + "" +",login_ " + backend->getSQLType(A_field_type_string,"32") + "" +",password_ " + backend->getSQLType(A_field_type_string,"32") + "" +",pwdErrNbr_ " + backend->getSQLType(A_field_type_integer,"") + "" +")"));
+    res.push_back(Database::SchemaItem("User_","table","CREATE TABLE User_ (id_ " + rowIdType + ",isAdmin_ " + backend->getSQLType(A_field_type_boolean,"") + "" +",locale_ " + backend->getSQLType(A_field_type_string,"5") + "" +",login_ " + backend->getSQLType(A_field_type_string,"32") + "" +",password_ " + backend->getSQLType(A_field_type_string,"32") + "" +",pwdErrNbr_ " + backend->getSQLType(A_field_type_integer,"") + "" +")"));
     res.push_back(Database::SchemaItem("Account_","table","CREATE TABLE Account_ (id_ " + rowIdType + ",name_ " + backend->getSQLType(A_field_type_string,"256") + "" +",balance_ " + backend->getSQLType(A_field_type_float,"") + "" +")"));
     res.push_back(Database::SchemaItem("Category_","table","CREATE TABLE Category_ (id_ " + rowIdType + ",name_ " + backend->getSQLType(A_field_type_string,"64") + "" +",amount_ " + backend->getSQLType(A_field_type_float,"") + "" +")"));
     res.push_back(Database::SchemaItem("Provider_","table","CREATE TABLE Provider_ (id_ " + rowIdType + ",name_ " + backend->getSQLType(A_field_type_string,"64") + "" +",amount_ " + backend->getSQLType(A_field_type_float,"") + "" +")"));
