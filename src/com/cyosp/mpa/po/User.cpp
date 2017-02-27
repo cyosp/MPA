@@ -15,6 +15,11 @@ void mpapo::User::setIsAdmin( bool isAdmin )
 	this->isAdmin = isAdmin;
 }
 
+void mpapo::User::setLocale( string locale )
+{
+	this->locale = locale;
+}
+
 void mpapo::User::setLogin( string login )
 {
 	this->login = login;
