@@ -58,6 +58,16 @@ string ResourceBundle::translate( string key , string locale )
 	return ret;
 }
 
+vector<string> ResourceBundle::getLocales()
+{
+	vector<string> ret;
+
+	pair<string, ptree> pairStringPtree;
+	BOOST_FOREACH(pairStringPtree, translationList)	ret.push_back(pairStringPtree.first);
+
+	return ret;
+}
+
 ResourceBundle::~ResourceBundle()
 {}
 

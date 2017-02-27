@@ -14,6 +14,7 @@
 #include <boost/filesystem.hpp>
 #include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/info_parser.hpp>
+#include <boost/foreach.hpp>
 #include <boost/range/iterator_range.hpp>
 #include <boost/regex.hpp>
 
@@ -32,6 +33,7 @@ class ResourceBundle
 	public:
 		ResourceBundle( string i18nDirectory );
 		string translate( string key , string locale );
+		vector<string> getLocales();
 		virtual ~ResourceBundle();
 };
 
