@@ -31,8 +31,8 @@ string Logout::executeGetRequest(ptree & root)
 {
 	string ret = MPAO::DEFAULT_JSON_ID;
 
-	map<string, Token> tokenList = MPAOFactory::getInstance()->getTokenList();
-	map<string, Token>::iterator tokenIt = tokenList.find( argvals.find("token")->second );
+	map<string, string> tokenList = MPAOFactory::getInstance()->getTokenList();
+	map<string, string>::iterator tokenIt = tokenList.find( argvals.find("token")->second );
 	if( tokenIt != tokenList.end() )
 	{
 		tokenList.erase( tokenIt );

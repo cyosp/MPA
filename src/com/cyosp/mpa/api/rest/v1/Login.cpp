@@ -11,7 +11,9 @@ namespace mpa_api_rest_v1
 {
 
 Login::Login( HttpRequestType httpRequestType, ActionType actionType , const map<string, string>& argvals, vector<std::pair<string, int> > urlPairs ) : MPAO( httpRequestType, actionType, argvals, urlPairs )
-{}
+{
+	restrictedAccess = false;
+}
 
 bool Login::areGetParametersOk()
 {
@@ -66,8 +68,8 @@ string Login::executePostLoginRequest(ptree & root)
 					}
 
 					// Create and register token
-					Token token = Token( user );
-					MPAOFactory::getInstance()->getTokenList().insert( std::pair<string,Token>(token.getValue(), token) );
+					Token token = Token( user.login );
+					MPAOFactory::getInstance()->getTokenList().insert( std::pair<string,string>(token.getValue(), token.getUserLogin()) );
 
 					ret = token.getValue();
 				}

@@ -8,6 +8,8 @@
 #ifndef INCLUDES_MPA_API_REST_V1_MPAO_HPP_
 #define INCLUDES_MPA_API_REST_V1_MPAO_HPP_
 
+class MPAFactory;
+
 #include "com/cyosp/mpa/core/MPA.hpp"
 
 #include <boost/property_tree/ptree.hpp>
@@ -33,14 +35,23 @@ class MPAO
 
 public:
 	static string DEFAULT_JSON_ID;
+	static string OK_JSON_ID;
 
 private:
 	HttpRequestType httpRequestType;
 
 protected:
 	ActionType actionType;
+	// Request parameters received
 	map<string, string> argvals;
+	// URI stored in a vector
 	vector<std::pair<string, int> > urlPairs;
+	bool restrictedAccess;
+	string badParamsMsg;
+
+	string login;
+
+	virtual bool isValidAccess();
 
 	virtual bool areGetParametersOk() = 0;
 	virtual bool arePostLoginParametersOk();
@@ -58,6 +69,7 @@ public:
 	MPAO( HttpRequestType httpRequestType, ActionType actionType , const map<string, string>& argvals, vector<std::pair<string, int> > urlPairs );
 
 	bool areParametersOk();
+	string getBadParamsMsg();
 
 	string executeRequest(ptree & root);
 

@@ -102,6 +102,7 @@
 									<listOptionValue builtIn="false" value="boost_log"/>
 									<listOptionValue builtIn="false" value="boost_log_setup"/>
 									<listOptionValue builtIn="false" value="boost_locale"/>
+									<listOptionValue builtIn="false" srcPrefixMapping="" srcRootPath="" value="boost_filesystem"/>
 									<listOptionValue builtIn="false" value="litesql"/>
 									<listOptionValue builtIn="false" value="litesql-util"/>
 								</option>

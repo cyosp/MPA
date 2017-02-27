@@ -41,7 +41,9 @@ bool Account::arePostUpdateParametersOk()
 
 	if( ret )
 	{
-		if (argvals.find("name") != argvals.end() ) ret = true;
+		if (	argvals.find("name") != argvals.end()
+			&&	argvals.find("token") != argvals.end()
+			) ret = true;
 	}
 
 	return ret;

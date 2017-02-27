@@ -16,9 +16,12 @@
 #include "litesql.hpp"
 #include "com/cyosp/mpa/po/MPAPO.hpp"
 #include "com/cyosp/helpers/StrUtil.hpp"
+#include "com/cyosp/i18n/ResourceBundle.hpp"
+
 // no name collisions expected
 using namespace litesql;
 using namespace mpapo;
+using namespace cyosp_i18n;
 
 using std::vector;
 using std::string;
@@ -46,6 +49,8 @@ class MPA
 		const static string version;
 		const static string startMsg;
 
+		const static string DEFAULT_LOCALE;
+
 		const static int PWD_SECURITY_MIN_SIZE;
 		const static int PWD_SECURITY_UPPER_CASE_NBR;
 		const static int PWD_SECURITY_DIGIT_NBR;
@@ -64,10 +69,12 @@ class MPA
 		// Initialize SQL database
 		void initDatabase( string dbFilePath );
 		void initDatabase( string dbFilePath , string adminLogin );
-		// initialize www file path
+		// Initialize www file path
 		void initWWWFilePath( string wwwFilePath );
-		// initialize log file path
+		// Initialize log file path
 		void initLogFilePath( string logFilePath);
+		// Initialize locale
+		void initI18n( string i18nDirectory );
 
 		// Get persistence object
 		MPAPO & getMPAPO();
@@ -87,7 +94,7 @@ class MPA
 		// Check if user exist by login
 		bool existUser( string login );
 		// Add a user
-		mpapo::User & addUser(bool isAdmin, string login , string password);
+		mpapo::User & addUser(bool isAdmin, string login , string password, string locale);
 
 
 		static string getErrMsg(int code);
@@ -96,6 +103,8 @@ class MPA
 
 		bool isAdminRegistered() const;
 		void registerAdmin();
+
+		ResourceBundle & getResourceBundle();
 
 	private:
 		// Debug mode
@@ -112,7 +121,7 @@ class MPA
 		// WWW file path
 		string wwwFilePath;
 
-		static map<string, bool> * tokenList;
+		ResourceBundle * resourceBundle;
 };
 
 #endif /* MPA_HPP_ */

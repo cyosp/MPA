@@ -13,6 +13,15 @@ namespace mpa_api_rest_v1
 User::User( HttpRequestType httpRequestType, ActionType actionType, const map<string, string>& argvals, vector<std::pair<string, int> > urlPairs ) : MPAO( httpRequestType, actionType, argvals, urlPairs )
 {}
 
+bool User::isValidAccess()
+{
+	MPA_LOG_TRIVIAL( info , "Start MPAO::isValidAccess" );
+	bool ret =  MPAO::isValidAccess() || ! MPA::getInstance()->isAdminRegistered();
+	MPA_LOG_TRIVIAL( info , "End MPAO::isValidAccess: " + StrUtil::bool2string(ret) );
+
+	return ret;
+}
+
 bool User::areGetParametersOk()
 {
 	bool ret = true;
@@ -25,12 +34,33 @@ bool User::arePostAddParametersOk()
 
 	MPA_LOG_TRIVIAL(trace, "isAdminRegistered " + StrUtil::bool2string( MPA::getInstance()->isAdminRegistered() ) );
 
-	if(	! MPA::getInstance()->isAdminRegistered()
-			|| (		argvals.find("login") != argvals.end()
-					&&	argvals.find("password") != argvals.end()
-					&&	argvals.find("passwordConfirm") != argvals.end()
-					&&	argvals.find("token") != argvals.end() )
-		) ret = true;
+	//
+	// There is no user defined as long as administrator account is not registered
+	//
+	string locale = MPA::DEFAULT_LOCALE;
+	if( MPA::getInstance()->isAdminRegistered()  )	locale = MPA::getInstance()->getUser( login ).locale;
+	MPA_LOG_TRIVIAL( info , "Locale used:" + locale );
+
+	map<string, string>::iterator endIt = argvals.end();
+
+	map<string, string>::iterator loginIt = argvals.find("login");
+	map<string, string>::iterator passwordIt = argvals.find("password");
+	map<string, string>::iterator passwordConfirmIt = argvals.find("passwordConfirm");
+	map<string, string>::iterator localeIt = argvals.find("locale");
+
+	// There are all parameters
+	if(	loginIt != endIt &&	passwordIt != endIt && passwordConfirmIt != endIt && localeIt != endIt )
+	{
+		// Check password are same
+		if( passwordIt->second.compare( passwordConfirmIt->second ) == 0 )
+		{
+			ret = true;
+		}
+		else	badParamsMsg = MPA::getInstance()->getResourceBundle().translate( "Passwords don't match" , locale );
+	}
+	else	badParamsMsg = MPA::getInstance()->getResourceBundle().translate( "There are missing parameters" , locale );
+
+	MPA_LOG_TRIVIAL( info , "End User::arePostAddParametersOk: " + StrUtil::bool2string( ret ) );
 
 	return ret;
 }
@@ -60,10 +90,10 @@ string User::executeGetRequest(ptree & root)
 {
 	string ret = MPAO::DEFAULT_JSON_ID;
 
-	map<string, Token> tokenList = MPAOFactory::getInstance()->getTokenList();
-	map<string, Token>::iterator tokenIt = tokenList.find( argvals.find("token")->second );
+	// Get user
+	mpapo::User user = MPA::getInstance()->getUser( login );
 
-	if( tokenIt != tokenList.end() && tokenIt->second.getUser().isAdmin )
+	if( user.isAdmin )
 	{
 		if( urlPairs.size() == 1 )
 		{
@@ -91,42 +121,36 @@ string User::executeGetRequest(ptree & root)
 
 string User::executePostAddRequest(ptree & root)
 {
+	MPA_LOG_TRIVIAL(trace, "User::executePostAddRequest" );
+
 	string ret = MPAO::DEFAULT_JSON_ID;
 
 	bool isAdminRegistered = MPA::getInstance()->isAdminRegistered();
 
-
-	map<string, Token> tokenList = MPAOFactory::getInstance()->getTokenList();
-	map<string, Token>::iterator tokenIt = tokenList.find( argvals.find("token")->second );
-
-	if( ! isAdminRegistered || (tokenIt != tokenList.end() && tokenIt->second.getUser().isAdmin) )
+	if( ! isAdminRegistered || MPA::getInstance()->getUser( login ).isAdmin )
 	{
 		string login = argvals.find("login")->second;
 		string pwd = argvals.find("password")->second;
+		string locale = argvals.find("locale")->second;
 
-		if( pwd.compare( argvals.find("passwordConfirm")->second ) == 0 )
+		if( ! MPA::getInstance()->existUser( login ) )
 		{
-			if( ! MPA::getInstance()->existUser( login ) )
+			if( MPA::isSecurePwd( pwd ))
 			{
-				if( MPA::isSecurePwd( pwd ))
-				{
-					mpapo::User user( MPA::getInstance()->getMPAPO() );
-					user = MPA::getInstance()->addUser( ! isAdminRegistered , login , pwd );
+				mpapo::User user( MPA::getInstance()->getMPAPO() );
+				user = MPA::getInstance()->addUser( ! isAdminRegistered, login, pwd, locale );
 
-					// Get account ID
-					ret = string( user.id );
+				// Get account ID
+				ret = string( user.id );
 
-					MPA_LOG_TRIVIAL(trace,"User ID added: " + ret);
+				MPA_LOG_TRIVIAL(trace,"User ID added: " + ret);
 
-					// Generate Json output
-					root.push_back(BoostHelper::make_pair("version", user.version ));
-				}
-				else ret = MPA::getErrMsg(9);
+				// Generate Json output
+				root.push_back(BoostHelper::make_pair("version", user.version ));
 			}
-			else	ret = MPA::getErrMsg(10);
+			else ret = MPA::getErrMsg(9);
 		}
-		else	ret = MPA::getErrMsg(8);
-
+		else	ret = MPA::getErrMsg(10);
 	}
 
 	return ret;
@@ -136,10 +160,10 @@ string User::executePostDeleteRequest(ptree & root)
 {
 	string ret = MPAO::DEFAULT_JSON_ID;
 
-	map<string, Token> tokenList = MPAOFactory::getInstance()->getTokenList();
-	map<string, Token>::iterator tokenIt = tokenList.find( argvals.find("token")->second );
+	// Get user
+	mpapo::User user = MPA::getInstance()->getUser( login );
 
-	if( tokenIt != tokenList.end() && tokenIt->second.getUser().isAdmin )
+	if( user.isAdmin )
 	{
 		MPA::getInstance()->delUser( urlPairs[0].second, atoi( argvals.find("version")->second ) );
 		ret = "0";
@@ -152,10 +176,10 @@ string User::executePostUpdateRequest(ptree & root)
 {
 	string ret = MPAO::DEFAULT_JSON_ID;
 
-	map<string, Token> tokenList = MPAOFactory::getInstance()->getTokenList();
-	map<string, Token>::iterator tokenIt = tokenList.find( argvals.find("token")->second );
+	// Get user
+	mpapo::User user = MPA::getInstance()->getUser( login );
 
-	if( tokenIt != tokenList.end() && tokenIt->second.getUser().isAdmin )
+	if( user.isAdmin )
 	{
 		//TODO
 		mpapo::Account account = mpa::Account::renameAccount( urlPairs[0].second , atoi( argvals.find("version")->second ) , argvals.find("name")->second );
@@ -180,6 +204,7 @@ bool User::isObjectAlreadyExisting( string objectName )
 
 User::~User()
 {
+	//MPA_LOG_TRIVIAL( info , "User destroyed" );
 }
 
 } /* namespace mpa */

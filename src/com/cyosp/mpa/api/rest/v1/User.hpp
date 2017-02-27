@@ -23,6 +23,8 @@ class User : public MPAO
 {
 
 protected:
+	bool isValidAccess();
+
 	bool areGetParametersOk();
 	bool arePostAddParametersOk();
 	bool arePostDeleteParametersOk();

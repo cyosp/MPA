@@ -53,15 +53,13 @@ struct addResult
 const string MPA::version = "In progress";
 const string MPA::startMsg = "Starting MPA " + version;
 
+const string MPA::DEFAULT_LOCALE = "en";
+
 // Security constraints
 const int MPA::PWD_SECURITY_MIN_SIZE = 6;
 const int MPA::PWD_SECURITY_UPPER_CASE_NBR = 1;
 const int MPA::PWD_SECURITY_DIGIT_NBR = 1;
 const int MPA::PWD_SECURITY_ERROR_NBR = 3;
-
-// TODO : protect in multithread
-map<string, bool> * MPA::tokenList = new map<string, bool>;
-
 
 // Initialize static member
 MPA * MPA::mpa = NULL;
@@ -92,6 +90,7 @@ MPA::MPA()
 	mpa = NULL;
 	mpapo = NULL;
 	adminRegistered = false;
+	resourceBundle = NULL;
 }
 
 void MPA::initDatabase( string dbFilePath )
@@ -186,6 +185,11 @@ void MPA::initLogFilePath( string logFilePath )
 	MPA_LOG_TRIVIAL(info, "Logging system initialized");
 }
 
+void MPA::initI18n( string i18nDirectory )
+{
+	resourceBundle = new ResourceBundle( i18nDirectory );
+}
+
 MPAPO & MPA::getMPAPO()
 {
 	return * mpapo;
@@ -223,7 +227,7 @@ bool MPA::existUser( string login )
 	return select<mpapo::User>( getMPAPO() , mpapo::User::Login == login ).all().size() != 0;
 }
 
-mpapo::User & MPA::addUser(bool isAdmin, string login , string password)
+mpapo::User & MPA::addUser(bool isAdmin, string login, string password, string locale)
 {
 	mpapo::User * ret = NULL;
 
@@ -232,6 +236,7 @@ mpapo::User & MPA::addUser(bool isAdmin, string login , string password)
 	ret->setIsAdmin( isAdmin );
 	ret->setLogin(login);
 	ret->setPassword(password);
+	ret->setLocale(locale);
 	ret->update();
 
 	MPA_LOG_TRIVIAL(info,"User added, id=" + (* ret).id.value());
@@ -367,4 +372,9 @@ bool MPA::isAdminRegistered() const
 void MPA::registerAdmin()
 {
 	adminRegistered = true;
+}
+
+ResourceBundle & MPA::getResourceBundle()
+{
+	return * resourceBundle;
 }

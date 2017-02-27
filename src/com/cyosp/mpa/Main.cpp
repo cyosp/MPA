@@ -69,6 +69,7 @@ int main(int argc, char * const *argv)
 		/*if( argc == 5 )			mpa->initDatabase( dbFilePath , adminLogin );
 		else if( argc == 4 )	*/mpa->initDatabase( dbFilePath );
 		mpa->initWWWFilePath( wwwFilePath );
+		mpa->initI18n( wwwFilePath + "/" + "i18n" );
 
 		canContinue = true;
 	}
