@@ -24,13 +24,13 @@ namespace mpa_api_rest_v1
 			// Token value
 			string value;
 			//
-			mpapo::User * user;
+			string userLogin;
 
 
 		public:
-			Token( mpapo::User & user );
+			Token( string userLogin );
 			string & getValue();
-			mpapo::User & getUser();
+			string & getUserLogin();
 
 	};
 

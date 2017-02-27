@@ -10,7 +10,7 @@
 namespace mpa_api_rest_v1
 {
 
-Token::Token( mpapo::User & user )
+Token::Token( string userLogin )
 {
 	// Define created time
 	time( & created );
@@ -24,7 +24,7 @@ Token::Token( mpapo::User & user )
 	value = strm.str();
 
 	// Store user
-	this->user = & user;
+	this->userLogin = userLogin;
 }
 
 string & Token::getValue()
@@ -32,9 +32,9 @@ string & Token::getValue()
 	return value;
 }
 
-mpapo::User & Token::getUser()
+string & Token::getUserLogin()
 {
-	return * user;
+	return userLogin;
 }
 
 } /* namespace mpa */

@@ -23,7 +23,7 @@ MPAOFactory * MPAOFactory::getInstance()
 
 MPAOFactory::MPAOFactory()
 {
-	tokenList = new map<string, Token>();
+	//tokenList = new map<string, Token>();
 }
 
 // Return NULL if URL is bad
@@ -33,6 +33,7 @@ MPAOFactory::MPAOFactory()
 //	/mpa/res/accounts/10
 //	/mpa/res/accounts/10/categories
 //	/mpa/res/infos
+//	/mpa/res/locales
 // POST
 //	/mpa/res/login
 //	/mpa/res/users/add
@@ -166,6 +167,7 @@ mpa_api_rest_v1::MPAO * MPAOFactory::getMPAO(HttpRequestType requestType, const 
 			else if( lastIdentifier == "accounts" )		ret = new mpa_api_rest_v1::Account( requestType , actionType, argvals , urlPairs );
 			else if ( lastIdentifier == "users" )		ret = new mpa_api_rest_v1::User( requestType , actionType , argvals , urlPairs );
 			else if ( lastIdentifier == "infos" )		ret = new mpa_api_rest_v1::Info( requestType , actionType , argvals , urlPairs );
+			else if ( lastIdentifier == "locales" )		ret = new mpa_api_rest_v1::Locale( requestType , actionType , argvals , urlPairs );
 			else if ( lastIdentifier == "categories" )	ret = new mpa_api_rest_v1::Category( requestType , actionType , argvals , urlPairs );
 			else if ( lastIdentifier == "providers" )	ret = new mpa_api_rest_v1::Provider( requestType , actionType , argvals , urlPairs );
 			else if ( lastIdentifier == "operations" )	ret = new mpa_api_rest_v1::Operation( requestType , actionType , argvals , urlPairs );
@@ -178,9 +180,9 @@ mpa_api_rest_v1::MPAO * MPAOFactory::getMPAO(HttpRequestType requestType, const 
 	return ret;
 }
 
-map<string, Token> & MPAOFactory::getTokenList()
+map<string, string> & MPAOFactory::getTokenList()
 {
-	return * tokenList;
+	return tokenList;
 }
 
 } /* namespace mpa */
