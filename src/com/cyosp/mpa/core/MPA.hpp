@@ -36,11 +36,12 @@ using std::ofstream;
 // Can be used if needed: __FUNCTION__ => give method name
 
 // Define messages code
-static const int MSG_OK = 0;
 static const int MSG_DEL_IMPOSSIBLE_OPERATIONS = 22;
 static const int MSG_DEL_IMPOSSIBLE_PROVIDERS = 23;
 static const int MSG_DEL_IMPOSSIBLE_CATEGORIES = 24;
 static const int MSG_NO_SYSTEM_ACCOUNT = 25;
+
+static const string ACCOUNT_SAME_NAME_ALREADY_EXIST = "An account with same name already exist";
 
 class MPA
 {

@@ -1,4 +1,9 @@
+; URL
 "There are missing parameters" "There are missing parameters"
+; Password
 "Passwords don't match" "Passwords don't match"
+; Token
 "Token argument no found" "Token argument no found"
 "Invalid token" "Invalid token"
+; Account
+"An account with same name already exist" "An account with same name already exist"

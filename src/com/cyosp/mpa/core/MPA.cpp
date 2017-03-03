@@ -289,11 +289,6 @@ string MPA::getErrMsg(int code)
 
 	switch (code)
 	{
-	case MSG_OK: ret = "Ok";
-			break;
-
-	case 1: ret = "Un compte avec le même nom existe déjà";
-		break;
 	case 2: ret = "Le compte n'existe pas";
 		break;
 	// System case => message in English

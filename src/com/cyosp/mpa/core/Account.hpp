@@ -10,6 +10,7 @@
 
 #include "com/cyosp/mpa/core/Category.hpp"
 #include "com/cyosp/mpa/core/MPA.hpp"
+#include "com/cyosp/mpa/exception/MsgNotTranslated.hpp"
 
 namespace mpa
 {
