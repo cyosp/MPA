@@ -56,9 +56,9 @@ bool User::arePostAddParametersOk()
 		{
 			ret = true;
 		}
-		else	badParamsMsg = MPA::getInstance()->getResourceBundle().translate( "Passwords don't match" , locale );
+		else	badParamsMsg = MPA::getInstance()->getResourceBundle().translate( PASSWORDS_DONT_MATCH , locale );
 	}
-	else	badParamsMsg = MPA::getInstance()->getResourceBundle().translate( "There are missing parameters" , locale );
+	else	badParamsMsg = MPA::getInstance()->getResourceBundle().translate( THERE_ARE_MISSING_PARAMETERS , locale );
 
 	MPA_LOG_TRIVIAL( info , "End User::arePostAddParametersOk: " + StrUtil::bool2string( ret ) );
 

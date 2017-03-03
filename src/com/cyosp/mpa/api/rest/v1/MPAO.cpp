@@ -50,9 +50,9 @@ bool MPAO::isValidAccess()
 				login = it->second;
 				ret = true;
 			}
-			else badParamsMsg = MPA::getInstance()->getResourceBundle().translate( "Invalid token" , MPA::DEFAULT_LOCALE );
+			else badParamsMsg = MPA::getInstance()->getResourceBundle().translate( INVALID_TOKEN , MPA::DEFAULT_LOCALE );
 		}
-		else badParamsMsg = MPA::getInstance()->getResourceBundle().translate( "Token argument no found" , MPA::DEFAULT_LOCALE );
+		else badParamsMsg = MPA::getInstance()->getResourceBundle().translate( TOKEN_ARGUMENT_NOT_FOUND , MPA::DEFAULT_LOCALE );
 	}
 	else ret = true;
 

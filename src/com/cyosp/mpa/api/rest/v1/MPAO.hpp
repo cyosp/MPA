@@ -27,6 +27,12 @@ using std::vector;
 enum HttpRequestType { GET, POST };
 enum ActionType { NONE, LOGIN, ADD, DELETE, UPDATE };
 
+static const string INVALID_TOKEN = "Invalid token";
+static const string TOKEN_ARGUMENT_NOT_FOUND = "Token argument not found";
+static const string THERE_ARE_MISSING_PARAMETERS = "There are missing parameters";
+static const string PASSWORDS_DONT_MATCH = "Passwords don't match";
+static const string BAD_IDENTIFIER = "Bad identifier";
+
 namespace mpa_api_rest_v1
 {
 

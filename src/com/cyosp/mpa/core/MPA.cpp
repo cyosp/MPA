@@ -289,8 +289,6 @@ string MPA::getErrMsg(int code)
 
 	switch (code)
 	{
-	case 6: ret = "Identifiant incorrect";
-				break;
 	case 7: ret = "Mot de passe incorrect";
 			break;
 	case 8: ret = "Les mots de passes ne correspondent pas";

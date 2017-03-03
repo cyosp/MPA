@@ -5,7 +5,7 @@
 ; Password
 "Passwords don't match" "Passwords don't match"
 ; Token
-"Token argument no found" "Token argument no found"
+"Token argument not found" "Token argument no found"
 "Invalid token" "Invalid token"
 ; Account
 "An account with same name already exist" "An account with same name already exist"

@@ -97,7 +97,7 @@ string Login::executePostLoginRequest(ptree & root)
 		{
 			MPA_LOG_TRIVIAL(trace,"User authentication fails due to login error");
 
-			ret = MPA::getErrMsg( 6 );
+			ret = BAD_IDENTIFIER;
 		}
 	}
 	else
