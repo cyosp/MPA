@@ -176,19 +176,6 @@ string User::executePostUpdateRequest(ptree & root)
 {
 	string ret = MPAO::DEFAULT_JSON_ID;
 
-	// Get user
-	mpapo::User user = MPA::getInstance()->getUser( login );
-
-	if( user.isAdmin )
-	{
-		//TODO
-		mpapo::Account account = mpa::Account::renameAccount( urlPairs[0].second , atoi( argvals.find("version")->second ) , argvals.find("name")->second );
-		ret = urlPairs[0].second ;
-
-		// Generate Json output
-		root.push_back(BoostHelper::make_pair("version", StrUtil::int2string( account.version ) ));
-	}
-
 	return ret;
 }
 
