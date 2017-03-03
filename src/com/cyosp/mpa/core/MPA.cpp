@@ -289,9 +289,6 @@ string MPA::getErrMsg(int code)
 
 	switch (code)
 	{
-	// System case => message in English
-	case 5: ret = "URL conversion failure";
-			break;
 	case 6: ret = "Identifiant incorrect";
 				break;
 	case 7: ret = "Mot de passe incorrect";

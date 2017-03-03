@@ -546,9 +546,7 @@ void HTTPHandler::getFactoryMPAObject(HttpRequestType requestType, const string&
 		}
 		else	id = mpao->getBadParamsMsg();
 	}
-	else id = MPA::getErrMsg(5);
-
-
+	else id = "URL conversion failure";
 
 	// Add id
 	root.push_front( BoostHelper::make_pair( "id", id ) );
