@@ -17,6 +17,7 @@
 #include "com/cyosp/mpa/po/MPAPO.hpp"
 #include "com/cyosp/helpers/StrUtil.hpp"
 #include "com/cyosp/i18n/ResourceBundle.hpp"
+#include "com/cyosp/mpa/exception/MsgNotTranslated.hpp"
 
 // no name collisions expected
 using namespace litesql;
@@ -42,6 +43,7 @@ static const int MSG_DEL_IMPOSSIBLE_CATEGORIES = 24;
 static const int MSG_NO_SYSTEM_ACCOUNT = 25;
 
 static const string ACCOUNT_SAME_NAME_ALREADY_EXIST = "An account with same name already exist";
+static const string ACCOUNT_DOESNT_EXIST = "Account doesn't exist";
 
 class MPA
 {

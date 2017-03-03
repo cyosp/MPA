@@ -7,3 +7,4 @@
 "Invalid token" "Jeton invalide"
 ; Account
 "An account with same name already exist" "Un compte avec le même nom existe déjà"
+"Account doesn't exist" "Le compte n'existe pas"

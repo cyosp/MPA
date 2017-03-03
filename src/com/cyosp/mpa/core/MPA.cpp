@@ -273,7 +273,7 @@ bool MPA::delUser(int id , int version )
 	}
 	catch (NotFound & e)
 	{
-		throw getErrMsg( 2 );
+		throw mpa_exception::MsgNotTranslated( ACCOUNT_DOESNT_EXIST );
 	}
 
 	return ret;

@@ -89,7 +89,7 @@ void Provider::remove( int accountId , int providerId , int version )
 	}
 	catch (NotFound & e)
 	{
-		throw MPA::getErrMsg( 2 );
+		throw mpa_exception::MsgNotTranslated( ACCOUNT_DOESNT_EXIST );
 	}
 }
 
@@ -117,7 +117,7 @@ mpapo::Provider Provider::rename( int accountId , int providerId, int providerVe
 	}
 	catch (NotFound & e)
 	{
-		throw MPA::getErrMsg( 2 );
+		throw mpa_exception::MsgNotTranslated( ACCOUNT_DOESNT_EXIST );
 	}
 }
 

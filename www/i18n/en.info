@@ -7,3 +7,4 @@
 "Invalid token" "Invalid token"
 ; Account
 "An account with same name already exist" "An account with same name already exist"
+"Account doesn't exist" "Account doesn't exist"

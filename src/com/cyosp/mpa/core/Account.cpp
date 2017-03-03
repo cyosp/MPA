@@ -84,7 +84,7 @@ bool Account::delAccount(int id , int version )
 	}
 	catch (NotFound & e)
 	{
-		throw MPA::getErrMsg( 2 );
+		throw mpa_exception::MsgNotTranslated( ACCOUNT_DOESNT_EXIST );
 	}
 
 	return ret;
@@ -121,7 +121,7 @@ mpapo::Account Account::renameAccount( int accountId , int accountVersionToRenam
 	}
 	catch (NotFound & e)
 	{
-		throw MPA::getErrMsg( 2 );
+		throw mpa_exception::MsgNotTranslated( ACCOUNT_DOESNT_EXIST );
 	}
 }
 

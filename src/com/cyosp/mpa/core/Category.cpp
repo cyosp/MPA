@@ -89,7 +89,7 @@ void Category::remove( int accountId , int categoryId , int version )
 	}
 	catch (NotFound & e)
 	{
-		throw MPA::getErrMsg( 2 );
+		throw mpa_exception::MsgNotTranslated( ACCOUNT_DOESNT_EXIST );
 	}
 }
 
@@ -117,7 +117,7 @@ mpapo::Category Category::rename( int accountId , int categoryId, int categoryVe
 	}
 	catch (NotFound & e)
 	{
-		throw MPA::getErrMsg( 2 );
+		throw mpa_exception::MsgNotTranslated( ACCOUNT_DOESNT_EXIST );
 	}
 }
 
