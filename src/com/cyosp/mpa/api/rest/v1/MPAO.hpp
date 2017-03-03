@@ -73,6 +73,8 @@ public:
 
 	string executeRequest(ptree & root);
 
+	string & getLogin();
+
 	virtual ~MPAO();
 };
 

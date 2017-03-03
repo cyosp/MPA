@@ -170,6 +170,11 @@ string MPAO::executeRequest(ptree & root)
 	return ret;
 }
 
+string & MPAO::getLogin()
+{
+	return login;
+}
+
 MPAO::~MPAO()
 {
 }
