@@ -269,7 +269,7 @@ bool MPA::delUser(int id , int version )
 			}
 			else  throw getErrMsg( 13 );
 		}
-		else throw getErrMsg( 4 );
+		else throw mpa_exception::MsgNotTranslated( OPERATION_IMPOSSIBLE_BECAUSE_DATA_HAVE_CHANGED );
 	}
 	catch (NotFound & e)
 	{
@@ -289,8 +289,6 @@ string MPA::getErrMsg(int code)
 
 	switch (code)
 	{
-	case 4: ret = "Opération impossible car les données ont changé depuis leur récupération";
-		break;
 	// System case => message in English
 	case 5: ret = "URL conversion failure";
 			break;

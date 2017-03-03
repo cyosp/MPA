@@ -85,7 +85,7 @@ void Provider::remove( int accountId , int providerId , int version )
 			provider.del();
 			MPA::getInstance()->getMPAPO().commit();
 		}
-		else throw MPA::getErrMsg( 4 );
+		else throw mpa_exception::MsgNotTranslated( OPERATION_IMPOSSIBLE_BECAUSE_DATA_HAVE_CHANGED );
 	}
 	catch (NotFound & e)
 	{
@@ -113,7 +113,7 @@ mpapo::Provider Provider::rename( int accountId , int providerId, int providerVe
 			// Return is here because there is no empty constructor for mpapo::Provider::Provider()
 			return provider;
 		}
-		else throw MPA::getErrMsg( 4 );
+		else throw mpa_exception::MsgNotTranslated( OPERATION_IMPOSSIBLE_BECAUSE_DATA_HAVE_CHANGED );
 	}
 	catch (NotFound & e)
 	{

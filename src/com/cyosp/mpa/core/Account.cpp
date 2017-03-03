@@ -80,7 +80,7 @@ bool Account::delAccount(int id , int version )
 			accountToDel.del();
 			MPA::getInstance()->getMPAPO().commit();
 		}
-		else throw MPA::getErrMsg( 4 );
+		else throw mpa_exception::MsgNotTranslated( OPERATION_IMPOSSIBLE_BECAUSE_DATA_HAVE_CHANGED );
 	}
 	catch (NotFound & e)
 	{
@@ -117,7 +117,7 @@ mpapo::Account Account::renameAccount( int accountId , int accountVersionToRenam
 			// Return is here because there is no empty constructor for mpapo::Account::Account()
 			return account;
 		}
-		else throw MPA::getErrMsg( 4 );
+		else throw mpa_exception::MsgNotTranslated( OPERATION_IMPOSSIBLE_BECAUSE_DATA_HAVE_CHANGED );
 	}
 	catch (NotFound & e)
 	{

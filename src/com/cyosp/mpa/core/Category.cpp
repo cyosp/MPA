@@ -85,7 +85,7 @@ void Category::remove( int accountId , int categoryId , int version )
 			category.del();
 			MPA::getInstance()->getMPAPO().commit();
 		}
-		else throw MPA::getErrMsg( 4 );
+		else throw mpa_exception::MsgNotTranslated( OPERATION_IMPOSSIBLE_BECAUSE_DATA_HAVE_CHANGED );
 	}
 	catch (NotFound & e)
 	{
@@ -113,7 +113,7 @@ mpapo::Category Category::rename( int accountId , int categoryId, int categoryVe
 			// Return is here because there is no empty constructor for mpapo::Category::Category()
 			return category;
 		}
-		else throw MPA::getErrMsg( 4 );
+		else throw mpa_exception::MsgNotTranslated( OPERATION_IMPOSSIBLE_BECAUSE_DATA_HAVE_CHANGED );
 	}
 	catch (NotFound & e)
 	{
