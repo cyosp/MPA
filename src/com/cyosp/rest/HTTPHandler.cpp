@@ -1,5 +1,8 @@
 #include "com/cyosp/rest/HTTPHandler.hpp"
 
+#include "com/cyosp/mpa/exception/MsgNotTranslated.hpp"
+#include "com/cyosp/i18n/ResourceBundle.hpp"
+
 int HTTPHandler::shouldNotExit = 1;
 
 // Manage SIGTERM
@@ -532,9 +535,13 @@ void HTTPHandler::getFactoryMPAObject(HttpRequestType requestType, const string&
 				MPA_LOG_TRIVIAL(trace,requestType + " mpao->executeRequest( root )");
 				id = mpao->executeRequest( root );
 			}
-			catch (string & e)
+			catch(mpa_exception::MsgNotTranslated & e1)
 			{
-				id = e;
+				id = MPA::getInstance()->getResourceBundle().translate( e1.what() , MPA::getInstance()->getUser( mpao->getLogin() ).locale );
+			}
+			catch(string & e2)
+			{
+				id = e2;
 			}
 		}
 		else	id = mpao->getBadParamsMsg();
