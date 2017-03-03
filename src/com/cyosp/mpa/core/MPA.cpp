@@ -289,11 +289,6 @@ string MPA::getErrMsg(int code)
 
 	switch (code)
 	{
-	case 2: ret = "Le compte n'existe pas";
-		break;
-	// System case => message in English
-	case 3: ret = "Missing parameters";
-		break;
 	case 4: ret = "Opération impossible car les données ont changé depuis leur récupération";
 		break;
 	// System case => message in English
