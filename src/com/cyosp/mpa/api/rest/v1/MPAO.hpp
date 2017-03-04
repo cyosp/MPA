@@ -33,6 +33,7 @@ static const string THERE_ARE_MISSING_PARAMETERS = "There are missing parameters
 static const string PASSWORDS_DONT_MATCH = "Passwords don't match";
 static const string BAD_IDENTIFIER = "Bad identifier";
 static const string BAD_PASSWORD = "Bad password";
+static const string PASSWORD_SECURITY_TOO_LOW = "Password security is too low";
 
 namespace mpa_api_rest_v1
 {

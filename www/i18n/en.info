@@ -4,6 +4,7 @@
 "There are missing parameters" "There are missing parameters"
 ; Password
 "Passwords don't match" "Passwords don't match"
+"Password security is too low" "Password security is too low. It must respect: size >= %s, uppercase letter(s) >= %s, digit(s) >= %s"
 ; Login
 "Bad password" "Bad password"
 ; Token

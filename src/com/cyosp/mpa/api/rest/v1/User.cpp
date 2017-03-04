@@ -148,7 +148,16 @@ string User::executePostAddRequest(ptree & root)
 				// Generate Json output
 				root.push_back(BoostHelper::make_pair("version", user.version ));
 			}
-			else ret = MPA::getErrMsg(9);
+			else
+			{
+				// Translate string
+				ret = MPA::getInstance()->getResourceBundle().translate( PASSWORD_SECURITY_TOO_LOW , locale );
+
+				// Inject integer values
+				char stemp[512] = "";
+				snprintf(stemp, 512, ret.c_str(), StrUtil::int2string( MPA::PWD_SECURITY_MIN_SIZE ).c_str() , StrUtil::int2string( MPA::PWD_SECURITY_UPPER_CASE_NBR ).c_str() , StrUtil::int2string( MPA::PWD_SECURITY_DIGIT_NBR ).c_str() );
+				ret = stemp;
+			}
 		}
 		else	ret = MPA::getErrMsg(10);
 	}

@@ -4,6 +4,7 @@
 "There are missing parameters" "Il manque des paramètres"
 ; Password
 "Passwords don't match" "Les mots de passe ne correspondent pas"
+"Password security is too low" "La sécurité du mot de passe est trop failble. Il doit respecter les critères suivants : taille >= %s, majuscule(s) >= %s, chiffre(s) >= %s"
 ; Login
 "Bad password" "Mot de passe incorrect"
 ; Token
