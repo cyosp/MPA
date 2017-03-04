@@ -34,6 +34,7 @@ static const string PASSWORDS_DONT_MATCH = "Passwords don't match";
 static const string BAD_IDENTIFIER = "Bad identifier";
 static const string BAD_PASSWORD = "Bad password";
 static const string PASSWORD_SECURITY_TOO_LOW = "Password security is too low";
+static const string USER_ALREADY_EXISTS = "User already exists";
 
 namespace mpa_api_rest_v1
 {

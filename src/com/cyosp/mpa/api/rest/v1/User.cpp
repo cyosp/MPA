@@ -159,7 +159,7 @@ string User::executePostAddRequest(ptree & root)
 				ret = stemp;
 			}
 		}
-		else	ret = MPA::getErrMsg(10);
+		else	ret = MPA::getInstance()->getResourceBundle().translate( USER_ALREADY_EXISTS , locale );
 	}
 
 	return ret;

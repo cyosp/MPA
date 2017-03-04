@@ -10,6 +10,8 @@
 ; Token
 "Token argument not found" "Token argument no found"
 "Invalid token" "Invalid token"
+; User
+"User already exists" "User already exists"
 ; Account
 "An account with same name already exist" "An account with same name already exist"
 "Account doesn't exist" "Account doesn't exist"

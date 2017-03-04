@@ -10,6 +10,8 @@
 ; Token
 "Token argument not found" "L'argument 'token' n'a pas été trouvé"
 "Invalid token" "Jeton invalide"
+; User
+"User already exists" "L'utilisateur existe déjà"
 ; Account
 "An account with same name already exist" "Un compte avec le même nom existe déjà"
 "Account doesn't exist" "Le compte n'existe pas"

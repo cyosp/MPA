@@ -289,8 +289,6 @@ string MPA::getErrMsg(int code)
 
 	switch (code)
 	{
-	case 10: ret = "L'utilisateur existe déjà";
-				break;
 	case 11: ret = "Le compte utilisateur est bloqué";
 				break;
 	case 13: ret = "L'utilisateur administrateur ne peut pas être supprimé";
