@@ -93,7 +93,7 @@ string Login::executePostLoginRequest(ptree & root)
 				// TODO : Message for fail2ban or same program using remote IP
 				MPA_LOG_TRIVIAL(error,"Account: " + user.login + " blocked" );
 
-				ret = MPA::getErrMsg( 11 );
+				ret = MPA::getInstance()->getResourceBundle().translate( USER_ACCOUNT_BLOCKED , locale );
 			}
 		}
 		catch (NotFound & e)
