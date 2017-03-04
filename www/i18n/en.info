@@ -4,6 +4,8 @@
 "There are missing parameters" "There are missing parameters"
 ; Password
 "Passwords don't match" "Passwords don't match"
+; Login
+"Bad password" "Bad password"
 ; Token
 "Token argument not found" "Token argument no found"
 "Invalid token" "Invalid token"

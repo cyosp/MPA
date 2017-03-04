@@ -50,6 +50,9 @@ string Login::executePostLoginRequest(ptree & root)
 	string login = argvals.find("login")->second;
 	string pwd   = argvals.find("pwd")->second;
 
+	string locale = MPA::DEFAULT_LOCALE;
+	if( argvals.find("locale") != argvals.end() )	locale = argvals.find("locale")->second;
+
 	// There is an administrator user defined
 	if( MPA::getInstance()->isAdminRegistered() )
 	{
@@ -82,7 +85,7 @@ string Login::executePostLoginRequest(ptree & root)
 					user.addPwdErr();
 					user.update();
 
-					ret = MPA::getErrMsg( 7 );
+					ret = MPA::getInstance()->getResourceBundle().translate( BAD_PASSWORD , locale );
 				}
 			}
 			else

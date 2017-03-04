@@ -32,6 +32,7 @@ static const string TOKEN_ARGUMENT_NOT_FOUND = "Token argument not found";
 static const string THERE_ARE_MISSING_PARAMETERS = "There are missing parameters";
 static const string PASSWORDS_DONT_MATCH = "Passwords don't match";
 static const string BAD_IDENTIFIER = "Bad identifier";
+static const string BAD_PASSWORD = "Bad password";
 
 namespace mpa_api_rest_v1
 {
