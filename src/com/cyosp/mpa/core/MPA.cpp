@@ -289,15 +289,11 @@ string MPA::getErrMsg(int code)
 
 	switch (code)
 	{
-	case 8: ret = "Les mots de passes ne correspondent pas";
-			break;
 	case 9: ret = "La sécurité du mot de passe est trop failble. Il doit respecter les critères suivants: taille >=" + StrUtil::int2string( MPA::PWD_SECURITY_MIN_SIZE ) + ", majuscule(s) >=" + StrUtil::int2string( MPA::PWD_SECURITY_UPPER_CASE_NBR ) + ", chiffre(s) >=" + StrUtil::int2string( MPA::PWD_SECURITY_DIGIT_NBR );
 				break;
 	case 10: ret = "L'utilisateur existe déjà";
 				break;
 	case 11: ret = "Le compte utilisateur est bloqué";
-				break;
-	case 12: ret = "L'utilisateur n'existe pas";
 				break;
 	case 13: ret = "L'utilisateur administrateur ne peut pas être supprimé";
 				break;
