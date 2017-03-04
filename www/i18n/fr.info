@@ -13,6 +13,7 @@
 ; User
 "User already exists" "L'utilisateur existe déjà"
 "User account is blocked" "Le compte utilisateur est bloqué"
+"Administrator user cannot be deleted" "L'utilisateur administrateur ne peut pas être supprimé"
 ; Account
 "An account with same name already exist" "Un compte avec le même nom existe déjà"
 "Account doesn't exist" "Le compte n'existe pas"

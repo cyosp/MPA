@@ -267,7 +267,7 @@ bool MPA::delUser(int id , int version )
 				userToDel.del();
 				getMPAPO().commit();
 			}
-			else  throw getErrMsg( 13 );
+			else  throw mpa_exception::MsgNotTranslated( ADMINISTRATOR_USER_CANNOT_BE_CHANGED );
 		}
 		else throw mpa_exception::MsgNotTranslated( OPERATION_IMPOSSIBLE_BECAUSE_DATA_HAVE_CHANGED );
 	}
@@ -289,8 +289,6 @@ string MPA::getErrMsg(int code)
 
 	switch (code)
 	{
-	case 13: ret = "L'utilisateur administrateur ne peut pas être supprimé";
-				break;
 	case 20: ret = "Une category avec le même nom existe déjà";
 			break;
 	// System case => message in English

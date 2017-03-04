@@ -45,6 +45,7 @@ static const int MSG_NO_SYSTEM_ACCOUNT = 25;
 static const string ACCOUNT_SAME_NAME_ALREADY_EXIST = "An account with same name already exist";
 static const string ACCOUNT_DOESNT_EXIST = "Account doesn't exist";
 static const string OPERATION_IMPOSSIBLE_BECAUSE_DATA_HAVE_CHANGED = "Operation impossible because data have changed since recovery";
+static const string ADMINISTRATOR_USER_CANNOT_BE_CHANGED = "Administrator user cannot be deleted";
 //mpa_exception::MsgNotTranslated( BAD_IDENTIFIER );
 //string locale = MPA::DEFAULT_LOCALE;
 //if( MPA::getInstance()->isAdminRegistered()  )	locale = MPA::getInstance()->getUser( login ).locale;
