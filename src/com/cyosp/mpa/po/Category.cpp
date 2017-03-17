@@ -21,7 +21,7 @@ void Category::setName( int accountId, string name )
 	//MPA_LOG_TRIVIAL(trace,"setName2");
 
 	if (categoryId == 0)	this->name = name;
-	else	throw MPA::getErrMsg( 20 );
+	else	throw mpa_exception::MsgNotTranslated( CATEGORY_SAME_NAME_ALREADY_EXIST );
 }
 
 void Category::setAmount( float amount )

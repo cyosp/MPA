@@ -289,8 +289,6 @@ string MPA::getErrMsg(int code)
 
 	switch (code)
 	{
-	case 20: ret = "Une category avec le même nom existe déjà";
-			break;
 	// System case => message in English
 	case 21: ret = "Bad URL";
 		break;
