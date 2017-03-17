@@ -172,7 +172,7 @@ mpa_api_rest_v1::MPAO * MPAOFactory::getMPAO(HttpRequestType requestType, const 
 			else if ( lastIdentifier == "providers" )	ret = new mpa_api_rest_v1::Provider( requestType , actionType , argvals , urlPairs );
 			else if ( lastIdentifier == "operations" )	ret = new mpa_api_rest_v1::Operation( requestType , actionType , argvals , urlPairs );
 		}
-		else	MPA_LOG_TRIVIAL(info, MPA::getErrMsg( 21 ) );
+		else	MPA_LOG_TRIVIAL(info, "Bad URL" );
 	}
 	else
 		MPA_LOG_TRIVIAL(trace, "Doesn't match with POST start URL");

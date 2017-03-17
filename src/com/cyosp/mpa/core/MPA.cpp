@@ -289,8 +289,6 @@ string MPA::getErrMsg(int code)
 
 	switch (code)
 	{
-	// System case => message in English
-	case 21: ret = "Bad URL";
 		break;
 	case MSG_DEL_IMPOSSIBLE_OPERATIONS: ret = "Suppression impossible car il existe encore des opérations";
 		break;
