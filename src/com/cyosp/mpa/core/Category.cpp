@@ -78,7 +78,7 @@ void Category::remove( int accountId , int categoryId , int version )
 		{
 			//MPA_LOG_TRIVIAL(trace,"Not found");
 
-			if( category.subOperations().get().all().size() > 0 ) throw MPA::getErrMsg( MSG_DEL_IMPOSSIBLE_OPERATIONS );
+			if( category.subOperations().get().all().size() > 0 ) throw mpa_exception::MsgNotTranslated( IMPOSSIBLE_REMOVE_THERE_ARE_AGAIN_OPERATIONS );
 
 			MPA::getInstance()->getMPAPO().begin();
 			mpa::Account::getAccount( accountId ).categories().unlink( category );

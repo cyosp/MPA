@@ -1,5 +1,6 @@
 ; Common
 "Operation impossible because data have changed since recovery" "Operation impossible because data have changed since recovery"
+"Impossible to remove because there are again some operations" "Impossible to remove because there are again some operations"
 ; URL
 "There are missing parameters" "There are missing parameters"
 ; Password

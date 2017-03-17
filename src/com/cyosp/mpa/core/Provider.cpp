@@ -78,7 +78,7 @@ void Provider::remove( int accountId , int providerId , int version )
 		{
 			//MPA_LOG_TRIVIAL(trace,"Not found");
 
-			if( provider.operations().get().all().size() > 0 ) throw MPA::getErrMsg( MSG_DEL_IMPOSSIBLE_OPERATIONS );
+			if( provider.operations().get().all().size() > 0 ) throw mpa_exception::MsgNotTranslated( IMPOSSIBLE_REMOVE_THERE_ARE_AGAIN_OPERATIONS );
 
 			MPA::getInstance()->getMPAPO().begin();
 			Account::getAccount( accountId ).providers().unlink( provider );

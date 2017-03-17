@@ -290,8 +290,6 @@ string MPA::getErrMsg(int code)
 	switch (code)
 	{
 		break;
-	case MSG_DEL_IMPOSSIBLE_OPERATIONS: ret = "Suppression impossible car il existe encore des opérations";
-		break;
 	case MSG_DEL_IMPOSSIBLE_PROVIDERS: ret = "Suppression impossible car il existe encore des tiers";
 		break;
 	case MSG_DEL_IMPOSSIBLE_CATEGORIES: ret = "Suppression impossible car il existe encore des categories";

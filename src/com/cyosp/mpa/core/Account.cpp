@@ -72,7 +72,7 @@ bool Account::delAccount(int id , int version )
 		{
 			MPA_LOG_TRIVIAL(trace,"Account found");
 
-			if( accountToDel.operations().get().all().size() > 0 ) throw MPA::getErrMsg( MSG_DEL_IMPOSSIBLE_OPERATIONS );
+			if( accountToDel.operations().get().all().size() > 0 ) throw mpa_exception::MsgNotTranslated( IMPOSSIBLE_REMOVE_THERE_ARE_AGAIN_OPERATIONS );
 			if( accountToDel.providers().get().all().size() > 0 ) throw MPA::getErrMsg( MSG_DEL_IMPOSSIBLE_PROVIDERS );
 			if( accountToDel.categories().get().all().size() > 0 ) throw MPA::getErrMsg( MSG_DEL_IMPOSSIBLE_CATEGORIES );
 
