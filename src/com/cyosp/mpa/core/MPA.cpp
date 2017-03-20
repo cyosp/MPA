@@ -289,9 +289,6 @@ string MPA::getErrMsg(int code)
 
 	switch (code)
 	{
-		break;
-	case MSG_DEL_IMPOSSIBLE_CATEGORIES: ret = "Suppression impossible car il existe encore des categories";
-		break;
 	case MSG_NO_SYSTEM_ACCOUNT: ret = "Administrator account is not defined";
 		break;
 

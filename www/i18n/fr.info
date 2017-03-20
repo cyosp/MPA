@@ -2,6 +2,7 @@
 "Operation impossible because data have changed since recovery" "Opération impossible car les données ont changé depuis leur récupération"
 "Impossible to remove because there are again some operations" "Suppression impossible car il existe encore des opérations"
 "Impossible to remove because there are again some providers" "Suppression impossible car il existe encore des tiers"
+"Impossible to remove because there are again some categories" "Suppression impossible car il existe encore des categories"
 ; URL
 "There are missing parameters" "Il manque des paramètres"
 ; Password
