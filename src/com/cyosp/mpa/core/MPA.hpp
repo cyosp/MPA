@@ -48,6 +48,7 @@ static const string OPERATION_IMPOSSIBLE_BECAUSE_DATA_HAVE_CHANGED = "Operation 
 static const string ADMINISTRATOR_USER_CANNOT_BE_CHANGED = "Administrator user cannot be deleted";
 static const string CATEGORY_SAME_NAME_ALREADY_EXIST = "A category with same name already exist";
 static const string IMPOSSIBLE_REMOVE_THERE_ARE_AGAIN_OPERATIONS = "Impossible to remove because there are again some operations";
+static const string IMPOSSIBLE_REMOVE_THERE_ARE_AGAIN_PROVIDERS = "Impossible to remove because there are again some providers";
 //mpa_exception::MsgNotTranslated( IMPOSSIBLE_REMOVE_THERE_ARE_AGAIN_OPERATIONS );
 //string locale = MPA::DEFAULT_LOCALE;
 //if( MPA::getInstance()->isAdminRegistered()  )	locale = MPA::getInstance()->getUser( login ).locale;
