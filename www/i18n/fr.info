@@ -10,6 +10,7 @@
 "Password security is too low" "La sécurité du mot de passe est trop failble. Il doit respecter les critères suivants : taille >= %s, majuscule(s) >= %s, chiffre(s) >= %s"
 ; Login
 "Bad password" "Mot de passe incorrect"
+"Administrator account is not defined" "Le compte administrateur n'est pas défini"
 ; Token
 "Token argument not found" "L'argument 'token' n'a pas été trouvé"
 "Invalid token" "Jeton invalide"

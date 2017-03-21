@@ -10,6 +10,7 @@
 "Password security is too low" "Password security is too low. It must respect: size >= %s, uppercase letter(s) >= %s, digit(s) >= %s"
 ; Login
 "Bad password" "Bad password"
+"Administrator account is not defined" "Administrator account is not defined"
 ; Token
 "Token argument not found" "Token argument no found"
 "Invalid token" "Invalid token"

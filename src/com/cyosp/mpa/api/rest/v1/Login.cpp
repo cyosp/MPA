@@ -105,9 +105,9 @@ string Login::executePostLoginRequest(ptree & root)
 	}
 	else
 	{
-		MPA_LOG_TRIVIAL(trace, "Administrator account is not defined" );
+		MPA_LOG_TRIVIAL(trace, ADMIN_ACCOUNT_NOT_DEFINED );
 
-		ret = MPA::getErrMsg( MSG_NO_SYSTEM_ACCOUNT );
+		ret = MPA::getInstance()->getResourceBundle().translate( ADMIN_ACCOUNT_NOT_DEFINED , locale );
 	}
 
 	return ret;

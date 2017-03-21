@@ -36,6 +36,7 @@ static const string BAD_PASSWORD = "Bad password";
 static const string PASSWORD_SECURITY_TOO_LOW = "Password security is too low";
 static const string USER_ALREADY_EXISTS = "User already exists";
 static const string USER_ACCOUNT_BLOCKED = "User account is blocked";
+static const string ADMIN_ACCOUNT_NOT_DEFINED = "Administrator account is not defined";
 
 namespace mpa_api_rest_v1
 {

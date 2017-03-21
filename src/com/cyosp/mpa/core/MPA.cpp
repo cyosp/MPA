@@ -289,9 +289,6 @@ string MPA::getErrMsg(int code)
 
 	switch (code)
 	{
-	case MSG_NO_SYSTEM_ACCOUNT: ret = "Administrator account is not defined";
-		break;
-
 	default:
 		break;
 	}
