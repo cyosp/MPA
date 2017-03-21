@@ -282,20 +282,6 @@ bool MPA::delUser(int id , int version )
 //	mpapo::Object a =new mpapo::Object(getMPAPO() );
 //a.getNextObject();
 
-
-string MPA::getErrMsg(int code)
-{
-	string ret = "";
-
-	switch (code)
-	{
-	default:
-		break;
-	}
-
-	return ret;
-}
-
 bool MPA::isSecurePwd( const string pwd )
 {
 	bool ret = false;

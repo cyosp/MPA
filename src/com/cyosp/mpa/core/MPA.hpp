@@ -109,9 +109,6 @@ class MPA
 		// Add a user
 		mpapo::User & addUser(bool isAdmin, string login , string password, string locale);
 
-
-		static string getErrMsg(int code);
-
 		static bool isSecurePwd( const string pwd );
 
 		bool isAdminRegistered() const;
