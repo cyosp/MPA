@@ -257,14 +257,9 @@ bool MPA::delUser(int id , int version )
 		{
 			MPA_LOG_TRIVIAL(trace,"User found");
 
-			// Only non admin users can be deleted
-			if( ! userToDel.isAdmin )
-			{
-				getMPAPO().begin();
-				userToDel.del();
-				getMPAPO().commit();
-			}
-			else  throw mpa_exception::MsgNotTranslated( ADMINISTRATOR_USER_CANNOT_BE_CHANGED );
+			getMPAPO().begin();
+			userToDel.del();
+			getMPAPO().commit();
 		}
 		else throw mpa_exception::MsgNotTranslated( OPERATION_IMPOSSIBLE_BECAUSE_DATA_HAVE_CHANGED );
 	}

@@ -1,3 +1,5 @@
+// 2017-04-21 V 1.8.0
+// - Remove: Administrator account at the end of test
 // 2017-04-16 V 1.7.0
 // - Add: Create a category
 // 2017-02-23 V 1.6.0
@@ -30,6 +32,8 @@ chai.use( require('chai-json-schema') );
 var host = "http://localhost:8080";
 var adminLogin = "cyosp";
 var adminPwd = "CYOSP1";
+var userAdminId = null;
+var adminVersion = null;
 var adminToken = null;
 var defaultLocale = "";
 
@@ -222,7 +226,7 @@ describe( "MPA API" , function()
 			// Check administrator user id is a number
 			expect( userAdminData.id , 'identifier is not a number' ).to.be.not.NaN;
 			
-			var userAdminId = parseInt( userAdminData.id );
+			userAdminId = parseInt( userAdminData.id );
 			
 			// Check administrator user is a positive number
 			expect( Math.abs( userAdminId ) ).to.be.equal( userAdminId );
@@ -235,8 +239,10 @@ describe( "MPA API" , function()
 			// Check JSON contains version property
 			assert.property( userAdminData , 'version' );
 			
+			adminVersion = userAdminData.version;
+			
 			// Check version is equal to 0
-			expect( userAdminData.version , 'version is not equal to 0' ).to.be.equal( "0" );
+			expect( adminVersion , 'version is not equal to 0' ).to.be.equal( "0" );
 			
 			// End test
 			done();
@@ -584,6 +590,50 @@ describe( "MPA API" , function()
 			userId = userData.id;
 			
 			expect( userId , 'execution code is not equal to 0' ).to.be.equal( "0" );
+			
+			// End test
+			done();
+		});
+	});
+	
+	describe( "Delete administrator" , function()
+	{
+		var adminData = null;
+		
+		it( "response code is equal to 200" , function( done )
+		{
+			chai.request( host )
+				.post( "/api/rest/v1/users/" + userAdminId + "/del" )
+				.set( 'content-type', 'application/x-www-form-urlencoded' )
+				.send( {version: adminVersion , token: adminToken } )
+			.end( function( error , response , body )
+			{
+				if( error )	done( error );
+				else
+				{
+					var data = JSON.parse( response.text );
+					
+					// Check response is 200
+		   			expect( response.statusCode ).to.equal(200);
+		   			
+		   			// get response data
+		   			adminData = data;
+
+					// End test
+		    		done();
+				}
+		  	});
+		});
+		
+		it( "execution code is equal to 0" , function( done )
+		{
+			// Check JSON contains id property
+			assert.property( adminData , 'id' );
+
+			// Get token
+			adminId = adminData.id;
+			
+			expect( adminId , 'execution code is not equal to 0' ).to.be.equal( "0" );
 			
 			// End test
 			done();
