@@ -112,7 +112,6 @@ class MPA
 		static bool isSecurePwd( const string pwd );
 
 		bool isAdminRegistered() const;
-		void registerAdmin();
 
 		ResourceBundle & getResourceBundle();
 
@@ -121,8 +120,6 @@ class MPA
 		bool debugMode;
 		// Singleton member
 		static MPA * mpa;
-		// administrator is it registered
-		bool adminRegistered;
 		// Singleton constructor
 		MPA();
 

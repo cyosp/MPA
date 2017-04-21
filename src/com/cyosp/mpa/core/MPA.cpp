@@ -89,7 +89,6 @@ MPA::MPA()
 	debugMode = false;
 	mpa = NULL;
 	mpapo = NULL;
-	adminRegistered = false;
 	resourceBundle = NULL;
 }
 
@@ -241,8 +240,6 @@ mpapo::User & MPA::addUser(bool isAdmin, string login, string password, string l
 
 	MPA_LOG_TRIVIAL(info,"User added, id=" + (* ret).id.value());
 
-	if( isAdmin )	registerAdmin();
-
 	return * ret;
 }
 
@@ -307,12 +304,7 @@ bool MPA::isSecurePwd( const string pwd )
 
 bool MPA::isAdminRegistered() const
 {
-	return adminRegistered;
-}
-
-void MPA::registerAdmin()
-{
-	adminRegistered = true;
+	return MPA::getInstance()->getAdminUsers().size() > 0;
 }
 
 ResourceBundle & MPA::getResourceBundle()
