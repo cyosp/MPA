@@ -1,3 +1,5 @@
+// 2017-04-23 V 1.9.0
+// - Add: Get list of users
 // 2017-04-21 V 1.8.0
 // - Remove: Administrator account at the end of test
 // 2017-04-16 V 1.7.0
@@ -312,6 +314,57 @@ describe( "MPA API" , function()
 			userVersion = userData.version;
 			
 			expect( userVersion , 'version is not equal to 0' ).to.be.equal( "0" );
+			
+			// End test
+			done();
+		});
+	});
+	
+	describe( "Get list of users" , function()
+	{
+		var usersData = null;
+		
+		it( "response code is equal to 200" , function( done )
+		{
+			chai.request( host )
+				.get( "/api/rest/v1/users?token=" + adminToken )
+				.set( 'content-type', 'application/x-www-form-urlencoded' )
+				.send()
+			.end( function( error , response , body )
+			{
+				if( error )	done( error );
+				else
+				{
+					var data = JSON.parse( response.text );
+					
+					// Check response is 200
+		   			expect( response.statusCode ).to.equal(200);
+		
+					// Get response data
+		   			usersData = data;
+
+					// End test
+		    		done();
+				}
+		  	});
+		});
+		it( "users created are in the list" , function( done )
+		{
+			expect( usersData , adminLogin +  " is not in the list" ).to.have.deep.property( 'users[0].login' , adminLogin );
+			expect( usersData , userLogin  +  " is not in the list" ).to.have.deep.property( 'users[1].login' , userLogin );
+			
+			// End test
+			done();
+		});
+		it( "users properties are ok" , function( done )
+		{
+			expect( usersData ).to.have.deep.property( 'users[0].version' , '0' );
+			expect( usersData ).to.have.deep.property( 'users[0].isAdmin' , 'true' );
+			expect( usersData ).to.have.deep.property( 'users[0].pwdErrNbr' , '0' );
+			
+			expect( usersData ).to.have.deep.property( 'users[1].version' , '0' );
+			expect( usersData ).to.have.deep.property( 'users[1].isAdmin' , 'false' );
+			expect( usersData ).to.have.deep.property( 'users[1].pwdErrNbr' , '0' );
 			
 			// End test
 			done();
