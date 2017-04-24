@@ -22,11 +22,19 @@
 // 2017-01-08 V 1.0.0
 // - First version
 
+// Allow to display REST API responses
+var DEBUG_MODE = false;
+
 var chai      = require("chai");
 var request   = require("request");
 
 var expect    = chai.expect;
 var assert    = chai.assert;
+
+var debug = function( message )
+{
+	if( DEBUG_MODE )	console.log( message );		
+}
 
 chai.use( require("chai-http") );
 chai.use( require('chai-json-schema') );
@@ -39,11 +47,12 @@ var adminVersion = null;
 var adminToken = null;
 var defaultLocale = "";
 
+
 var adminLoginFct = function()
 {
 	describe( "Administrator login" , function()
 	{
-		it( "response code is equal to 200" , function( done )
+		it( "check response integrity" , function( done )
 		{
 			chai.request( host )
 				.post( "/api/rest/v1/users/login" )
@@ -51,6 +60,8 @@ var adminLoginFct = function()
 				.send( {login: adminLogin , pwd: adminPwd } )
 			.end( function( error , response , body )
 			{
+				debug( response.text );
+
 				if( error )	done( error );
 				else
 				{
@@ -61,26 +72,20 @@ var adminLoginFct = function()
 		   			
 		   			// Get response data
 					userAdminData = data;
+					
+					// Check JSON contains id property
+					assert.property( userAdminData , 'id' );
+					
+					// Get token
+					adminToken = userAdminData.id;
+					
+					// Check token is a number
+					expect( adminToken , 'token is not a number' ).to.be.not.NaN;
 
 					// End test
 		    		done();
 				}
 		  	});
-		});
-	
-		it( "token is a number" , function( done )
-		{
-			// Check JSON contains id property
-			assert.property( userAdminData , 'id' );
-
-			// Get token
-			adminToken = userAdminData.id;
-			
-			// Check token is a number
-			expect( adminToken , 'token is not a number' ).to.be.not.NaN;
-			
-			// End test
-			done();
 		});
 	});
 }
@@ -92,7 +97,7 @@ var adminLogoutFct = function()
 		var userAdminData;
 		var logoutId;
 
-		it( "response code is equal to 200" , function( done )
+		it( "check response integrity" , function( done )
 		{
 			chai.request( host )
 				.get( "/api/rest/v1/users/logout?token=" + adminToken )
@@ -100,6 +105,8 @@ var adminLogoutFct = function()
 				.send()
 			.end( function( error , response , body )
 			{
+				debug( response.text );
+				
 				if( error )	done( error );
 				else
 				{
@@ -110,24 +117,19 @@ var adminLogoutFct = function()
 		   			
 		   			// Get response data
 		   			userAdminData = data;
+		   			
+		   			// Check JSON contains id property
+					assert.property( userAdminData , 'id' );
+
+					// Get id
+					logoutId = userAdminData.id;
+
+					expect( logoutId , 'execution code is not equal to 0' ).to.be.equal( "0" );
 
 					// End test
 		    		done();
 				}
 		  	});
-		});
-		it( "execution code is equal to 0" , function( done )
-		{
-			// Check JSON contains id property
-			assert.property( userAdminData , 'id' );
-
-			// Get id
-			logoutId = userAdminData.id;
-
-			expect( logoutId , 'execution code is not equal to 0' ).to.be.equal( "0" );
-			
-			// End test
-			done();
 		});
 	});
 }
@@ -135,10 +137,8 @@ var adminLogoutFct = function()
 describe( "MPA API" , function()
 {
 	describe( "Get list of locales" , function()
-	{
-		var localesData = null;
-		
-		it( "response code is equal to 200" , function( done )
+	{		
+		it( "check response integrity" , function( done )
 		{
 			chai.request( host )
 				.get( "/api/rest/v1/locales" )
@@ -146,49 +146,23 @@ describe( "MPA API" , function()
 				.send()
 			.end( function( error , response , body )
 			{
+				debug( response.text );
+				
 				if( error )	done( error );
 				else
 				{
 					var data = JSON.parse( response.text );
 					
-					// Check response is 200
 		   			expect( response.statusCode ).to.equal(200);
-		
-					// Get response data
-		   			localesData = data;
+		   			expect( data ).to.have.deep.property( 'locales[0].name' );
+					
+					// Get default locale
+					defaultLocale = data.locales[0].name;
 
 					// End test
 		    		done();
 				}
 		  	});
-		});
-		it( "locales is an non empty array" , function( done )
-		{
-			// Check JSON contains locales property
-			assert.property( localesData , 'locales' );
-			
-			// Check locales is an array
-			expect( localesData.locales , 'locales is not an array' ).to.be.instanceof(Array);
-			
-			// Check array is not empty
-			expect( localesData.locales , 'locales array is empty' ).to.be.not.empty;
-			
-			// End test
-			done();
-		});
-		it( "get first locale" , function( done )
-		{
-			// Check JSON contains name property
-			assert.property( localesData.locales[0] , 'name' );
-			
-			// Check locale name is not empty
-			expect( localesData.locales[0].name , 'locale name is empty' ).to.be.not.empty;
-			
-			// Get default locale
-			defaultLocale = localesData.locales[0].name;
-			
-			// End test
-			done();
 		});
 	});
 	
@@ -196,7 +170,7 @@ describe( "MPA API" , function()
 	{
 		var userAdminData = null;
 		
-		it( "response code is equal to 200" , function( done )
+		it( "check response integrity" , function( done )
 		{
 			chai.request( host )
 				.post( "/api/rest/v1/users/add" )
@@ -204,6 +178,8 @@ describe( "MPA API" , function()
 				.send( {login: adminLogin , password: adminPwd , passwordConfirm: adminPwd, locale: defaultLocale } )
 			.end( function( error , response , body )
 			{
+				debug( response.text );
+				
 				if( error )	done( error );
 				else
 				{
@@ -214,40 +190,30 @@ describe( "MPA API" , function()
 		
 					// Get response data
 					userAdminData = data;
+					
+					// Check JSON contains id property
+					assert.property( userAdminData , 'id' );
+					
+					// Check administrator user id is a number
+					expect( userAdminData.id , 'identifier is not a number' ).to.be.not.NaN;
+					
+					userAdminId = parseInt( userAdminData.id );
+					
+					// Check administrator user is a positive number
+					expect( Math.abs( userAdminId ) ).to.be.equal( userAdminId );
+					
+					// Check JSON contains version property
+					assert.property( userAdminData , 'version' );
+					
+					adminVersion = userAdminData.version;
+					
+					// Check version is equal to 0
+					expect( adminVersion , 'version is not equal to 0' ).to.be.equal( "0" );
 
 					// End test
 		    		done();
 				}
 		  	});
-		});
-		it( "identifier is a positive number" , function( done )
-		{
-			// Check JSON contains id property
-			assert.property( userAdminData , 'id' );
-			
-			// Check administrator user id is a number
-			expect( userAdminData.id , 'identifier is not a number' ).to.be.not.NaN;
-			
-			userAdminId = parseInt( userAdminData.id );
-			
-			// Check administrator user is a positive number
-			expect( Math.abs( userAdminId ) ).to.be.equal( userAdminId );
-			
-			// End test
-			done();
-		});
-		it( "version is equal to 0" , function( done )
-		{
-			// Check JSON contains version property
-			assert.property( userAdminData , 'version' );
-			
-			adminVersion = userAdminData.version;
-			
-			// Check version is equal to 0
-			expect( adminVersion , 'version is not equal to 0' ).to.be.equal( "0" );
-			
-			// End test
-			done();
 		});
 	});
 
@@ -262,7 +228,7 @@ describe( "MPA API" , function()
 	{
 		var userData = null;
 		
-		it( "response code is equal to 200" , function( done )
+		it( "check response integrity" , function( done )
 		{
 			chai.request( host )
 				.post( "/api/rest/v1/users/add" )
@@ -270,6 +236,8 @@ describe( "MPA API" , function()
 				.send( {login: userLogin , password: userPwd , passwordConfirm: userPwd, token: adminToken, locale: defaultLocale } )
 			.end( function( error , response , body )
 			{
+				debug( response.text );
+				
 				if( error )	done( error );
 				else
 				{
@@ -280,43 +248,33 @@ describe( "MPA API" , function()
 		   			
 		   			// Get response data
 		   			userData = data;
+		   			
+		   			// Check JSON contains id property
+					assert.property( userData , 'id' );
+
+					// Get token
+					userId = userData.id;
+					
+					// Check user id is a number
+					expect( userId , 'identifier is not a number' ).to.be.not.NaN;
+					
+					userId = parseInt( userId );
+					
+					// Check user is a positive number
+					expect( Math.abs( userId ) ).to.be.equal( userId );
+					
+					// Check JSON contains version property
+					assert.property( userData , 'version' );
+					
+					// Get version
+					userVersion = userData.version;
+					
+					expect( userVersion , 'version is not equal to 0' ).to.be.equal( "0" );
 
 					// End test
 		    		done();
 				}
 		  	});
-		});
-		it( "identifier is a positive number" , function( done )
-		{
-			// Check JSON contains id property
-			assert.property( userData , 'id' );
-
-			// Get token
-			userId = userData.id;
-			
-			// Check user id is a number
-			expect( userId , 'identifier is not a number' ).to.be.not.NaN;
-			
-			userId = parseInt( userId );
-			
-			// Check user is a positive number
-			expect( Math.abs( userId ) ).to.be.equal( userId );
-			
-			// End test
-			done();
-		});
-		it( "version is equal to 0" , function( done )
-		{
-			// Check JSON contains version property
-			assert.property( userData , 'version' );
-			
-			// Get version
-			userVersion = userData.version;
-			
-			expect( userVersion , 'version is not equal to 0' ).to.be.equal( "0" );
-			
-			// End test
-			done();
 		});
 	});
 	
@@ -324,7 +282,7 @@ describe( "MPA API" , function()
 	{
 		var usersData = null;
 		
-		it( "response code is equal to 200" , function( done )
+		it( "check response integrity" , function( done )
 		{
 			chai.request( host )
 				.get( "/api/rest/v1/users?token=" + adminToken )
@@ -332,6 +290,8 @@ describe( "MPA API" , function()
 				.send()
 			.end( function( error , response , body )
 			{
+				debug( response.text );
+				
 				if( error )	done( error );
 				else
 				{
@@ -342,32 +302,22 @@ describe( "MPA API" , function()
 		
 					// Get response data
 		   			usersData = data;
+		   			
+		   			expect( usersData , adminLogin +  " is not in the list" ).to.have.deep.property( 'users[0].login' , adminLogin );
+					expect( usersData , userLogin  +  " is not in the list" ).to.have.deep.property( 'users[1].login' , userLogin );
+					
+					expect( usersData ).to.have.deep.property( 'users[0].version' , '0' );
+					expect( usersData ).to.have.deep.property( 'users[0].isAdmin' , 'true' );
+					expect( usersData ).to.have.deep.property( 'users[0].pwdErrNbr' , '0' );
+					
+					expect( usersData ).to.have.deep.property( 'users[1].version' , '0' );
+					expect( usersData ).to.have.deep.property( 'users[1].isAdmin' , 'false' );
+					expect( usersData ).to.have.deep.property( 'users[1].pwdErrNbr' , '0' );
 
 					// End test
 		    		done();
 				}
 		  	});
-		});
-		it( "users created are in the list" , function( done )
-		{
-			expect( usersData , adminLogin +  " is not in the list" ).to.have.deep.property( 'users[0].login' , adminLogin );
-			expect( usersData , userLogin  +  " is not in the list" ).to.have.deep.property( 'users[1].login' , userLogin );
-			
-			// End test
-			done();
-		});
-		it( "users properties are ok" , function( done )
-		{
-			expect( usersData ).to.have.deep.property( 'users[0].version' , '0' );
-			expect( usersData ).to.have.deep.property( 'users[0].isAdmin' , 'true' );
-			expect( usersData ).to.have.deep.property( 'users[0].pwdErrNbr' , '0' );
-			
-			expect( usersData ).to.have.deep.property( 'users[1].version' , '0' );
-			expect( usersData ).to.have.deep.property( 'users[1].isAdmin' , 'false' );
-			expect( usersData ).to.have.deep.property( 'users[1].pwdErrNbr' , '0' );
-			
-			// End test
-			done();
 		});
 	});
 	
@@ -376,7 +326,7 @@ describe( "MPA API" , function()
 	{
 		var accountData = null;
 		
-		it( "response code is equal to 200" , function( done )
+		it( "check response integrity" , function( done )
 		{
 			chai.request( host )
 				.post( "/api/rest/v1/accounts/add" )
@@ -384,6 +334,8 @@ describe( "MPA API" , function()
 				.send( {name: "MyBank", token: adminToken } )
 			.end( function( error , response , body )
 			{
+				debug( response.text );
+				
 				if( error )	done( error );
 				else
 				{
@@ -394,50 +346,35 @@ describe( "MPA API" , function()
 		   			
 		   			// Get response data
 		   			accountData = data;
+		   			
+		   			// Check JSON contains id property
+					assert.property( accountData , 'id' );
+
+					// Get id
+					accountId = accountData.id;
+					
+					// Check account id is a number
+					expect( accountId , 'identifier is not a number' ).to.be.not.NaN;
+					
+					accountId = parseInt( accountId );
+					
+					// Check account is a positive number
+					expect( Math.abs( accountId ) ).to.be.equal( accountId );
+					
+					// Check JSON contains version property
+					assert.property( accountData , 'version' );
+					
+					expect( accountData.version , 'version is not equal to 0' ).to.be.equal( "0" );
+					
+					// Check JSON contains balance property
+					assert.property( accountData , 'balance' );
+					
+					expect( accountData.balance , 'balance is not equal to 0' ).to.be.equal( "0" );
 
 					// End test
 		    		done();
 				}
 		  	});
-		});
-		it( "identifier is a positive number" , function( done )
-		{
-			// Check JSON contains id property
-			assert.property( accountData , 'id' );
-
-			// Get id
-			accountId = accountData.id;
-			
-			// Check account id is a number
-			expect( accountId , 'identifier is not a number' ).to.be.not.NaN;
-			
-			accountId = parseInt( accountId );
-			
-			// Check account is a positive number
-			expect( Math.abs( accountId ) ).to.be.equal( accountId );
-			
-			// End test
-			done();
-		});
-		it( "version is equal to 0" , function( done )
-		{
-			// Check JSON contains version property
-			assert.property( accountData , 'version' );
-			
-			expect( accountData.version , 'version is not equal to 0' ).to.be.equal( "0" );
-			
-			// End test
-			done();
-		});
-		it( "balance is equal to 0" , function( done )
-		{
-			// Check JSON contains balance property
-			assert.property( accountData , 'balance' );
-			
-			expect( accountData.balance , 'balance is not equal to 0' ).to.be.equal( "0" );
-			
-			// End test
-			done();
 		});
 	});
 	
@@ -446,8 +383,7 @@ describe( "MPA API" , function()
 	{
 		var categoryData = null;
 		
-		
-		it( "response code is equal to 200" , function( done )
+		it( "check response integrity" , function( done )
 		{
 			chai.request( host )
 				.post( "/api/rest/v1/accounts/" + accountId + "/categories/add" )
@@ -455,6 +391,8 @@ describe( "MPA API" , function()
 				.send( {name: "MyCategory", token: adminToken } )
 			.end( function( error , response , body )
 			{
+				debug( response.text );
+				
 				if( error )	done( error );
 				else
 				{
@@ -465,52 +403,35 @@ describe( "MPA API" , function()
 		   			
 		   			// Get response data
 		   			categoryData = data;
+		   			
+		   			// Check JSON contains id property
+					assert.property( categoryData , 'id' );
+
+					// Get id
+					categoryId = categoryData.id;
+					
+					// Check category id is a number
+					expect( categoryId , 'identifier is not a number' ).to.be.not.NaN;
+					
+					categoryId = parseInt( categoryId );
+					
+					// Check category is a positive number
+					expect( Math.abs( categoryId ) ).to.be.equal( categoryId );
+					
+					// Check JSON contains version property
+					assert.property( categoryData , 'version' );
+					
+					expect( categoryData.version , 'version is not equal to 0' ).to.be.equal( "0" );
+					
+					// Check JSON contains amount property
+					assert.property( categoryData , 'amount' );
+					
+					expect( categoryData.amount , 'amount is not equal to 0' ).to.be.equal( "0" );
 
 					// End test
 		    		done();
 				}
 		  	});
-		});
-		it( "identifier is a positive number" , function( done )
-		{
-			// Check JSON contains id property
-			assert.property( categoryData , 'id' );
-
-			// Get id
-			categoryId = categoryData.id;
-			
-			// Check category id is a number
-			expect( categoryId , 'identifier is not a number' ).to.be.not.NaN;
-			
-			categoryId = parseInt( categoryId );
-			
-			// Check category is a positive number
-			expect( Math.abs( categoryId ) ).to.be.equal( categoryId );
-			
-			// End test
-			done();
-		});
-		it( "version is equal to 0" , function( done )
-		{
-			// Check JSON contains version property
-			assert.property( categoryData , 'version' );
-			
-			expect( categoryData.version , 'version is not equal to 0' ).to.be.equal( "0" );
-			
-			// End test
-			done();
-		});
-		
-
-		it( "amount is equal to 0" , function( done )
-		{
-			// Check JSON contains amount property
-			assert.property( categoryData , 'amount' );
-			
-			expect( categoryData.amount , 'amount is not equal to 0' ).to.be.equal( "0" );
-			
-			// End test
-			done();
 		});
 	});
 	
@@ -518,7 +439,7 @@ describe( "MPA API" , function()
 	
 	describe( "User login" , function()
 	{
-		it( "response code is equal to 200" , function( done )
+		it( "check response integrity" , function( done )
 		{
 			chai.request( host )
 				.post( "/api/rest/v1/users/login" )
@@ -526,6 +447,8 @@ describe( "MPA API" , function()
 				.send( {login: userLogin , pwd: userPwd } )
 			.end( function( error , response , body )
 			{
+				debug( response.text );
+				
 				if( error )	done( error );
 				else
 				{
@@ -536,26 +459,20 @@ describe( "MPA API" , function()
 		   			
 		   			// Get response data
 					userData = data;
+					
+					// Check JSON contains id property
+					assert.property( userData , 'id' );
+
+					// Get token
+					userToken = userData.id;
+					
+					// Check token is a number
+					expect( userToken , 'token is not a number' ).to.be.not.NaN;
 
 					// End test
 		    		done();
 				}
 		  	});
-		});
-	
-		it( "token is a number" , function( done )
-		{
-			// Check JSON contains id property
-			assert.property( userData , 'id' );
-
-			// Get token
-			userToken = userData.id;
-			
-			// Check token is a number
-			expect( userToken , 'token is not a number' ).to.be.not.NaN;
-			
-			// End test
-			done();
 		});
 	});
 	
@@ -564,7 +481,7 @@ describe( "MPA API" , function()
 		var userData;
 		var logoutId;
 
-		it( "response code is equal to 200" , function( done )
+		it( "check response integrity" , function( done )
 		{
 			chai.request( host )
 				.get( "/api/rest/v1/users/logout?token=" + userToken )
@@ -572,6 +489,8 @@ describe( "MPA API" , function()
 				.send()
 			.end( function( error , response , body )
 			{
+				debug( response.text );
+				
 				if( error )	done( error );
 				else
 				{
@@ -582,24 +501,19 @@ describe( "MPA API" , function()
 		   			
 		   			// Get response data
 		   			userData = data;
+		   			
+		   			// Check JSON contains id property
+					assert.property( userData , 'id' );
+
+					// Get id
+					logoutId = userData.id;
+
+					expect( logoutId , 'execution code is not equal to 0' ).to.be.equal( "0" );
 
 					// End test
 		    		done();
 				}
 		  	});
-		});
-		it( "execution code is equal to 0" , function( done )
-		{
-			// Check JSON contains id property
-			assert.property( userData , 'id' );
-
-			// Get id
-			logoutId = userData.id;
-
-			expect( logoutId , 'execution code is not equal to 0' ).to.be.equal( "0" );
-			
-			// End test
-			done();
 		});
 	});
 	
@@ -609,7 +523,7 @@ describe( "MPA API" , function()
 	{
 		var userData = null;
 		
-		it( "response code is equal to 200" , function( done )
+		it( "check response integrity" , function( done )
 		{
 			chai.request( host )
 				.post( "/api/rest/v1/users/" + userId + "/del" )
@@ -617,6 +531,8 @@ describe( "MPA API" , function()
 				.send( {version: userVersion , token: adminToken } )
 			.end( function( error , response , body )
 			{
+				debug( response.text );
+				
 				if( error )	done( error );
 				else
 				{
@@ -627,25 +543,19 @@ describe( "MPA API" , function()
 		   			
 		   			// get response data
 		   			userData = data;
+		   			
+		   			// Check JSON contains id property
+					assert.property( userData , 'id' );
+
+					// Get token
+					userId = userData.id;
+					
+					expect( userId , 'execution code is not equal to 0' ).to.be.equal( "0" );
 
 					// End test
 		    		done();
 				}
 		  	});
-		});
-		
-		it( "execution code is equal to 0" , function( done )
-		{
-			// Check JSON contains id property
-			assert.property( userData , 'id' );
-
-			// Get token
-			userId = userData.id;
-			
-			expect( userId , 'execution code is not equal to 0' ).to.be.equal( "0" );
-			
-			// End test
-			done();
 		});
 	});
 	
@@ -653,7 +563,7 @@ describe( "MPA API" , function()
 	{
 		var adminData = null;
 		
-		it( "response code is equal to 200" , function( done )
+		it( "check response integrity" , function( done )
 		{
 			chai.request( host )
 				.post( "/api/rest/v1/users/" + userAdminId + "/del" )
@@ -661,6 +571,8 @@ describe( "MPA API" , function()
 				.send( {version: adminVersion , token: adminToken } )
 			.end( function( error , response , body )
 			{
+				debug( response.text );
+				
 				if( error )	done( error );
 				else
 				{
@@ -671,25 +583,19 @@ describe( "MPA API" , function()
 		   			
 		   			// get response data
 		   			adminData = data;
+		   			
+		   			// Check JSON contains id property
+					assert.property( adminData , 'id' );
+
+					// Get token
+					adminId = adminData.id;
+					
+					expect( adminId , 'execution code is not equal to 0' ).to.be.equal( "0" );
 
 					// End test
 		    		done();
 				}
 		  	});
-		});
-		
-		it( "execution code is equal to 0" , function( done )
-		{
-			// Check JSON contains id property
-			assert.property( adminData , 'id' );
-
-			// Get token
-			adminId = adminData.id;
-			
-			expect( adminId , 'execution code is not equal to 0' ).to.be.equal( "0" );
-			
-			// End test
-			done();
 		});
 	});
 	
