@@ -1,3 +1,5 @@
+// 2017-04-25 V 1.11.0
+// - Add: Remove account
 // 2017-04-25 V 1.10.0
 // - Add: Get list of accounts
 // 2017-04-23 V 1.9.0
@@ -324,6 +326,7 @@ describe( "MPA API" , function()
 	});
 	
 	var accountId = null;
+	var accountVersion = null;
 	var accountName = "MyBank";
 	describe( "Create an account" , function()
 	{
@@ -367,7 +370,9 @@ describe( "MPA API" , function()
 					// Check JSON contains version property
 					assert.property( accountData , 'version' );
 					
-					expect( accountData.version , 'version is not equal to 0' ).to.be.equal( "0" );
+					accountVersion = accountData.version;
+					
+					expect( accountVersion , 'version is not equal to 0' ).to.be.equal( "0" );
 					
 					// Check JSON contains balance property
 					assert.property( accountData , 'balance' );
@@ -598,6 +603,38 @@ describe( "MPA API" , function()
 		});
 	});
 	
+	describe( "Delete account" , function()
+	{	
+		it( "check response integrity" , function( done )
+		{
+			chai.request( host )
+				.post( "/api/rest/v1/accounts/" + accountId + "/del" )
+				.set( 'content-type', 'application/x-www-form-urlencoded' )
+				.send( {version: accountVersion , token: adminToken } )
+			.end( function( error , response , body )
+			{
+				debug( response.text );
+				
+				if( error )	done( error );
+				else
+				{
+					var data = JSON.parse( response.text );
+					
+					// Check response is 200
+		   			expect( response.statusCode ).to.equal(200);
+		   			
+		   			// Check JSON contains id property
+					assert.property( data , 'id' );
+					
+					expect( data.id , 'execution code is not equal to 0' ).to.be.equal( "0" );
+
+					// End test
+		    		done();
+				}
+		  	});
+		});
+	});
+
 	describe( "Delete administrator" , function()
 	{
 		var adminData = null;
