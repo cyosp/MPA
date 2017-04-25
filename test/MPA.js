@@ -1,3 +1,7 @@
+// 2017-04-25 V 1.13.0
+// - Add: Remove account
+// 2017-04-25 V 1.12.0
+// - Add: Remove category
 // 2017-04-25 V 1.11.0
 // - Add: Remove account
 // 2017-04-25 V 1.10.0
@@ -27,7 +31,7 @@
 // - First version
 
 // Allow to display REST API responses
-var DEBUG_MODE = false;
+var DEBUG_MODE = true;
 
 var chai      = require("chai");
 var request   = require("request");
@@ -423,6 +427,8 @@ describe( "MPA API" , function()
 	});
 	
 	var categoryId = null;
+	var categoryName = "MyCategory";
+	var categoryVersion = null;
 	describe( "Create a category" , function()
 	{
 		var categoryData = null;
@@ -432,7 +438,7 @@ describe( "MPA API" , function()
 			chai.request( host )
 				.post( "/api/rest/v1/accounts/" + accountId + "/categories/add" )
 				.set( 'content-type', 'application/x-www-form-urlencoded' )
-				.send( {name: "MyCategory", token: adminToken } )
+				.send( {name: categoryName, token: adminToken } )
 			.end( function( error , response , body )
 			{
 				debug( response.text );
@@ -465,7 +471,10 @@ describe( "MPA API" , function()
 					// Check JSON contains version property
 					assert.property( categoryData , 'version' );
 					
-					expect( categoryData.version , 'version is not equal to 0' ).to.be.equal( "0" );
+					// Get category version
+					categoryVersion = categoryData.version;
+					
+					expect( categoryVersion , 'version is not equal to 0' ).to.be.equal( "0" );
 					
 					// Check JSON contains amount property
 					assert.property( categoryData , 'amount' );
@@ -595,6 +604,38 @@ describe( "MPA API" , function()
 					userId = userData.id;
 					
 					expect( userId , 'execution code is not equal to 0' ).to.be.equal( "0" );
+
+					// End test
+		    		done();
+				}
+		  	});
+		});
+	});
+	
+	describe( "Delete category" , function()
+	{	
+		it( "check response integrity" , function( done )
+		{
+			chai.request( host )
+				.post( "/api/rest/v1/accounts/" + accountId + "/categories/" + categoryId + "/del" )
+				.set( 'content-type', 'application/x-www-form-urlencoded' )
+				.send( {version: categoryVersion , token: adminToken } )
+			.end( function( error , response , body )
+			{
+				debug( response.text );
+				
+				if( error )	done( error );
+				else
+				{
+					var data = JSON.parse( response.text );
+					
+					// Check response is 200
+		   			expect( response.statusCode ).to.equal(200);
+		   			
+		   			// Check JSON contains id property
+					assert.property( data , 'id' );
+					
+					expect( data.id , 'execution code is not equal to 0' ).to.be.equal( "0" );
 
 					// End test
 		    		done();
