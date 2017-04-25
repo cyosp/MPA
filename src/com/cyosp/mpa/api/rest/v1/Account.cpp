@@ -100,6 +100,7 @@ string Account::executePostDeleteRequest(ptree & root)
 	string ret = MPAO::DEFAULT_JSON_ID;
 
 	mpa::Account::delAccount( urlPairs[0].second , atoi( argvals.find("version")->second ) );
+	ret = "0";
 
 	return ret;
 }

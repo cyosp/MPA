@@ -111,6 +111,7 @@ string Category::executePostDeleteRequest(ptree & root)
 	int categoryVersion = atoi( argvals.find("version")->second );
 
 	mpa::Category::remove( accountId , categoryId , categoryVersion );
+	ret = "0";
 
 	return ret;
 }
