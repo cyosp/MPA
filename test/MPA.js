@@ -1,3 +1,5 @@
+// 2017-04-25 V 1.10.0
+// - Add: Get list of accounts
 // 2017-04-23 V 1.9.0
 // - Add: Get list of users
 // 2017-04-21 V 1.8.0
@@ -322,6 +324,7 @@ describe( "MPA API" , function()
 	});
 	
 	var accountId = null;
+	var accountName = "MyBank";
 	describe( "Create an account" , function()
 	{
 		var accountData = null;
@@ -331,7 +334,7 @@ describe( "MPA API" , function()
 			chai.request( host )
 				.post( "/api/rest/v1/accounts/add" )
 				.set( 'content-type', 'application/x-www-form-urlencoded' )
-				.send( {name: "MyBank", token: adminToken } )
+				.send( {name: accountName, token: adminToken } )
 			.end( function( error , response , body )
 			{
 				debug( response.text );
@@ -370,6 +373,42 @@ describe( "MPA API" , function()
 					assert.property( accountData , 'balance' );
 					
 					expect( accountData.balance , 'balance is not equal to 0' ).to.be.equal( "0" );
+
+					// End test
+		    		done();
+				}
+		  	});
+		});
+	});
+	
+	describe( "Get list of accounts" , function()
+	{
+		var accountsData = null;
+		
+		it( "check response integrity" , function( done )
+		{
+			chai.request( host )
+				.get( "/api/rest/v1/accounts?token=" + adminToken )
+				.set( 'content-type', 'application/x-www-form-urlencoded' )
+				.send()
+			.end( function( error , response , body )
+			{
+				debug( response.text );
+				
+				if( error )	done( error );
+				else
+				{
+					var data = JSON.parse( response.text );
+					
+					// Check response is 200
+		   			expect( response.statusCode ).to.equal(200);
+		
+					// Get response data
+		   			accountsData = data;
+					
+					expect( accountsData ).to.have.deep.property( 'accounts[0].version' , '0' );
+					expect( accountsData ).to.have.deep.property( 'accounts[0].name' , accountName );
+					expect( accountsData ).to.have.deep.property( 'accounts[0].balance' , '0' );
 
 					// End test
 		    		done();
