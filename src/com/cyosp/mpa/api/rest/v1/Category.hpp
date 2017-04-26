@@ -23,6 +23,11 @@ namespace mpa_api_rest_v1
 
 class Category: public MPAO
 {
+	private:
+		int accountId;
+
+		bool isUrlPathValid();
+
 protected:
 	bool areGetParametersOk();
 	bool arePostAddParametersOk();
@@ -36,6 +41,8 @@ protected:
 
 public:
 	Category(HttpRequestType httpRequestType, ActionType actionType, const map<string, string>& argvals, vector<std::pair<string, int> > urlPairs );
+
+	int getAccontId();
 
 	virtual ~Category();
 };

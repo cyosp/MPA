@@ -14,11 +14,28 @@ Category::Category(HttpRequestType httpRequestType, ActionType actionType,
 		const map<string, string>& argvals,
 		vector<std::pair<string, int> > urlPairs) :
 		MPAO(httpRequestType, actionType, argvals, urlPairs)
-{}
+{
+	accountId = -1;
+}
+
+bool Category::isUrlPathValid()
+{
+	bool ret = false;
+
+	// TODO remove "hard coded" accounts string
+	if( urlPairs.size() > 0 && urlPairs[0].first == "accounts"	)
+	{
+		accountId = urlPairs[0].second;
+		ret = true;
+	}
+
+	return ret;
+}
 
 bool Category::areGetParametersOk()
 {
-	bool ret = true;
+	bool ret = isUrlPathValid();
+
 	return ret;
 }
 
@@ -26,14 +43,16 @@ bool Category::arePostAddParametersOk()
 {
 	bool ret = false;
 
-	if( argvals.find("name") != argvals.end() ) ret = true;
+	if( isUrlPathValid() && argvals.find("name") != argvals.end() ) ret = true;
 
 	return ret;
 }
 
 bool Category::arePostDeleteParametersOk()
 {
-	bool ret = MPAO::arePostDeleteParametersOk();
+	bool ret = false;
+
+	if( isUrlPathValid() && MPAO::arePostDeleteParametersOk() )	ret = true;
 
 	return ret;
 }
@@ -54,13 +73,9 @@ string Category::executeGetRequest(ptree & root)
 {
 	string ret = MPAO::DEFAULT_JSON_ID;
 
-	//MPA_LOG_TRIVIAL(trace, "" );
-
-	int accountId = urlPairs[0].second;
-
 	ptree categoriesChildren;
 
-	vector<mpapo::Category> accounts = mpa::Category::getCategories( accountId );
+	vector<mpapo::Category> accounts = mpa::Category::getCategories( getAccontId() );
 	for (vector<mpapo::Category>::iterator it = accounts.begin(); it != accounts.end(); it++)
 	{
 		ptree categoryPtree;
@@ -81,12 +96,11 @@ string Category::executePostAddRequest(ptree & root)
 {
 	string ret = MPAO::DEFAULT_JSON_ID;
 
-	int accountId = urlPairs[0].second;
 	string categoryName = argvals.find("name")->second;
 
 	//MPA_LOG_TRIVIAL(trace,"");
 
-	mpapo::Category category = mpa::Category::getCategory( accountId , categoryName );
+	mpapo::Category category = mpa::Category::getCategory( getAccontId() , categoryName );
 
 	//MPA_LOG_TRIVIAL(trace,"");
 
@@ -106,11 +120,10 @@ string Category::executePostDeleteRequest(ptree & root)
 {
 	string ret = MPAO::DEFAULT_JSON_ID;
 
-	int accountId = urlPairs[0].second;
 	int categoryId = urlPairs[1].second;
 	int categoryVersion = atoi( argvals.find("version")->second );
 
-	mpa::Category::remove( accountId , categoryId , categoryVersion );
+	mpa::Category::remove( getAccontId() , categoryId , categoryVersion );
 	ret = "0";
 
 	return ret;
@@ -122,12 +135,11 @@ string Category::executePostUpdateRequest(ptree & root)
 
 	string ret = MPAO::DEFAULT_JSON_ID;
 
-	int accountId = urlPairs[0].second;
 	int categoryId = urlPairs[1].second;
 	int categoryVersion = atoi( argvals.find("version")->second );
 	string categoryNewName = argvals.find("name")->second;
 
-	mpapo::Category category = mpa::Category::rename( accountId , categoryId , categoryVersion , categoryNewName );
+	mpapo::Category category = mpa::Category::rename( getAccontId() , categoryId , categoryVersion , categoryNewName );
 	ret = StrUtil::int2string( categoryId );
 
 	// Generate Json output
@@ -136,6 +148,11 @@ string Category::executePostUpdateRequest(ptree & root)
 	//MPA_LOG_TRIVIAL( trace , "End" );
 
 	return ret;
+}
+
+int Category::getAccontId()
+{
+	return accountId;
 }
 
 Category::~Category()
