@@ -1,3 +1,5 @@
+// 2017-04-26 V 1.14.0
+// - Add: Get list of categories
 // 2017-04-25 V 1.13.0
 // - Add: Remove account
 // 2017-04-25 V 1.12.0
@@ -31,7 +33,7 @@
 // - First version
 
 // Allow to display REST API responses
-var DEBUG_MODE = true;
+var DEBUG_MODE = false;
 
 var chai      = require("chai");
 var request   = require("request");
@@ -480,6 +482,42 @@ describe( "MPA API" , function()
 					assert.property( categoryData , 'amount' );
 					
 					expect( categoryData.amount , 'amount is not equal to 0' ).to.be.equal( "0" );
+
+					// End test
+		    		done();
+				}
+		  	});
+		});
+	});
+	
+	describe( "Get list of categories" , function()
+	{
+		var accountsData = null;
+		
+		it( "check response integrity" , function( done )
+		{
+			chai.request( host )
+				.get( "/api/rest/v1/accounts/" + accountId + "/categories?token=" + adminToken )
+				.set( 'content-type', 'application/x-www-form-urlencoded' )
+				.send()
+			.end( function( error , response , body )
+			{
+				debug( response.text );
+				
+				if( error )	done( error );
+				else
+				{
+					var data = JSON.parse( response.text );
+					
+					// Check response is 200
+		   			expect( response.statusCode ).to.equal(200);
+		
+					// Get response data
+		   			accountsData = data;
+					
+					expect( accountsData ).to.have.deep.property( 'categories[0].version' , '0' );
+					expect( accountsData ).to.have.deep.property( 'categories[0].name' , categoryName );
+					expect( accountsData ).to.have.deep.property( 'categories[0].amount' , '0' );
 
 					// End test
 		    		done();
