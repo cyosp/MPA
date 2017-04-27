@@ -175,7 +175,7 @@ string User::executePostDeleteRequest(ptree & root)
 	if( user.isAdmin )
 	{
 		MPA::getInstance()->delUser( urlPairs[0].second, atoi( argvals.find("version")->second ) );
-		ret = "0";
+		ret = MPAO::OK_JSON_ID;
 	}
 
 	return ret;

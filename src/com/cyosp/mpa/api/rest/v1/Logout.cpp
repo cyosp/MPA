@@ -36,7 +36,7 @@ string Logout::executeGetRequest(ptree & root)
 	if( tokenIt != tokenList.end() )
 	{
 		tokenList.erase( tokenIt );
-		ret = "0";
+		ret = MPAO::OK_JSON_ID;
 	}
 
 	return ret;
