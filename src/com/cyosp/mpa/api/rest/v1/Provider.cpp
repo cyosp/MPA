@@ -112,6 +112,7 @@ string Provider::executePostDeleteRequest(ptree & root)
 	int providerVersion = atoi( argvals.find("version")->second );
 
 	mpa::Provider::remove( accountId , providerId , providerVersion );
+	ret = "0";
 
 	return ret;
 }
