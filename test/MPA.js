@@ -1,3 +1,5 @@
+// 2017-04-27 V 1.16.0
+// - Add: Get list of providers
 // 2017-04-27 V 1.15.0
 // - Add: Create a provider
 // 2017-04-26 V 1.14.0
@@ -395,9 +397,7 @@ describe( "MPA API" , function()
 	});
 	
 	describe( "Get list of accounts" , function()
-	{
-		var accountsData = null;
-		
+	{	
 		it( "check response integrity" , function( done )
 		{
 			chai.request( host )
@@ -415,13 +415,10 @@ describe( "MPA API" , function()
 					
 					// Check response is 200
 		   			expect( response.statusCode ).to.equal(200);
-		
-					// Get response data
-		   			accountsData = data;
 					
-					expect( accountsData ).to.have.deep.property( 'accounts[0].version' , '0' );
-					expect( accountsData ).to.have.deep.property( 'accounts[0].name' , accountName );
-					expect( accountsData ).to.have.deep.property( 'accounts[0].balance' , '0' );
+					expect( data ).to.have.deep.property( 'accounts[0].version' , '0' );
+					expect( data ).to.have.deep.property( 'accounts[0].name' , accountName );
+					expect( data ).to.have.deep.property( 'accounts[0].balance' , '0' );
 
 					// End test
 		    		done();
@@ -493,9 +490,7 @@ describe( "MPA API" , function()
 	});
 	
 	describe( "Get list of categories" , function()
-	{
-		var accountsData = null;
-		
+	{	
 		it( "check response integrity" , function( done )
 		{
 			chai.request( host )
@@ -513,13 +508,10 @@ describe( "MPA API" , function()
 					
 					// Check response is 200
 		   			expect( response.statusCode ).to.equal(200);
-		
-					// Get response data
-		   			accountsData = data;
 					
-					expect( accountsData ).to.have.deep.property( 'categories[0].version' , '0' );
-					expect( accountsData ).to.have.deep.property( 'categories[0].name' , categoryName );
-					expect( accountsData ).to.have.deep.property( 'categories[0].amount' , '0' );
+					expect( data ).to.have.deep.property( 'categories[0].version' , '0' );
+					expect( data ).to.have.deep.property( 'categories[0].name' , categoryName );
+					expect( data ).to.have.deep.property( 'categories[0].amount' , '0' );
 
 					// End test
 		    		done();
@@ -577,6 +569,37 @@ describe( "MPA API" , function()
 					assert.property( data , 'amount' );
 					
 					expect( data.amount , 'amount is not equal to 0' ).to.be.equal( "0" );
+
+					// End test
+		    		done();
+				}
+		  	});
+		});
+	});
+	
+	describe( "Get list of providers" , function()
+	{	
+		it( "check response integrity" , function( done )
+		{
+			chai.request( host )
+				.get( "/api/rest/v1/accounts/" + accountId + "/providers?token=" + adminToken )
+				.set( 'content-type', 'application/x-www-form-urlencoded' )
+				.send()
+			.end( function( error , response , body )
+			{
+				debug( response.text );
+				
+				if( error )	done( error );
+				else
+				{
+					var data = JSON.parse( response.text );
+					
+					// Check response is 200
+		   			expect( response.statusCode ).to.equal(200);
+					
+					expect( data ).to.have.deep.property( 'providers[0].version' , '0' );
+					expect( data ).to.have.deep.property( 'providers[0].name' , providerName );
+					expect( data ).to.have.deep.property( 'providers[0].amount' , '0' );
 
 					// End test
 		    		done();
