@@ -1,3 +1,5 @@
+// 2017-04-27 V 1.15.0
+// - Add: Create a provider
 // 2017-04-26 V 1.14.0
 // - Add: Get list of categories
 // 2017-04-25 V 1.13.0
@@ -518,6 +520,63 @@ describe( "MPA API" , function()
 					expect( accountsData ).to.have.deep.property( 'categories[0].version' , '0' );
 					expect( accountsData ).to.have.deep.property( 'categories[0].name' , categoryName );
 					expect( accountsData ).to.have.deep.property( 'categories[0].amount' , '0' );
+
+					// End test
+		    		done();
+				}
+		  	});
+		});
+	});
+	
+	var providerId = null;
+	var providerName = "AProvider";
+	var providerVersion = null;
+	describe( "Create a provider" , function()
+	{	
+		it( "check response integrity" , function( done )
+		{
+			chai.request( host )
+				.post( "/api/rest/v1/accounts/" + accountId + "/providers/add" )
+				.set( 'content-type', 'application/x-www-form-urlencoded' )
+				.send( {name: providerName, token: adminToken } )
+			.end( function( error , response , body )
+			{
+				debug( response.text );
+				
+				if( error )	done( error );
+				else
+				{
+					var data = JSON.parse( response.text );
+
+					// Check response is 200
+		   			expect( response.statusCode ).to.equal(200);
+		   			
+		   			// Check JSON contains id property
+					assert.property( data , 'id' );
+
+					// Get id
+					providerId = data.id;
+					
+					// Check category id is a number
+					expect( providerId , 'identifier is not a number' ).to.be.not.NaN;
+					
+					providerId = parseInt( providerId );
+					
+					// Check category is a positive number
+					expect( Math.abs( providerId ) ).to.be.equal( providerId );
+					
+					// Check JSON contains version property
+					assert.property( data , 'version' );
+					
+					// Get category version
+					providerVersion = data.version;
+					
+					expect( providerVersion , 'version is not equal to 0' ).to.be.equal( "0" );
+					
+					// Check JSON contains amount property
+					assert.property( data , 'amount' );
+					
+					expect( data.amount , 'amount is not equal to 0' ).to.be.equal( "0" );
 
 					// End test
 		    		done();
