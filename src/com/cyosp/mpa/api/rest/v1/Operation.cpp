@@ -10,6 +10,8 @@
 namespace mpa_api_rest_v1
 {
 
+string Operation::URL_STRING_PATH_IDENTIFIER = "operations";
+
 Operation::Operation(HttpRequestType httpRequestType, ActionType actionType,
 		const map<string, string>& argvals,
 		vector<std::pair<string, int> > urlPairs) :

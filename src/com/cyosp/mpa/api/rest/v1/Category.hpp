@@ -24,6 +24,9 @@ namespace mpa_api_rest_v1
 
 class Category: public MPAO
 {
+	public:
+		static string URL_STRING_PATH_IDENTIFIER;
+
 	private:
 		int accountId;
 

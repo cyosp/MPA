@@ -9,6 +9,8 @@
 
 namespace mpa_api_rest_v1 {
 
+string Locale::URL_STRING_PATH_IDENTIFIER = "locales";
+
 Locale::Locale(HttpRequestType httpRequestType, ActionType actionType,
 		const map<string, string>& argvals,
 		vector<std::pair<string, int> > urlPairs) :

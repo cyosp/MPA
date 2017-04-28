@@ -10,6 +10,8 @@
 namespace mpa_api_rest_v1
 {
 
+string Provider::URL_STRING_PATH_IDENTIFIER = "providers";
+
 Provider::Provider(HttpRequestType httpRequestType, ActionType actionType,
 		const map<string, string>& argvals,
 		vector<std::pair<string, int> > urlPairs) :

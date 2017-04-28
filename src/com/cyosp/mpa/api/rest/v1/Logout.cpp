@@ -10,6 +10,8 @@
 namespace mpa_api_rest_v1
 {
 
+string Logout::URL_STRING_PATH_IDENTIFIER = "logout";
+
 Logout::Logout( HttpRequestType httpRequestType, ActionType actionType , const map<string, string>& argvals, vector<std::pair<string, int> > urlPairs ) : MPAO( httpRequestType, actionType, argvals, urlPairs )
 {}
 

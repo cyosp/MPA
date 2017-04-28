@@ -10,6 +10,8 @@
 namespace mpa_api_rest_v1
 {
 
+string Login::URL_STRING_PATH_IDENTIFIER = "login";
+
 Login::Login( HttpRequestType httpRequestType, ActionType actionType , const map<string, string>& argvals, vector<std::pair<string, int> > urlPairs ) : MPAO( httpRequestType, actionType, argvals, urlPairs )
 {
 	restrictedAccess = false;

@@ -10,7 +10,7 @@
 namespace mpa_api_rest_v1
 {
 
-string MPAO::URL_STRING_PATH_IDENTIFIER = "accounts";
+string Account::URL_STRING_PATH_IDENTIFIER = "accounts";
 
 Account::Account( HttpRequestType httpRequestType, ActionType actionType , const map<string, string>& argvals, vector<std::pair<string, int> > urlPairs ) : MPAO( httpRequestType, actionType, argvals, urlPairs )
 {}

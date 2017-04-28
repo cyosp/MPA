@@ -162,15 +162,15 @@ mpa_api_rest_v1::MPAO * MPAOFactory::getMPAO(HttpRequestType requestType, const 
 
 			MPA_LOG_TRIVIAL(trace, "Last identifier: " + lastIdentifier );
 
-			if( lastIdentifier == "login" )				ret = new mpa_api_rest_v1::Login( requestType , actionType, argvals , urlPairs );
-			else if( lastIdentifier == "logout" )		ret = new mpa_api_rest_v1::Logout( requestType , actionType, argvals , urlPairs );
-			else if( lastIdentifier == "accounts" )		ret = new mpa_api_rest_v1::Account( requestType , actionType, argvals , urlPairs );
-			else if ( lastIdentifier == "users" )		ret = new mpa_api_rest_v1::User( requestType , actionType , argvals , urlPairs );
-			else if ( lastIdentifier == "infos" )		ret = new mpa_api_rest_v1::Info( requestType , actionType , argvals , urlPairs );
-			else if ( lastIdentifier == "locales" )		ret = new mpa_api_rest_v1::Locale( requestType , actionType , argvals , urlPairs );
-			else if ( lastIdentifier == "categories" )	ret = new mpa_api_rest_v1::Category( requestType , actionType , argvals , urlPairs );
-			else if ( lastIdentifier == "providers" )	ret = new mpa_api_rest_v1::Provider( requestType , actionType , argvals , urlPairs );
-			else if ( lastIdentifier == "operations" )	ret = new mpa_api_rest_v1::Operation( requestType , actionType , argvals , urlPairs );
+			if(       lastIdentifier == mpa_api_rest_v1::Login::URL_STRING_PATH_IDENTIFIER		)	ret = new mpa_api_rest_v1::Login(		requestType , actionType , argvals , urlPairs );
+			else if ( lastIdentifier == mpa_api_rest_v1::Logout::URL_STRING_PATH_IDENTIFIER		)	ret = new mpa_api_rest_v1::Logout(		requestType , actionType , argvals , urlPairs );
+			else if ( lastIdentifier == mpa_api_rest_v1::Account::URL_STRING_PATH_IDENTIFIER	)	ret = new mpa_api_rest_v1::Account(		requestType , actionType , argvals , urlPairs );
+			else if ( lastIdentifier == mpa_api_rest_v1::User::URL_STRING_PATH_IDENTIFIER		)	ret = new mpa_api_rest_v1::User(		requestType , actionType , argvals , urlPairs );
+			else if ( lastIdentifier == mpa_api_rest_v1::Info::URL_STRING_PATH_IDENTIFIER		)	ret = new mpa_api_rest_v1::Info(		requestType , actionType , argvals , urlPairs );
+			else if ( lastIdentifier == mpa_api_rest_v1::Locale::URL_STRING_PATH_IDENTIFIER		)	ret = new mpa_api_rest_v1::Locale(		requestType , actionType , argvals , urlPairs );
+			else if ( lastIdentifier == mpa_api_rest_v1::Category::URL_STRING_PATH_IDENTIFIER	)	ret = new mpa_api_rest_v1::Category(	requestType , actionType , argvals , urlPairs );
+			else if ( lastIdentifier == mpa_api_rest_v1::Provider::URL_STRING_PATH_IDENTIFIER	)	ret = new mpa_api_rest_v1::Provider(	requestType , actionType , argvals , urlPairs );
+			else if ( lastIdentifier == mpa_api_rest_v1::Operation::URL_STRING_PATH_IDENTIFIER	)	ret = new mpa_api_rest_v1::Operation(	requestType , actionType , argvals , urlPairs );
 		}
 		else	MPA_LOG_TRIVIAL(info, "Bad URL" );
 	}

@@ -16,6 +16,9 @@ namespace mpa_api_rest_v1
 
 class Locale: public MPAO
 {
+	public:
+		static string URL_STRING_PATH_IDENTIFIER;
+
 	protected:
 		bool areGetParametersOk();
 		bool arePostAddParametersOk();

@@ -21,6 +21,8 @@ namespace mpa_api_rest_v1
 
 class User : public MPAO
 {
+	public:
+		static string URL_STRING_PATH_IDENTIFIER;
 
 protected:
 	bool isValidAccess();

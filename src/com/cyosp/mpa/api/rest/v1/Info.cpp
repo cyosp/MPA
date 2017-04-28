@@ -10,6 +10,8 @@
 namespace mpa_api_rest_v1
 {
 
+string Info::URL_STRING_PATH_IDENTIFIER = "infos";
+
 Info::Info(HttpRequestType httpRequestType, ActionType actionType,
 		const map<string, string>& argvals,
 		vector<std::pair<string, int> > urlPairs) :
