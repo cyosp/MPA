@@ -16,6 +16,7 @@
 #include "com/cyosp/mpa/core/MPA.hpp"
 #include "com/cyosp/mpa/api/rest/v1/MPAO.hpp"
 #include "com/cyosp/mpa/po/MPAPO.hpp"
+#include "com/cyosp/mpa/api/rest/v1/Account.hpp"
 
 
 namespace mpa_api_rest_v1
@@ -24,6 +25,11 @@ namespace mpa_api_rest_v1
 	{
 		public:
 			static string URL_STRING_PATH_IDENTIFIER;
+
+		private:
+			int accountId;
+
+			bool isUrlPathValid();
 
 		protected:
 			bool areGetParametersOk();
@@ -38,6 +44,8 @@ namespace mpa_api_rest_v1
 
 		public:
 			Provider(HttpRequestType httpRequestType, ActionType actionType, const map<string, string>& argvals, vector<std::pair<string, int> > urlPairs );
+
+			int getAccountId();
 
 			virtual ~Provider();
 	};

@@ -46,7 +46,7 @@ protected:
 public:
 	Category(HttpRequestType httpRequestType, ActionType actionType, const map<string, string>& argvals, vector<std::pair<string, int> > urlPairs );
 
-	int getAccontId();
+	int getAccountId();
 
 	virtual ~Category();
 };

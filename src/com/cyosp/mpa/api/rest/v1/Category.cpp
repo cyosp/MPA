@@ -76,7 +76,7 @@ string Category::executeGetRequest(ptree & root)
 
 	ptree categoriesChildren;
 
-	vector<mpapo::Category> accounts = mpa::Category::getCategories( getAccontId() );
+	vector<mpapo::Category> accounts = mpa::Category::getCategories( getAccountId() );
 	for (vector<mpapo::Category>::iterator it = accounts.begin(); it != accounts.end(); it++)
 	{
 		ptree categoryPtree;
@@ -101,7 +101,7 @@ string Category::executePostAddRequest(ptree & root)
 
 	//MPA_LOG_TRIVIAL(trace,"");
 
-	mpapo::Category category = mpa::Category::getCategory( getAccontId() , categoryName );
+	mpapo::Category category = mpa::Category::getCategory( getAccountId() , categoryName );
 
 	//MPA_LOG_TRIVIAL(trace,"");
 
@@ -124,7 +124,7 @@ string Category::executePostDeleteRequest(ptree & root)
 	int categoryId = urlPairs[1].second;
 	int categoryVersion = atoi( argvals.find("version")->second );
 
-	mpa::Category::remove( getAccontId() , categoryId , categoryVersion );
+	mpa::Category::remove( getAccountId() , categoryId , categoryVersion );
 	ret = MPAO::OK_JSON_ID;
 
 	return ret;
@@ -140,7 +140,7 @@ string Category::executePostUpdateRequest(ptree & root)
 	int categoryVersion = atoi( argvals.find("version")->second );
 	string categoryNewName = argvals.find("name")->second;
 
-	mpapo::Category category = mpa::Category::rename( getAccontId() , categoryId , categoryVersion , categoryNewName );
+	mpapo::Category category = mpa::Category::rename( getAccountId() , categoryId , categoryVersion , categoryNewName );
 	ret = StrUtil::int2string( categoryId );
 
 	// Generate Json output
@@ -151,7 +151,7 @@ string Category::executePostUpdateRequest(ptree & root)
 	return ret;
 }
 
-int Category::getAccontId()
+int Category::getAccountId()
 {
 	return accountId;
 }
