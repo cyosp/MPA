@@ -16,6 +16,7 @@
 #include "com/cyosp/mpa/core/MPA.hpp"
 #include "com/cyosp/mpa/api/rest/v1/MPAO.hpp"
 #include "com/cyosp/mpa/po/MPAPO.hpp"
+#include "com/cyosp/mpa/api/rest/v1/Account.hpp"
 
 
 namespace mpa_api_rest_v1

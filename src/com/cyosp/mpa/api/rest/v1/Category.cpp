@@ -22,8 +22,7 @@ bool Category::isUrlPathValid()
 {
 	bool ret = false;
 
-	// TODO remove "hard coded" accounts string
-	if( urlPairs.size() > 0 && urlPairs[0].first == "accounts"	)
+	if( urlPairs.size() > 0 && urlPairs[0].first == Account::URL_STRING_PATH_IDENTIFIER	)
 	{
 		accountId = urlPairs[0].second;
 		ret = true;
