@@ -1,3 +1,5 @@
+// 2017-04-29 V 1.18.0
+// - Add: Create operation
 // 2017-04-27 V 1.17.0
 // - Add: Remove provider
 // 2017-04-27 V 1.16.0
@@ -63,6 +65,7 @@ var adminVersion = null;
 var adminToken = null;
 var defaultLocale = "";
 
+var accountBalance = 0;
 
 var adminLoginFct = function()
 {
@@ -643,6 +646,59 @@ describe( "MPA API" , function()
 					
 					// Check token is a number
 					expect( userToken , 'token is not a number' ).to.be.not.NaN;
+
+					// End test
+		    		done();
+				}
+		  	});
+		});
+	});
+	
+	var operationDate = "2017-04-28";
+	var operationAmount = "-10,5";
+	var operationNote = "This a test operation";
+	accountBalance += parseInt( operationAmount );
+	var operationVersion = null;
+	describe( "Create an operation" , function()
+	{
+		var categoryData = null;
+		
+		it( "check response integrity" , function( done )
+		{
+			chai.request( host )
+				.post( "/api/rest/v1/accounts/" + accountId + "/operations/add" )
+				.set( 'content-type', 'application/x-www-form-urlencoded' )
+				.send( {
+							date: operationDate,
+							provider: providerName,
+							amount: operationAmount,
+							category: categoryName,
+							note: operationNote,
+							token: adminToken } )
+			.end( function( error , response , body )
+			{
+				debug( response.text );
+				
+				if( error )	done( error );
+				else
+				{
+					var data = JSON.parse( response.text );
+
+					// Check response is 200
+		   			expect( response.statusCode ).to.equal(200);
+					
+					// Check JSON contains version property
+					assert.property( data , 'version' );
+					
+					// Get operation version
+					operationVersion = data.version;
+					
+					expect( operationVersion , 'version is not equal to 0' ).to.be.equal( "0" );
+					
+					// Check JSON contains balance amount property
+					assert.property( data , 'accountBalance' );
+					
+					expect( data.accountBalance , 'accountBalance is not equal to ' + accountBalance ).to.be.equal( accountBalance.toString() );
 
 					// End test
 		    		done();
