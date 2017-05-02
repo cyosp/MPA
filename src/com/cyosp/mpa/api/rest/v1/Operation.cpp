@@ -116,6 +116,8 @@ string Operation::executeGetRequest(ptree & root)
 
 		operationPtree.add_child("subOperations", subOperationsChildren);
 		operationsChildren.push_back(std::make_pair("", operationPtree));
+
+		ret = MPAO::OK_JSON_ID;
 	}
 
 	root.add_child("operations", operationsChildren);
