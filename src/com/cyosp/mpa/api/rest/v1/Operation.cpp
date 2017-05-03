@@ -16,11 +16,28 @@ Operation::Operation(HttpRequestType httpRequestType, ActionType actionType,
 		const map<string, string>& argvals,
 		vector<std::pair<string, int> > urlPairs) :
 		MPAO(httpRequestType, actionType, argvals, urlPairs)
-{}
+{
+	accountId = -1;
+}
+
+bool Operation::isUrlPathValid()
+{
+	bool ret = false;
+
+	if( urlPairs.size() > 0 && urlPairs[0].first == Account::URL_STRING_PATH_IDENTIFIER	)
+	{
+		accountId = urlPairs[0].second;
+		ret = true;
+	}
+
+	return ret;
+}
+
 
 bool Operation::areGetParametersOk()
 {
-	bool ret = true;
+	bool ret = isUrlPathValid();
+
 	return ret;
 }
 
@@ -28,16 +45,23 @@ bool Operation::arePostAddParametersOk()
 {
 	bool ret = false;
 
-	if( argvals.find("date") != argvals.end() && argvals.find("provider") != argvals.end() && argvals.find("amount") != argvals.end() && argvals.find("category") != argvals.end() && argvals.find("note") != argvals.end() ) ret = true;
+	if( isUrlPathValid()
+			&& argvals.find("date") != argvals.end()
+			&& argvals.find("provider") != argvals.end()
+			&& argvals.find("amount") != argvals.end()
+			&& argvals.find("category") != argvals.end()
+			&& argvals.find("note") != argvals.end() ) ret = true;
 
-	MPA_LOG_TRIVIAL(trace, "Return: " + StrUtil::bool2string( ret ) );
+	//MPA_LOG_TRIVIAL(trace, "Return: " + StrUtil::bool2string( ret ) );
 
 	return ret;
 }
 
 bool Operation::arePostDeleteParametersOk()
 {
-	bool ret = MPAO::arePostDeleteParametersOk();
+	bool ret = false;
+
+	if( isUrlPathValid() && MPAO::arePostDeleteParametersOk() )	ret = true;
 
 	return ret;
 }
@@ -263,6 +287,10 @@ string Operation::executePostUpdateRequest(ptree & root)
 	MPA_LOG_TRIVIAL( trace , "End" );*/
 
 	return ret;
+}
+int Operation::getAccountId()
+{
+	return accountId;
 }
 
 Operation::~Operation()
