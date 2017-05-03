@@ -1,3 +1,5 @@
+// 2017-05-03 V 1.19.0
+// - Add: Get list of operations
 // 2017-04-29 V 1.18.0
 // - Add: Create operation
 // 2017-04-27 V 1.17.0
@@ -655,9 +657,9 @@ describe( "MPA API" , function()
 	});
 	
 	var operationDate = "2017-04-28";
-	var operationAmount = "-10,5";
+	var operationAmount = "-10.5";
 	var operationNote = "This a test operation";
-	accountBalance += parseInt( operationAmount );
+	accountBalance += parseFloat( operationAmount );
 	var operationVersion = null;
 	describe( "Create an operation" , function()
 	{
@@ -674,7 +676,7 @@ describe( "MPA API" , function()
 							amount: operationAmount,
 							category: categoryName,
 							note: operationNote,
-							token: adminToken } )
+							token: userToken } )
 			.end( function( error , response , body )
 			{
 				debug( response.text );
@@ -699,6 +701,42 @@ describe( "MPA API" , function()
 					assert.property( data , 'accountBalance' );
 					
 					expect( data.accountBalance , 'accountBalance is not equal to ' + accountBalance ).to.be.equal( accountBalance.toString() );
+
+					// End test
+		    		done();
+				}
+		  	});
+		});
+	});
+	
+	describe( "Get list of operations" , function()
+	{	
+		it( "check response integrity" , function( done )
+		{
+			chai.request( host )
+				.get( "/api/rest/v1/accounts/" + accountId + "/operations?token=" + userToken )
+				.set( 'content-type', 'application/x-www-form-urlencoded' )
+				.send()
+			.end( function( error , response , body )
+			{
+				debug( response.text );
+				
+				if( error )	done( error );
+				else
+				{
+					var data = JSON.parse( response.text );
+					
+					// Check response is 200
+		   			expect( response.statusCode ).to.equal(200);
+					
+					expect( data ).to.have.deep.property( 'operations[0].version'				, '0' );
+					expect( data ).to.have.deep.property( 'operations[0].date'					, operationDate );
+					expect( data ).to.have.deep.property( 'operations[0].provider'				, providerName );
+					expect( data ).to.have.deep.property( 'operations[0].amount'				, operationAmount );
+					expect( data ).to.have.deep.property( 'operations[0].accountBalance'		, accountBalance.toString() );
+					expect( data ).to.have.deep.property( 'operations[0].details[0].category'	, categoryName );
+					expect( data ).to.have.deep.property( 'operations[0].details[0].note'		, operationNote );
+					expect( data ).to.have.deep.property( 'operations[0].details[0].amount'		, operationAmount );
 
 					// End test
 		    		done();
