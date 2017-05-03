@@ -1,3 +1,5 @@
+// 2017-05-03 V 1.19.1
+// - Add operation list checks
 // 2017-05-03 V 1.19.0
 // - Add: Get list of operations
 // 2017-04-29 V 1.18.0
@@ -729,11 +731,14 @@ describe( "MPA API" , function()
 					// Check response is 200
 		   			expect( response.statusCode ).to.equal(200);
 					
-					expect( data ).to.have.deep.property( 'operations[0].version'				, '0' );
+		   			expect( data ).to.have.deep.property( 'operations[0].id' );
+		   			expect( data ).to.have.deep.property( 'operations[0].version'				, '0' );
 					expect( data ).to.have.deep.property( 'operations[0].date'					, operationDate );
 					expect( data ).to.have.deep.property( 'operations[0].provider'				, providerName );
 					expect( data ).to.have.deep.property( 'operations[0].amount'				, operationAmount );
 					expect( data ).to.have.deep.property( 'operations[0].accountBalance'		, accountBalance.toString() );
+					expect( data ).to.have.deep.property( 'operations[0].details[0].id' );
+					expect( data ).to.have.deep.property( 'operations[0].details[0].version'	, '0' );
 					expect( data ).to.have.deep.property( 'operations[0].details[0].category'	, categoryName );
 					expect( data ).to.have.deep.property( 'operations[0].details[0].note'		, operationNote );
 					expect( data ).to.have.deep.property( 'operations[0].details[0].amount'		, operationAmount );
