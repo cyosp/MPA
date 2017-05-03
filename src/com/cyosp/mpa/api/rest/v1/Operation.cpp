@@ -126,6 +126,7 @@ string Operation::executeGetRequest(ptree & root)
 			mpapo::OperationDetail OperationDetail = (*itSub);
 			ptree OperationDetailPtree;
 			OperationDetailPtree.put("id", OperationDetail.id);
+			OperationDetailPtree.put("version", OperationDetail.version);
 
 			string categoryString = "";
 			litesql::DataSource<mpapo::Category> categoryDatasource = OperationDetail.category().get();
@@ -238,13 +239,12 @@ string Operation::executePostDeleteRequest(ptree & root)
 {
 	string ret = MPAO::DEFAULT_JSON_ID;
 
-	/*int accountId = urlPairs[0].second;
-	int categoryId = urlPairs[1].second;
+	/*int categoryId = urlPairs[1].second;
 	int categoryVersion = atoi( argvals.find("version")->second );
 
 	try
 	{
-		mpapo::Category category = Category::getCategory(accountId , categoryId);
+		mpapo::Category category = Category::getCategory(getAccountId() , categoryId);
 
 		if( category.isCorrectVersion( categoryVersion ) )
 		{
