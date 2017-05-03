@@ -9,7 +9,7 @@ class Account;
 class Category;
 class Provider;
 class Operation;
-class SubOperation;
+class OperationDetail;
 class AccountCategoryRelation {
 public:
     class Row {
@@ -86,40 +86,40 @@ public:
 ;
 ;
 };
-class OperationSubOperationRelation {
+class OperationOperationDetailRelation {
 public:
     class Row {
     public:
-        litesql::Field<int> subOperation;
+        litesql::Field<int> operationDetail;
         litesql::Field<int> operation;
         Row(const litesql::Database& db, const litesql::Record& rec=litesql::Record());
     };
     static const std::string table__;
     static const litesql::FieldType Operation;
-    static const litesql::FieldType SubOperation;
-    static void link(const litesql::Database& db, const mpapo::Operation& o0, const mpapo::SubOperation& o1);
-    static void unlink(const litesql::Database& db, const mpapo::Operation& o0, const mpapo::SubOperation& o1);
+    static const litesql::FieldType OperationDetail;
+    static void link(const litesql::Database& db, const mpapo::Operation& o0, const mpapo::OperationDetail& o1);
+    static void unlink(const litesql::Database& db, const mpapo::Operation& o0, const mpapo::OperationDetail& o1);
     static void del(const litesql::Database& db, const litesql::Expr& expr=litesql::Expr());
-    static litesql::DataSource<OperationSubOperationRelation::Row> getRows(const litesql::Database& db, const litesql::Expr& expr=litesql::Expr());
+    static litesql::DataSource<OperationOperationDetailRelation::Row> getRows(const litesql::Database& db, const litesql::Expr& expr=litesql::Expr());
     template <class T> static litesql::DataSource<T> get(const litesql::Database& db, const litesql::Expr& expr=litesql::Expr(), const litesql::Expr& srcExpr=litesql::Expr());
 ;
 ;
 };
-class CategorySubOperationRelation {
+class CategoryOperationDetailRelation {
 public:
     class Row {
     public:
-        litesql::Field<int> subOperation;
+        litesql::Field<int> operationDetail;
         litesql::Field<int> category;
         Row(const litesql::Database& db, const litesql::Record& rec=litesql::Record());
     };
     static const std::string table__;
     static const litesql::FieldType Category;
-    static const litesql::FieldType SubOperation;
-    static void link(const litesql::Database& db, const mpapo::Category& o0, const mpapo::SubOperation& o1);
-    static void unlink(const litesql::Database& db, const mpapo::Category& o0, const mpapo::SubOperation& o1);
+    static const litesql::FieldType OperationDetail;
+    static void link(const litesql::Database& db, const mpapo::Category& o0, const mpapo::OperationDetail& o1);
+    static void unlink(const litesql::Database& db, const mpapo::Category& o0, const mpapo::OperationDetail& o1);
     static void del(const litesql::Database& db, const litesql::Expr& expr=litesql::Expr());
-    static litesql::DataSource<CategorySubOperationRelation::Row> getRows(const litesql::Database& db, const litesql::Expr& expr=litesql::Expr());
+    static litesql::DataSource<CategoryOperationDetailRelation::Row> getRows(const litesql::Database& db, const litesql::Expr& expr=litesql::Expr());
     template <class T> static litesql::DataSource<T> get(const litesql::Database& db, const litesql::Expr& expr=litesql::Expr(), const litesql::Expr& srcExpr=litesql::Expr());
 ;
 ;
@@ -303,14 +303,14 @@ public:
         litesql::DataSource<Account> get(const litesql::Expr& expr=litesql::Expr(), const litesql::Expr& srcExpr=litesql::Expr());
         litesql::DataSource<AccountCategoryRelation::Row> getRows(const litesql::Expr& expr=litesql::Expr());
     };
-    class SubOperationsHandle : public litesql::RelationHandle<Category> {
+    class OperationDetailsHandle : public litesql::RelationHandle<Category> {
     public:
-        SubOperationsHandle(const Category& owner);
-        void link(const SubOperation& o0);
-        void unlink(const SubOperation& o0);
+        OperationDetailsHandle(const Category& owner);
+        void link(const OperationDetail& o0);
+        void unlink(const OperationDetail& o0);
         void del(const litesql::Expr& expr=litesql::Expr());
-        litesql::DataSource<SubOperation> get(const litesql::Expr& expr=litesql::Expr(), const litesql::Expr& srcExpr=litesql::Expr());
-        litesql::DataSource<CategorySubOperationRelation::Row> getRows(const litesql::Expr& expr=litesql::Expr());
+        litesql::DataSource<OperationDetail> get(const litesql::Expr& expr=litesql::Expr(), const litesql::Expr& srcExpr=litesql::Expr());
+        litesql::DataSource<CategoryOperationDetailRelation::Row> getRows(const litesql::Expr& expr=litesql::Expr());
     };
     static const std::string type__;
     static const std::string table__;
@@ -327,7 +327,7 @@ public:
     Category(const Category& obj);
     const Category& operator=(const Category& obj);
     Category::AccountHandle account();
-    Category::SubOperationsHandle subOperations();
+    Category::OperationDetailsHandle operationDetails();
     virtual void setName(int accountId, string name);
     virtual void setAmount(float amount);
     virtual void addToAmount(float amount);
@@ -434,14 +434,14 @@ public:
         litesql::DataSource<Provider> get(const litesql::Expr& expr=litesql::Expr(), const litesql::Expr& srcExpr=litesql::Expr());
         litesql::DataSource<OperationProviderRelation::Row> getRows(const litesql::Expr& expr=litesql::Expr());
     };
-    class SubOperationsHandle : public litesql::RelationHandle<Operation> {
+    class OperationDetailsHandle : public litesql::RelationHandle<Operation> {
     public:
-        SubOperationsHandle(const Operation& owner);
-        void link(const SubOperation& o0);
-        void unlink(const SubOperation& o0);
+        OperationDetailsHandle(const Operation& owner);
+        void link(const OperationDetail& o0);
+        void unlink(const OperationDetail& o0);
         void del(const litesql::Expr& expr=litesql::Expr());
-        litesql::DataSource<SubOperation> get(const litesql::Expr& expr=litesql::Expr(), const litesql::Expr& srcExpr=litesql::Expr());
-        litesql::DataSource<OperationSubOperationRelation::Row> getRows(const litesql::Expr& expr=litesql::Expr());
+        litesql::DataSource<OperationDetail> get(const litesql::Expr& expr=litesql::Expr(), const litesql::Expr& srcExpr=litesql::Expr());
+        litesql::DataSource<OperationOperationDetailRelation::Row> getRows(const litesql::Expr& expr=litesql::Expr());
     };
     static const std::string type__;
     static const std::string table__;
@@ -461,7 +461,7 @@ public:
     const Operation& operator=(const Operation& obj);
     Operation::AccountHandle account();
     Operation::ProviderHandle provider();
-    Operation::SubOperationsHandle subOperations();
+    Operation::OperationDetailsHandle operationDetails();
     virtual void setDate(string date);
     virtual void setAmount(float amount);
     virtual void setAccountBalance(float amount);
@@ -483,29 +483,29 @@ public:
     std::auto_ptr<Operation> upcastCopy() const;
 };
 std::ostream & operator<<(std::ostream& os, Operation o);
-class SubOperation : public MPAO {
+class OperationDetail : public MPAO {
 public:
     class Own {
     public:
         static const litesql::FieldType Id;
     };
-    class OperationHandle : public litesql::RelationHandle<SubOperation> {
+    class OperationHandle : public litesql::RelationHandle<OperationDetail> {
     public:
-        OperationHandle(const SubOperation& owner);
+        OperationHandle(const OperationDetail& owner);
         void link(const Operation& o0);
         void unlink(const Operation& o0);
         void del(const litesql::Expr& expr=litesql::Expr());
         litesql::DataSource<Operation> get(const litesql::Expr& expr=litesql::Expr(), const litesql::Expr& srcExpr=litesql::Expr());
-        litesql::DataSource<OperationSubOperationRelation::Row> getRows(const litesql::Expr& expr=litesql::Expr());
+        litesql::DataSource<OperationOperationDetailRelation::Row> getRows(const litesql::Expr& expr=litesql::Expr());
     };
-    class CategoryHandle : public litesql::RelationHandle<SubOperation> {
+    class CategoryHandle : public litesql::RelationHandle<OperationDetail> {
     public:
-        CategoryHandle(const SubOperation& owner);
+        CategoryHandle(const OperationDetail& owner);
         void link(const Category& o0);
         void unlink(const Category& o0);
         void del(const litesql::Expr& expr=litesql::Expr());
         litesql::DataSource<Category> get(const litesql::Expr& expr=litesql::Expr(), const litesql::Expr& srcExpr=litesql::Expr());
-        litesql::DataSource<CategorySubOperationRelation::Row> getRows(const litesql::Expr& expr=litesql::Expr());
+        litesql::DataSource<CategoryOperationDetailRelation::Row> getRows(const litesql::Expr& expr=litesql::Expr());
     };
     static const std::string type__;
     static const std::string table__;
@@ -517,12 +517,12 @@ public:
 protected:
     void defaults();
 public:
-    SubOperation(const litesql::Database& db);
-    SubOperation(const litesql::Database& db, const litesql::Record& rec);
-    SubOperation(const SubOperation& obj);
-    const SubOperation& operator=(const SubOperation& obj);
-    SubOperation::OperationHandle operation();
-    SubOperation::CategoryHandle category();
+    OperationDetail(const litesql::Database& db);
+    OperationDetail(const litesql::Database& db, const litesql::Record& rec);
+    OperationDetail(const OperationDetail& obj);
+    const OperationDetail& operator=(const OperationDetail& obj);
+    OperationDetail::OperationHandle operation();
+    OperationDetail::CategoryHandle category();
     virtual void setAmount(float amount);
     virtual void setNote(string name);
 protected:
@@ -539,10 +539,10 @@ public:
     virtual void update();
     virtual void del();
     virtual bool typeIsCorrect() const;
-    std::auto_ptr<SubOperation> upcast() const;
-    std::auto_ptr<SubOperation> upcastCopy() const;
+    std::auto_ptr<OperationDetail> upcast() const;
+    std::auto_ptr<OperationDetail> upcastCopy() const;
 };
-std::ostream & operator<<(std::ostream& os, SubOperation o);
+std::ostream & operator<<(std::ostream& os, OperationDetail o);
 class MPAPO : public litesql::Database {
 public:
     MPAPO(std::string backendType, std::string connInfo);

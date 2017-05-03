@@ -10,12 +10,12 @@
 namespace mpapo
 {
 
-void SubOperation::setAmount( float amount )
+void OperationDetail::setAmount( float amount )
 {
 	this->amount = amount;
 }
 
-void SubOperation::setNote( string note )
+void OperationDetail::setNote( string note )
 {
 	this->note = note;
 }

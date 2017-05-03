@@ -72,7 +72,7 @@ string Operation::executeGetRequest(ptree & root)
 		// Get operation
 		mpapo::Operation operation = (*it);
 		// Get sub operations list
-		vector<mpapo::SubOperation> subOperations = operation.subOperations().get().all();
+		vector<mpapo::OperationDetail> OperationDetails = operation.operationDetails().get().all();
 
 		//MPA_LOG_TRIVIAL(trace, "" );
 		ptree operationPtree;
@@ -91,30 +91,30 @@ string Operation::executeGetRequest(ptree & root)
 		//MPA_LOG_TRIVIAL(trace, "" );
 		operationPtree.put("accountBalance", StrUtil::float2string(operation.accountBalance));
 
-		ptree subOperationsChildren;
+		ptree operationDetailsChildren;
 
 		//MPA_LOG_TRIVIAL(trace, "" );
 
-		//For now there is only one suboperation
-		for (vector<mpapo::SubOperation>::iterator itSub = subOperations.begin(); itSub != subOperations.end(); itSub++)
+		//For now there is only one OperationDetail
+		for (vector<mpapo::OperationDetail>::iterator itSub = OperationDetails.begin(); itSub != OperationDetails.end(); itSub++)
 		{
 			//MPA_LOG_TRIVIAL(trace, "" );
-			mpapo::SubOperation subOperation = (*itSub);
-			ptree subOperationPtree;
-			subOperationPtree.put("id", subOperation.id);
+			mpapo::OperationDetail OperationDetail = (*itSub);
+			ptree OperationDetailPtree;
+			OperationDetailPtree.put("id", OperationDetail.id);
 
 			string categoryString = "";
-			litesql::DataSource<mpapo::Category> categoryDatasource = subOperation.category().get();
+			litesql::DataSource<mpapo::Category> categoryDatasource = OperationDetail.category().get();
 			if( categoryDatasource.count() > 0  )	categoryString = categoryDatasource.one().name;
-			subOperationPtree.put("category", categoryString );
+			OperationDetailPtree.put("category", categoryString );
 
-			subOperationPtree.put("note", subOperation.note);
-			subOperationPtree.put("amount", subOperation.amount);
+			OperationDetailPtree.put("note", OperationDetail.note);
+			OperationDetailPtree.put("amount", OperationDetail.amount);
 
-			subOperationsChildren.push_back(std::make_pair("", subOperationPtree));
+			operationDetailsChildren.push_back(std::make_pair("", OperationDetailPtree));
 		}
 
-		operationPtree.add_child("subOperations", subOperationsChildren);
+		operationPtree.add_child("details", operationDetailsChildren);
 		operationsChildren.push_back(std::make_pair("", operationPtree));
 
 		ret = MPAO::OK_JSON_ID;
@@ -149,12 +149,12 @@ string Operation::executePostAddRequest(ptree & root)
 
 	//MPA_LOG_TRIVIAL(trace,"");
 
-	// Create SubOPeration
-	mpapo::SubOperation subOperation( MPA::getInstance()->getMPAPO() );
-	subOperation.initializeVersion();
-	subOperation.setAmount( amount );
-	subOperation.setNote( note );
-	subOperation.update();
+	// Create OperationDetail
+	mpapo::OperationDetail OperationDetail( MPA::getInstance()->getMPAPO() );
+	OperationDetail.initializeVersion();
+	OperationDetail.setAmount( amount );
+	OperationDetail.setNote( note );
+	OperationDetail.update();
 
 	// Create Operation
 	mpapo::Operation operation( MPA::getInstance()->getMPAPO() );
@@ -164,8 +164,8 @@ string Operation::executePostAddRequest(ptree & root)
 	operation.setAccountBalance( accountBalance );
 	operation.update();
 
-	// Link SubOperation to Operation
-	operation.subOperations().link( subOperation );
+	// Link OperationDetail to Operation
+	operation.operationDetails().link( OperationDetail );
 
 	// Get provider
 	mpapo::Provider provider = mpa::Provider::getProvider( accountId , providerName );
@@ -182,8 +182,8 @@ string Operation::executePostAddRequest(ptree & root)
 	category.addToAmount( amount );
 	category.update();
 
-	// Link category to subOperation
-	subOperation.category().link( category );
+	// Link category to OperationDetail
+	OperationDetail.category().link( category );
 
 	// Get account
 	mpapo::Account account = mpa::Account::getAccount( accountId );

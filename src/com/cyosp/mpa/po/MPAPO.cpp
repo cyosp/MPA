@@ -197,103 +197,103 @@ template <> litesql::DataSource<mpapo::Provider> OperationProviderRelation::get(
     sel.where(srcExpr);
     return DataSource<mpapo::Provider>(db, mpapo::Provider::Id.in(sel) && expr);
 }
-OperationSubOperationRelation::Row::Row(const litesql::Database& db, const litesql::Record& rec)
-         : subOperation(OperationSubOperationRelation::SubOperation), operation(OperationSubOperationRelation::Operation) {
+OperationOperationDetailRelation::Row::Row(const litesql::Database& db, const litesql::Record& rec)
+         : operationDetail(OperationOperationDetailRelation::OperationDetail), operation(OperationOperationDetailRelation::Operation) {
     switch(rec.size()) {
     case 2:
-        subOperation = rec[1];
+        operationDetail = rec[1];
     case 1:
         operation = rec[0];
     }
 }
-const std::string OperationSubOperationRelation::table__("Operation_SubOperation_");
-const litesql::FieldType OperationSubOperationRelation::Operation("Operation1_",A_field_type_integer,table__);
-const litesql::FieldType OperationSubOperationRelation::SubOperation("SubOperation2_",A_field_type_integer,table__);
-void OperationSubOperationRelation::link(const litesql::Database& db, const mpapo::Operation& o0, const mpapo::SubOperation& o1) {
+const std::string OperationOperationDetailRelation::table__("Operation_OperationDetail_");
+const litesql::FieldType OperationOperationDetailRelation::Operation("Operation1_",A_field_type_integer,table__);
+const litesql::FieldType OperationOperationDetailRelation::OperationDetail("OperationDetail2_",A_field_type_integer,table__);
+void OperationOperationDetailRelation::link(const litesql::Database& db, const mpapo::Operation& o0, const mpapo::OperationDetail& o1) {
     Record values;
     Split fields;
     fields.push_back(Operation.name());
     values.push_back(o0.id);
-    fields.push_back(SubOperation.name());
+    fields.push_back(OperationDetail.name());
     values.push_back(o1.id);
     db.insert(table__, values, fields);
 }
-void OperationSubOperationRelation::unlink(const litesql::Database& db, const mpapo::Operation& o0, const mpapo::SubOperation& o1) {
-    db.delete_(table__, (Operation == o0.id && SubOperation == o1.id));
+void OperationOperationDetailRelation::unlink(const litesql::Database& db, const mpapo::Operation& o0, const mpapo::OperationDetail& o1) {
+    db.delete_(table__, (Operation == o0.id && OperationDetail == o1.id));
 }
-void OperationSubOperationRelation::del(const litesql::Database& db, const litesql::Expr& expr) {
+void OperationOperationDetailRelation::del(const litesql::Database& db, const litesql::Expr& expr) {
     db.delete_(table__, expr);
 }
-litesql::DataSource<OperationSubOperationRelation::Row> OperationSubOperationRelation::getRows(const litesql::Database& db, const litesql::Expr& expr) {
+litesql::DataSource<OperationOperationDetailRelation::Row> OperationOperationDetailRelation::getRows(const litesql::Database& db, const litesql::Expr& expr) {
     SelectQuery sel;
     sel.result(Operation.fullName());
-    sel.result(SubOperation.fullName());
+    sel.result(OperationDetail.fullName());
     sel.source(table__);
     sel.where(expr);
-    return DataSource<OperationSubOperationRelation::Row>(db, sel);
+    return DataSource<OperationOperationDetailRelation::Row>(db, sel);
 }
-template <> litesql::DataSource<mpapo::Operation> OperationSubOperationRelation::get(const litesql::Database& db, const litesql::Expr& expr, const litesql::Expr& srcExpr) {
+template <> litesql::DataSource<mpapo::Operation> OperationOperationDetailRelation::get(const litesql::Database& db, const litesql::Expr& expr, const litesql::Expr& srcExpr) {
     SelectQuery sel;
     sel.source(table__);
     sel.result(Operation.fullName());
     sel.where(srcExpr);
     return DataSource<mpapo::Operation>(db, mpapo::Operation::Id.in(sel) && expr);
 }
-template <> litesql::DataSource<mpapo::SubOperation> OperationSubOperationRelation::get(const litesql::Database& db, const litesql::Expr& expr, const litesql::Expr& srcExpr) {
+template <> litesql::DataSource<mpapo::OperationDetail> OperationOperationDetailRelation::get(const litesql::Database& db, const litesql::Expr& expr, const litesql::Expr& srcExpr) {
     SelectQuery sel;
     sel.source(table__);
-    sel.result(SubOperation.fullName());
+    sel.result(OperationDetail.fullName());
     sel.where(srcExpr);
-    return DataSource<mpapo::SubOperation>(db, mpapo::SubOperation::Id.in(sel) && expr);
+    return DataSource<mpapo::OperationDetail>(db, mpapo::OperationDetail::Id.in(sel) && expr);
 }
-CategorySubOperationRelation::Row::Row(const litesql::Database& db, const litesql::Record& rec)
-         : subOperation(CategorySubOperationRelation::SubOperation), category(CategorySubOperationRelation::Category) {
+CategoryOperationDetailRelation::Row::Row(const litesql::Database& db, const litesql::Record& rec)
+         : operationDetail(CategoryOperationDetailRelation::OperationDetail), category(CategoryOperationDetailRelation::Category) {
     switch(rec.size()) {
     case 2:
-        subOperation = rec[1];
+        operationDetail = rec[1];
     case 1:
         category = rec[0];
     }
 }
-const std::string CategorySubOperationRelation::table__("Category_SubOperation_");
-const litesql::FieldType CategorySubOperationRelation::Category("Category1_",A_field_type_integer,table__);
-const litesql::FieldType CategorySubOperationRelation::SubOperation("SubOperation2_",A_field_type_integer,table__);
-void CategorySubOperationRelation::link(const litesql::Database& db, const mpapo::Category& o0, const mpapo::SubOperation& o1) {
+const std::string CategoryOperationDetailRelation::table__("Category_OperationDetail_");
+const litesql::FieldType CategoryOperationDetailRelation::Category("Category1_",A_field_type_integer,table__);
+const litesql::FieldType CategoryOperationDetailRelation::OperationDetail("OperationDetail2_",A_field_type_integer,table__);
+void CategoryOperationDetailRelation::link(const litesql::Database& db, const mpapo::Category& o0, const mpapo::OperationDetail& o1) {
     Record values;
     Split fields;
     fields.push_back(Category.name());
     values.push_back(o0.id);
-    fields.push_back(SubOperation.name());
+    fields.push_back(OperationDetail.name());
     values.push_back(o1.id);
     db.insert(table__, values, fields);
 }
-void CategorySubOperationRelation::unlink(const litesql::Database& db, const mpapo::Category& o0, const mpapo::SubOperation& o1) {
-    db.delete_(table__, (Category == o0.id && SubOperation == o1.id));
+void CategoryOperationDetailRelation::unlink(const litesql::Database& db, const mpapo::Category& o0, const mpapo::OperationDetail& o1) {
+    db.delete_(table__, (Category == o0.id && OperationDetail == o1.id));
 }
-void CategorySubOperationRelation::del(const litesql::Database& db, const litesql::Expr& expr) {
+void CategoryOperationDetailRelation::del(const litesql::Database& db, const litesql::Expr& expr) {
     db.delete_(table__, expr);
 }
-litesql::DataSource<CategorySubOperationRelation::Row> CategorySubOperationRelation::getRows(const litesql::Database& db, const litesql::Expr& expr) {
+litesql::DataSource<CategoryOperationDetailRelation::Row> CategoryOperationDetailRelation::getRows(const litesql::Database& db, const litesql::Expr& expr) {
     SelectQuery sel;
     sel.result(Category.fullName());
-    sel.result(SubOperation.fullName());
+    sel.result(OperationDetail.fullName());
     sel.source(table__);
     sel.where(expr);
-    return DataSource<CategorySubOperationRelation::Row>(db, sel);
+    return DataSource<CategoryOperationDetailRelation::Row>(db, sel);
 }
-template <> litesql::DataSource<mpapo::Category> CategorySubOperationRelation::get(const litesql::Database& db, const litesql::Expr& expr, const litesql::Expr& srcExpr) {
+template <> litesql::DataSource<mpapo::Category> CategoryOperationDetailRelation::get(const litesql::Database& db, const litesql::Expr& expr, const litesql::Expr& srcExpr) {
     SelectQuery sel;
     sel.source(table__);
     sel.result(Category.fullName());
     sel.where(srcExpr);
     return DataSource<mpapo::Category>(db, mpapo::Category::Id.in(sel) && expr);
 }
-template <> litesql::DataSource<mpapo::SubOperation> CategorySubOperationRelation::get(const litesql::Database& db, const litesql::Expr& expr, const litesql::Expr& srcExpr) {
+template <> litesql::DataSource<mpapo::OperationDetail> CategoryOperationDetailRelation::get(const litesql::Database& db, const litesql::Expr& expr, const litesql::Expr& srcExpr) {
     SelectQuery sel;
     sel.source(table__);
-    sel.result(SubOperation.fullName());
+    sel.result(OperationDetail.fullName());
     sel.where(srcExpr);
-    return DataSource<mpapo::SubOperation>(db, mpapo::SubOperation::Id.in(sel) && expr);
+    return DataSource<mpapo::OperationDetail>(db, mpapo::OperationDetail::Id.in(sel) && expr);
 }
 const litesql::FieldType MPAO::Own::Id("id_",A_field_type_integer,"MPAO_");
 const std::string MPAO::type__("MPAO");
@@ -422,8 +422,8 @@ std::auto_ptr<MPAO> MPAO::upcast() const {
         return auto_ptr<MPAO>(new Provider(select<Provider>(*db, Id == id).one()));
     if (type == Operation::type__)
         return auto_ptr<MPAO>(new Operation(select<Operation>(*db, Id == id).one()));
-    if (type == SubOperation::type__)
-        return auto_ptr<MPAO>(new SubOperation(select<SubOperation>(*db, Id == id).one()));
+    if (type == OperationDetail::type__)
+        return auto_ptr<MPAO>(new OperationDetail(select<OperationDetail>(*db, Id == id).one()));
     return auto_ptr<MPAO>(new MPAO(*this));
 }
 std::auto_ptr<MPAO> MPAO::upcastCopy() const {
@@ -438,8 +438,8 @@ std::auto_ptr<MPAO> MPAO::upcastCopy() const {
         np = new Provider(*db);
     if (type == "Operation")
         np = new Operation(*db);
-    if (type == "SubOperation")
-        np = new SubOperation(*db);
+    if (type == "OperationDetail")
+        np = new OperationDetail(*db);
     np->id = id;
     np->type = type;
     np->version = version;
@@ -841,23 +841,23 @@ litesql::DataSource<Account> Category::AccountHandle::get(const litesql::Expr& e
 litesql::DataSource<AccountCategoryRelation::Row> Category::AccountHandle::getRows(const litesql::Expr& expr) {
     return AccountCategoryRelation::getRows(owner->getDatabase(), expr && (AccountCategoryRelation::Category == owner->id));
 }
-Category::SubOperationsHandle::SubOperationsHandle(const Category& owner)
+Category::OperationDetailsHandle::OperationDetailsHandle(const Category& owner)
          : litesql::RelationHandle<Category>(owner) {
 }
-void Category::SubOperationsHandle::link(const SubOperation& o0) {
-    CategorySubOperationRelation::link(owner->getDatabase(), *owner, o0);
+void Category::OperationDetailsHandle::link(const OperationDetail& o0) {
+    CategoryOperationDetailRelation::link(owner->getDatabase(), *owner, o0);
 }
-void Category::SubOperationsHandle::unlink(const SubOperation& o0) {
-    CategorySubOperationRelation::unlink(owner->getDatabase(), *owner, o0);
+void Category::OperationDetailsHandle::unlink(const OperationDetail& o0) {
+    CategoryOperationDetailRelation::unlink(owner->getDatabase(), *owner, o0);
 }
-void Category::SubOperationsHandle::del(const litesql::Expr& expr) {
-    CategorySubOperationRelation::del(owner->getDatabase(), expr && CategorySubOperationRelation::Category == owner->id);
+void Category::OperationDetailsHandle::del(const litesql::Expr& expr) {
+    CategoryOperationDetailRelation::del(owner->getDatabase(), expr && CategoryOperationDetailRelation::Category == owner->id);
 }
-litesql::DataSource<SubOperation> Category::SubOperationsHandle::get(const litesql::Expr& expr, const litesql::Expr& srcExpr) {
-    return CategorySubOperationRelation::get<SubOperation>(owner->getDatabase(), expr, (CategorySubOperationRelation::Category == owner->id) && srcExpr);
+litesql::DataSource<OperationDetail> Category::OperationDetailsHandle::get(const litesql::Expr& expr, const litesql::Expr& srcExpr) {
+    return CategoryOperationDetailRelation::get<OperationDetail>(owner->getDatabase(), expr, (CategoryOperationDetailRelation::Category == owner->id) && srcExpr);
 }
-litesql::DataSource<CategorySubOperationRelation::Row> Category::SubOperationsHandle::getRows(const litesql::Expr& expr) {
-    return CategorySubOperationRelation::getRows(owner->getDatabase(), expr && (CategorySubOperationRelation::Category == owner->id));
+litesql::DataSource<CategoryOperationDetailRelation::Row> Category::OperationDetailsHandle::getRows(const litesql::Expr& expr) {
+    return CategoryOperationDetailRelation::getRows(owner->getDatabase(), expr && (CategoryOperationDetailRelation::Category == owner->id));
 }
 const std::string Category::type__("Category");
 const std::string Category::table__("Category_");
@@ -897,8 +897,8 @@ const Category& Category::operator=(const Category& obj) {
 Category::AccountHandle Category::account() {
     return Category::AccountHandle(*this);
 }
-Category::SubOperationsHandle Category::subOperations() {
-    return Category::SubOperationsHandle(*this);
+Category::OperationDetailsHandle Category::operationDetails() {
+    return Category::OperationDetailsHandle(*this);
 }
 std::string Category::insert(litesql::Record& tables, litesql::Records& fieldRecs, litesql::Records& valueRecs) {
     tables.push_back(table__);
@@ -946,7 +946,7 @@ void Category::delRecord() {
 }
 void Category::delRelations() {
     AccountCategoryRelation::del(*db, (AccountCategoryRelation::Category == id));
-    CategorySubOperationRelation::del(*db, (CategorySubOperationRelation::Category == id));
+    CategoryOperationDetailRelation::del(*db, (CategoryOperationDetailRelation::Category == id));
 }
 void Category::update() {
     if (!inDatabase) {
@@ -1215,23 +1215,23 @@ litesql::DataSource<Provider> Operation::ProviderHandle::get(const litesql::Expr
 litesql::DataSource<OperationProviderRelation::Row> Operation::ProviderHandle::getRows(const litesql::Expr& expr) {
     return OperationProviderRelation::getRows(owner->getDatabase(), expr && (OperationProviderRelation::Operation == owner->id));
 }
-Operation::SubOperationsHandle::SubOperationsHandle(const Operation& owner)
+Operation::OperationDetailsHandle::OperationDetailsHandle(const Operation& owner)
          : litesql::RelationHandle<Operation>(owner) {
 }
-void Operation::SubOperationsHandle::link(const SubOperation& o0) {
-    OperationSubOperationRelation::link(owner->getDatabase(), *owner, o0);
+void Operation::OperationDetailsHandle::link(const OperationDetail& o0) {
+    OperationOperationDetailRelation::link(owner->getDatabase(), *owner, o0);
 }
-void Operation::SubOperationsHandle::unlink(const SubOperation& o0) {
-    OperationSubOperationRelation::unlink(owner->getDatabase(), *owner, o0);
+void Operation::OperationDetailsHandle::unlink(const OperationDetail& o0) {
+    OperationOperationDetailRelation::unlink(owner->getDatabase(), *owner, o0);
 }
-void Operation::SubOperationsHandle::del(const litesql::Expr& expr) {
-    OperationSubOperationRelation::del(owner->getDatabase(), expr && OperationSubOperationRelation::Operation == owner->id);
+void Operation::OperationDetailsHandle::del(const litesql::Expr& expr) {
+    OperationOperationDetailRelation::del(owner->getDatabase(), expr && OperationOperationDetailRelation::Operation == owner->id);
 }
-litesql::DataSource<SubOperation> Operation::SubOperationsHandle::get(const litesql::Expr& expr, const litesql::Expr& srcExpr) {
-    return OperationSubOperationRelation::get<SubOperation>(owner->getDatabase(), expr, (OperationSubOperationRelation::Operation == owner->id) && srcExpr);
+litesql::DataSource<OperationDetail> Operation::OperationDetailsHandle::get(const litesql::Expr& expr, const litesql::Expr& srcExpr) {
+    return OperationOperationDetailRelation::get<OperationDetail>(owner->getDatabase(), expr, (OperationOperationDetailRelation::Operation == owner->id) && srcExpr);
 }
-litesql::DataSource<OperationSubOperationRelation::Row> Operation::SubOperationsHandle::getRows(const litesql::Expr& expr) {
-    return OperationSubOperationRelation::getRows(owner->getDatabase(), expr && (OperationSubOperationRelation::Operation == owner->id));
+litesql::DataSource<OperationOperationDetailRelation::Row> Operation::OperationDetailsHandle::getRows(const litesql::Expr& expr) {
+    return OperationOperationDetailRelation::getRows(owner->getDatabase(), expr && (OperationOperationDetailRelation::Operation == owner->id));
 }
 const std::string Operation::type__("Operation");
 const std::string Operation::table__("Operation_");
@@ -1279,8 +1279,8 @@ Operation::AccountHandle Operation::account() {
 Operation::ProviderHandle Operation::provider() {
     return Operation::ProviderHandle(*this);
 }
-Operation::SubOperationsHandle Operation::subOperations() {
-    return Operation::SubOperationsHandle(*this);
+Operation::OperationDetailsHandle Operation::operationDetails() {
+    return Operation::OperationDetailsHandle(*this);
 }
 std::string Operation::insert(litesql::Record& tables, litesql::Records& fieldRecs, litesql::Records& valueRecs) {
     tables.push_back(table__);
@@ -1334,7 +1334,7 @@ void Operation::delRecord() {
 void Operation::delRelations() {
     AccountOperationRelation::del(*db, (AccountOperationRelation::Operation == id));
     OperationProviderRelation::del(*db, (OperationProviderRelation::Operation == id));
-    OperationSubOperationRelation::del(*db, (OperationSubOperationRelation::Operation == id));
+    OperationOperationDetailRelation::del(*db, (OperationOperationDetailRelation::Operation == id));
 }
 void Operation::update() {
     if (!inDatabase) {
@@ -1390,57 +1390,57 @@ std::ostream & operator<<(std::ostream& os, Operation o) {
     os << "-------------------------------------" << std::endl;
     return os;
 }
-const litesql::FieldType SubOperation::Own::Id("id_",A_field_type_integer,"SubOperation_");
-SubOperation::OperationHandle::OperationHandle(const SubOperation& owner)
-         : litesql::RelationHandle<SubOperation>(owner) {
+const litesql::FieldType OperationDetail::Own::Id("id_",A_field_type_integer,"OperationDetail_");
+OperationDetail::OperationHandle::OperationHandle(const OperationDetail& owner)
+         : litesql::RelationHandle<OperationDetail>(owner) {
 }
-void SubOperation::OperationHandle::link(const Operation& o0) {
-    OperationSubOperationRelation::link(owner->getDatabase(), o0, *owner);
+void OperationDetail::OperationHandle::link(const Operation& o0) {
+    OperationOperationDetailRelation::link(owner->getDatabase(), o0, *owner);
 }
-void SubOperation::OperationHandle::unlink(const Operation& o0) {
-    OperationSubOperationRelation::unlink(owner->getDatabase(), o0, *owner);
+void OperationDetail::OperationHandle::unlink(const Operation& o0) {
+    OperationOperationDetailRelation::unlink(owner->getDatabase(), o0, *owner);
 }
-void SubOperation::OperationHandle::del(const litesql::Expr& expr) {
-    OperationSubOperationRelation::del(owner->getDatabase(), expr && OperationSubOperationRelation::SubOperation == owner->id);
+void OperationDetail::OperationHandle::del(const litesql::Expr& expr) {
+    OperationOperationDetailRelation::del(owner->getDatabase(), expr && OperationOperationDetailRelation::OperationDetail == owner->id);
 }
-litesql::DataSource<Operation> SubOperation::OperationHandle::get(const litesql::Expr& expr, const litesql::Expr& srcExpr) {
-    return OperationSubOperationRelation::get<Operation>(owner->getDatabase(), expr, (OperationSubOperationRelation::SubOperation == owner->id) && srcExpr);
+litesql::DataSource<Operation> OperationDetail::OperationHandle::get(const litesql::Expr& expr, const litesql::Expr& srcExpr) {
+    return OperationOperationDetailRelation::get<Operation>(owner->getDatabase(), expr, (OperationOperationDetailRelation::OperationDetail == owner->id) && srcExpr);
 }
-litesql::DataSource<OperationSubOperationRelation::Row> SubOperation::OperationHandle::getRows(const litesql::Expr& expr) {
-    return OperationSubOperationRelation::getRows(owner->getDatabase(), expr && (OperationSubOperationRelation::SubOperation == owner->id));
+litesql::DataSource<OperationOperationDetailRelation::Row> OperationDetail::OperationHandle::getRows(const litesql::Expr& expr) {
+    return OperationOperationDetailRelation::getRows(owner->getDatabase(), expr && (OperationOperationDetailRelation::OperationDetail == owner->id));
 }
-SubOperation::CategoryHandle::CategoryHandle(const SubOperation& owner)
-         : litesql::RelationHandle<SubOperation>(owner) {
+OperationDetail::CategoryHandle::CategoryHandle(const OperationDetail& owner)
+         : litesql::RelationHandle<OperationDetail>(owner) {
 }
-void SubOperation::CategoryHandle::link(const Category& o0) {
-    CategorySubOperationRelation::link(owner->getDatabase(), o0, *owner);
+void OperationDetail::CategoryHandle::link(const Category& o0) {
+    CategoryOperationDetailRelation::link(owner->getDatabase(), o0, *owner);
 }
-void SubOperation::CategoryHandle::unlink(const Category& o0) {
-    CategorySubOperationRelation::unlink(owner->getDatabase(), o0, *owner);
+void OperationDetail::CategoryHandle::unlink(const Category& o0) {
+    CategoryOperationDetailRelation::unlink(owner->getDatabase(), o0, *owner);
 }
-void SubOperation::CategoryHandle::del(const litesql::Expr& expr) {
-    CategorySubOperationRelation::del(owner->getDatabase(), expr && CategorySubOperationRelation::SubOperation == owner->id);
+void OperationDetail::CategoryHandle::del(const litesql::Expr& expr) {
+    CategoryOperationDetailRelation::del(owner->getDatabase(), expr && CategoryOperationDetailRelation::OperationDetail == owner->id);
 }
-litesql::DataSource<Category> SubOperation::CategoryHandle::get(const litesql::Expr& expr, const litesql::Expr& srcExpr) {
-    return CategorySubOperationRelation::get<Category>(owner->getDatabase(), expr, (CategorySubOperationRelation::SubOperation == owner->id) && srcExpr);
+litesql::DataSource<Category> OperationDetail::CategoryHandle::get(const litesql::Expr& expr, const litesql::Expr& srcExpr) {
+    return CategoryOperationDetailRelation::get<Category>(owner->getDatabase(), expr, (CategoryOperationDetailRelation::OperationDetail == owner->id) && srcExpr);
 }
-litesql::DataSource<CategorySubOperationRelation::Row> SubOperation::CategoryHandle::getRows(const litesql::Expr& expr) {
-    return CategorySubOperationRelation::getRows(owner->getDatabase(), expr && (CategorySubOperationRelation::SubOperation == owner->id));
+litesql::DataSource<CategoryOperationDetailRelation::Row> OperationDetail::CategoryHandle::getRows(const litesql::Expr& expr) {
+    return CategoryOperationDetailRelation::getRows(owner->getDatabase(), expr && (CategoryOperationDetailRelation::OperationDetail == owner->id));
 }
-const std::string SubOperation::type__("SubOperation");
-const std::string SubOperation::table__("SubOperation_");
-const litesql::FieldType SubOperation::Amount("amount_",A_field_type_float,table__);
-const litesql::FieldType SubOperation::Note("note_",A_field_type_string,table__);
-void SubOperation::initValues() {
+const std::string OperationDetail::type__("OperationDetail");
+const std::string OperationDetail::table__("OperationDetail_");
+const litesql::FieldType OperationDetail::Amount("amount_",A_field_type_float,table__);
+const litesql::FieldType OperationDetail::Note("note_",A_field_type_string,table__);
+void OperationDetail::initValues() {
 }
-void SubOperation::defaults() {
+void OperationDetail::defaults() {
     amount = 0.0;
 }
-SubOperation::SubOperation(const litesql::Database& db)
+OperationDetail::OperationDetail(const litesql::Database& db)
      : MPAO(db), amount(Amount), note(Note) {
     defaults();
 }
-SubOperation::SubOperation(const litesql::Database& db, const litesql::Record& rec)
+OperationDetail::OperationDetail(const litesql::Database& db, const litesql::Record& rec)
      : MPAO(db, rec), amount(Amount), note(Note) {
     defaults();
     size_t size = (rec.size() > 5) ? 5 : rec.size();
@@ -1451,10 +1451,10 @@ SubOperation::SubOperation(const litesql::Database& db, const litesql::Record& r
         amount.setModified(false);
     }
 }
-SubOperation::SubOperation(const SubOperation& obj)
+OperationDetail::OperationDetail(const OperationDetail& obj)
      : MPAO(obj), amount(obj.amount), note(obj.note) {
 }
-const SubOperation& SubOperation::operator=(const SubOperation& obj) {
+const OperationDetail& OperationDetail::operator=(const OperationDetail& obj) {
     if (this != &obj) {
         amount = obj.amount;
         note = obj.note;
@@ -1462,13 +1462,13 @@ const SubOperation& SubOperation::operator=(const SubOperation& obj) {
     MPAO::operator=(obj);
     return *this;
 }
-SubOperation::OperationHandle SubOperation::operation() {
-    return SubOperation::OperationHandle(*this);
+OperationDetail::OperationHandle OperationDetail::operation() {
+    return OperationDetail::OperationHandle(*this);
 }
-SubOperation::CategoryHandle SubOperation::category() {
-    return SubOperation::CategoryHandle(*this);
+OperationDetail::CategoryHandle OperationDetail::category() {
+    return OperationDetail::CategoryHandle(*this);
 }
-std::string SubOperation::insert(litesql::Record& tables, litesql::Records& fieldRecs, litesql::Records& valueRecs) {
+std::string OperationDetail::insert(litesql::Record& tables, litesql::Records& fieldRecs, litesql::Records& valueRecs) {
     tables.push_back(table__);
     litesql::Record fields;
     litesql::Record values;
@@ -1484,7 +1484,7 @@ std::string SubOperation::insert(litesql::Record& tables, litesql::Records& fiel
     valueRecs.push_back(values);
     return MPAO::insert(tables, fieldRecs, valueRecs);
 }
-void SubOperation::create() {
+void OperationDetail::create() {
     litesql::Record tables;
     litesql::Records fieldRecs;
     litesql::Records valueRecs;
@@ -1493,30 +1493,30 @@ void SubOperation::create() {
     if (id == 0)
         id = newID;
 }
-void SubOperation::addUpdates(Updates& updates) {
+void OperationDetail::addUpdates(Updates& updates) {
     prepareUpdate(updates, table__);
     updateField(updates, table__, amount);
     updateField(updates, table__, note);
     MPAO::addUpdates(updates);
 }
-void SubOperation::addIDUpdates(Updates& updates) {
+void OperationDetail::addIDUpdates(Updates& updates) {
     prepareUpdate(updates, table__);
     updateField(updates, table__, id);
 }
-void SubOperation::getFieldTypes(std::vector<litesql::FieldType>& ftypes) {
+void OperationDetail::getFieldTypes(std::vector<litesql::FieldType>& ftypes) {
     MPAO::getFieldTypes(ftypes);
     ftypes.push_back(Amount);
     ftypes.push_back(Note);
 }
-void SubOperation::delRecord() {
+void OperationDetail::delRecord() {
     deleteFromTable(table__, id);
     MPAO::delRecord();
 }
-void SubOperation::delRelations() {
-    OperationSubOperationRelation::del(*db, (OperationSubOperationRelation::SubOperation == id));
-    CategorySubOperationRelation::del(*db, (CategorySubOperationRelation::SubOperation == id));
+void OperationDetail::delRelations() {
+    OperationOperationDetailRelation::del(*db, (OperationOperationDetailRelation::OperationDetail == id));
+    CategoryOperationDetailRelation::del(*db, (CategoryOperationDetailRelation::OperationDetail == id));
 }
-void SubOperation::update() {
+void OperationDetail::update() {
     if (!inDatabase) {
         create();
         return;
@@ -1532,9 +1532,9 @@ void SubOperation::update() {
     litesql::Persistent::update(updates);
     oldKey = id;
 }
-void SubOperation::del() {
+void OperationDetail::del() {
     if (!typeIsCorrect()) {
-        std::auto_ptr<SubOperation> p(upcastCopy());
+        std::auto_ptr<OperationDetail> p(upcastCopy());
         p->delRelations();
         p->onDelete();
         p->delRecord();
@@ -1545,20 +1545,20 @@ void SubOperation::del() {
     }
     inDatabase = false;
 }
-bool SubOperation::typeIsCorrect() const {
+bool OperationDetail::typeIsCorrect() const {
     return type == type__;
 }
-std::auto_ptr<SubOperation> SubOperation::upcast() const {
-    return auto_ptr<SubOperation>(new SubOperation(*this));
+std::auto_ptr<OperationDetail> OperationDetail::upcast() const {
+    return auto_ptr<OperationDetail>(new OperationDetail(*this));
 }
-std::auto_ptr<SubOperation> SubOperation::upcastCopy() const {
-    SubOperation* np = new SubOperation(*this);
+std::auto_ptr<OperationDetail> OperationDetail::upcastCopy() const {
+    OperationDetail* np = new OperationDetail(*this);
     np->amount = amount;
     np->note = note;
     np->inDatabase = inDatabase;
-    return auto_ptr<SubOperation>(np);
+    return auto_ptr<OperationDetail>(np);
 }
-std::ostream & operator<<(std::ostream& os, SubOperation o) {
+std::ostream & operator<<(std::ostream& os, OperationDetail o) {
     os << "-------------------------------------" << std::endl;
     os << o.id.name() << " = " << o.id << std::endl;
     os << o.type.name() << " = " << o.type << std::endl;
@@ -1586,13 +1586,13 @@ std::vector<litesql::Database::SchemaItem> MPAPO::getSchema() const {
     res.push_back(Database::SchemaItem("Category_","table","CREATE TABLE Category_ (id_ " + rowIdType + ",name_ " + backend->getSQLType(A_field_type_string,"64") + "" +",amount_ " + backend->getSQLType(A_field_type_float,"") + "" +")"));
     res.push_back(Database::SchemaItem("Provider_","table","CREATE TABLE Provider_ (id_ " + rowIdType + ",name_ " + backend->getSQLType(A_field_type_string,"64") + "" +",amount_ " + backend->getSQLType(A_field_type_float,"") + "" +")"));
     res.push_back(Database::SchemaItem("Operation_","table","CREATE TABLE Operation_ (id_ " + rowIdType + ",date_ " + backend->getSQLType(A_field_type_string,"10") + "" +",amount_ " + backend->getSQLType(A_field_type_float,"") + "" +",accountBalance_ " + backend->getSQLType(A_field_type_float,"") + "" +")"));
-    res.push_back(Database::SchemaItem("SubOperation_","table","CREATE TABLE SubOperation_ (id_ " + rowIdType + ",amount_ " + backend->getSQLType(A_field_type_float,"") + "" +",note_ " + backend->getSQLType(A_field_type_string,"1024") + "" +")"));
+    res.push_back(Database::SchemaItem("OperationDetail_","table","CREATE TABLE OperationDetail_ (id_ " + rowIdType + ",amount_ " + backend->getSQLType(A_field_type_float,"") + "" +",note_ " + backend->getSQLType(A_field_type_string,"1024") + "" +")"));
     res.push_back(Database::SchemaItem("Account_Category_","table","CREATE TABLE Account_Category_ (Account1_ " + backend->getSQLType(A_field_type_integer,"") + "" +",Category2_ " + backend->getSQLType(A_field_type_integer,"") + " UNIQUE" +")"));
     res.push_back(Database::SchemaItem("Account_Provider_","table","CREATE TABLE Account_Provider_ (Account1_ " + backend->getSQLType(A_field_type_integer,"") + "" +",Provider2_ " + backend->getSQLType(A_field_type_integer,"") + " UNIQUE" +")"));
     res.push_back(Database::SchemaItem("Account_Operation_","table","CREATE TABLE Account_Operation_ (Account1_ " + backend->getSQLType(A_field_type_integer,"") + "" +",Operation2_ " + backend->getSQLType(A_field_type_integer,"") + " UNIQUE" +")"));
     res.push_back(Database::SchemaItem("Operation_Provider_","table","CREATE TABLE Operation_Provider_ (Operation1_ " + backend->getSQLType(A_field_type_integer,"") + " UNIQUE" +",Provider2_ " + backend->getSQLType(A_field_type_integer,"") + "" +")"));
-    res.push_back(Database::SchemaItem("Operation_SubOperation_","table","CREATE TABLE Operation_SubOperation_ (Operation1_ " + backend->getSQLType(A_field_type_integer,"") + "" +",SubOperation2_ " + backend->getSQLType(A_field_type_integer,"") + " UNIQUE" +")"));
-    res.push_back(Database::SchemaItem("Category_SubOperation_","table","CREATE TABLE Category_SubOperation_ (Category1_ " + backend->getSQLType(A_field_type_integer,"") + "" +",SubOperation2_ " + backend->getSQLType(A_field_type_integer,"") + " UNIQUE" +")"));
+    res.push_back(Database::SchemaItem("Operation_OperationDetail_","table","CREATE TABLE Operation_OperationDetail_ (Operation1_ " + backend->getSQLType(A_field_type_integer,"") + "" +",OperationDetail2_ " + backend->getSQLType(A_field_type_integer,"") + " UNIQUE" +")"));
+    res.push_back(Database::SchemaItem("Category_OperationDetail_","table","CREATE TABLE Category_OperationDetail_ (Category1_ " + backend->getSQLType(A_field_type_integer,"") + "" +",OperationDetail2_ " + backend->getSQLType(A_field_type_integer,"") + " UNIQUE" +")"));
     res.push_back(Database::SchemaItem("MPAO_id_idx","index","CREATE INDEX MPAO_id_idx ON MPAO_ (id_)"));
     res.push_back(Database::SchemaItem("Account_Category_Account1_idx","index","CREATE INDEX Account_Category_Account1_idx ON Account_Category_ (Account1_)"));
     res.push_back(Database::SchemaItem("Account_Category_Category2_idx","index","CREATE INDEX Account_Category_Category2_idx ON Account_Category_ (Category2_)"));
@@ -1606,12 +1606,12 @@ std::vector<litesql::Database::SchemaItem> MPAPO::getSchema() const {
     res.push_back(Database::SchemaItem("O2a49bb6ee72af75814472e98bf5bd","index","CREATE INDEX O2a49bb6ee72af75814472e98bf5bd ON Operation_Provider_ (Operation1_)"));
     res.push_back(Database::SchemaItem("Ob3ed6a6b37220a19dca7dd9b86086","index","CREATE INDEX Ob3ed6a6b37220a19dca7dd9b86086 ON Operation_Provider_ (Provider2_)"));
     res.push_back(Database::SchemaItem("Operation_Provider__all_idx","index","CREATE INDEX Operation_Provider__all_idx ON Operation_Provider_ (Operation1_,Provider2_)"));
-    res.push_back(Database::SchemaItem("O5878b6a45901dbe3d85d191a35c02","index","CREATE INDEX O5878b6a45901dbe3d85d191a35c02 ON Operation_SubOperation_ (Operation1_)"));
-    res.push_back(Database::SchemaItem("Ofeea4c6ec3fbbc389739771437ce7","index","CREATE INDEX Ofeea4c6ec3fbbc389739771437ce7 ON Operation_SubOperation_ (SubOperation2_)"));
-    res.push_back(Database::SchemaItem("O35a4cd2a5d4fe24baa830075d3697","index","CREATE INDEX O35a4cd2a5d4fe24baa830075d3697 ON Operation_SubOperation_ (Operation1_,SubOperation2_)"));
-    res.push_back(Database::SchemaItem("Oee56bd5cf95507024425ef62592e6","index","CREATE INDEX Oee56bd5cf95507024425ef62592e6 ON Category_SubOperation_ (Category1_)"));
-    res.push_back(Database::SchemaItem("O1a4165bfa432f6c1cc2ce4d2b2de1","index","CREATE INDEX O1a4165bfa432f6c1cc2ce4d2b2de1 ON Category_SubOperation_ (SubOperation2_)"));
-    res.push_back(Database::SchemaItem("Category_SubOperation__all_idx","index","CREATE INDEX Category_SubOperation__all_idx ON Category_SubOperation_ (Category1_,SubOperation2_)"));
+    res.push_back(Database::SchemaItem("O17daed388a001c4175aab7129fc16","index","CREATE INDEX O17daed388a001c4175aab7129fc16 ON Operation_OperationDetail_ (Operation1_)"));
+    res.push_back(Database::SchemaItem("Ofd3201198b6c943ec28bc26733f91","index","CREATE INDEX Ofd3201198b6c943ec28bc26733f91 ON Operation_OperationDetail_ (OperationDetail2_)"));
+    res.push_back(Database::SchemaItem("Oc2e4af7c5439ede28816d710a3615","index","CREATE INDEX Oc2e4af7c5439ede28816d710a3615 ON Operation_OperationDetail_ (Operation1_,OperationDetail2_)"));
+    res.push_back(Database::SchemaItem("O639119dfce383e8c0f76c3aa164f5","index","CREATE INDEX O639119dfce383e8c0f76c3aa164f5 ON Category_OperationDetail_ (Category1_)"));
+    res.push_back(Database::SchemaItem("O1fb877c5487f879a86efaf08818a1","index","CREATE INDEX O1fb877c5487f879a86efaf08818a1 ON Category_OperationDetail_ (OperationDetail2_)"));
+    res.push_back(Database::SchemaItem("Odff0a593025aab379bda67558b279","index","CREATE INDEX Odff0a593025aab379bda67558b279 ON Category_OperationDetail_ (Category1_,OperationDetail2_)"));
     return res;
 }
 void MPAPO::initialize() {

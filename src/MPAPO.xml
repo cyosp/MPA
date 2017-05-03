@@ -90,7 +90,7 @@
 		</method>
 	</object>
 	
-	<object name="SubOperation" inherits="MPAO">
+	<object name="OperationDetail" inherits="MPAO">
 		<field name="amount" type="float" />
 		<field name="note" type="string" length="1024" />
 		<method name="setAmount">
@@ -125,11 +125,11 @@
 	</relation>
 	
 	<relation>
-		<relate object="Operation" limit="one" handle="subOperations" />
-		<relate object="SubOperation" limit="many" handle="operation"/>
+		<relate object="Operation" limit="one" handle="operationDetails" />
+		<relate object="OperationDetail" limit="many" handle="operation"/>
 	</relation>
 	<relation>
-		<relate object="SubOperation" limit="many" handle="category" />
-		<relate object="Category" limit="one" handle="subOperations"/>
+		<relate object="OperationDetail" limit="many" handle="category" />
+		<relate object="Category" limit="one" handle="operationDetails"/>
 	</relation>
 </database>
