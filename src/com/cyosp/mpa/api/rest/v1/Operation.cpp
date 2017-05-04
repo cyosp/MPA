@@ -154,7 +154,6 @@ string Operation::executePostAddRequest(ptree & root)
 {
 	string ret = MPAO::DEFAULT_JSON_ID;
 
-	int accountId = urlPairs[0].second;
 	string date = argvals.find("date")->second;
 	string providerName = argvals.find("provider")->second;
 	float amount = StrUtil::string2float( argvals.find("amount")->second );
@@ -166,7 +165,7 @@ string Operation::executePostAddRequest(ptree & root)
 
 	// Get account balance
 	float accountBalance = 0;
-	vector<mpapo::Operation> accountOpSize = mpa::Account::getAccount( accountId ).operations().get().all();
+	vector<mpapo::Operation> accountOpSize = mpa::Account::getAccount( getAccountId() ).operations().get().all();
 	if( accountOpSize.size() > 0 )	accountBalance = accountOpSize[ accountOpSize.size() -1 ].accountBalance;
 
 	// Update account balance
@@ -193,7 +192,7 @@ string Operation::executePostAddRequest(ptree & root)
 	operation.operationDetails().link( OperationDetail );
 
 	// Get provider
-	mpapo::Provider provider = mpa::Provider::getProvider( accountId , providerName );
+	mpapo::Provider provider = mpa::Provider::getProvider( getAccountId() , providerName );
 	// Update provider amount
 	provider.addToAmount( amount );
 	provider.update();
@@ -202,7 +201,7 @@ string Operation::executePostAddRequest(ptree & root)
 	operation.provider().link( provider );
 
 	// Get category
-	mpapo::Category category = mpa::Category::getCategory( accountId , categoryName );
+	mpapo::Category category = mpa::Category::getCategory( getAccountId() , categoryName );
 	// Update category amount
 	category.addToAmount( amount );
 	category.update();
@@ -211,7 +210,7 @@ string Operation::executePostAddRequest(ptree & root)
 	OperationDetail.category().link( category );
 
 	// Get account
-	mpapo::Account account = mpa::Account::getAccount( accountId );
+	mpapo::Account account = mpa::Account::getAccount( getAccountId() );
 	// Update account balance
 	account.addToBalance( amount );
 	account.update();
