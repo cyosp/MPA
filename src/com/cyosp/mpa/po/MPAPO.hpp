@@ -465,6 +465,7 @@ public:
     virtual void setDate(string date);
     virtual void setAmount(float amount);
     virtual void setAccountBalance(float amount);
+    virtual void addToBalance(float amount);
 protected:
     std::string insert(litesql::Record& tables, litesql::Records& fieldRecs, litesql::Records& valueRecs);
     void create();

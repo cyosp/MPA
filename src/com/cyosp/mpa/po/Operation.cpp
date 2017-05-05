@@ -25,4 +25,10 @@ void Operation::setAccountBalance( float balance )
 	this->accountBalance = balance;
 }
 
+void Operation::addToBalance( float amount )
+{
+	this->accountBalance = this->accountBalance + amount;
+}
+
+
 }
