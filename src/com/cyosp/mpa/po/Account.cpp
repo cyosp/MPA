@@ -26,7 +26,7 @@ void Account::setName( string name )
 
 void Account::addToBalance( float balance )
 {
-	this->balance = this->balance + balance;
+	this->balance += balance;
 }
 
 } /* namespace mpapo */
