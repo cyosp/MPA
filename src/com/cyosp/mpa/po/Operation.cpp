@@ -22,8 +22,7 @@ void Operation::setAmount( float amount )
 
 void Operation::addToAmount( float amount )
 {
-	this->amount = this->amount + amount;
-
+	// Update provider amount
 	litesql::DataSource<mpapo::Provider> providerDatasource = provider().get();
 	if( providerDatasource.count() > 0  )
 	{
@@ -31,6 +30,35 @@ void Operation::addToAmount( float amount )
 		provider.addToAmount( amount );
 		provider.update();
 	}
+
+	// Update category amount
+	litesql::DataSource<mpapo::OperationDetail> operationDetailDatasource = operationDetails().get();
+	if( operationDetailDatasource.count() > 0  )
+	{
+		OperationDetail operationDetail = operationDetailDatasource.one();
+
+		litesql::DataSource<mpapo::Category> categoryDatasource = operationDetail.category().get();
+		if( categoryDatasource.count() > 0 )
+		{
+			Category category = categoryDatasource.one();
+			category.addToAmount( amount );
+			category.update();
+		}
+	}
+
+	// Update account balance
+	litesql::DataSource<mpapo::Account> accountDatasource = account().get();
+	if( accountDatasource.count() > 0 )
+	{
+		Account account = accountDatasource.one();
+
+		account.addToBalance( amount );
+		account.update();
+	}
+
+	// Update operation amount
+	this->amount = this->amount + amount;
+	this->update();
 }
 
 void Operation::setAccountBalance( float balance )

@@ -194,7 +194,6 @@ string Operation::executePostAddRequest(ptree & root)
 
 	// Get previous operation in order to get previous account balance
 	orderAsc = false;
-
 	DataSource<mpapo::Operation> operationDS = getAccount().operations().get( mpapo::Operation::Date <= getDate() ).orderBy( mpapo::Operation::Date , orderAsc );
 	if( operationDS.count() > 0 )
 	{
@@ -219,43 +218,26 @@ string Operation::executePostAddRequest(ptree & root)
 	operation.initializeVersion();
 	operation.setDate( getDate() );
 	operation.setAccountBalance( accountBalance );
+	// Give operation available
 	operation.update();
 
 	// Link OperationDetail to Operation
 	operation.operationDetails().link( OperationDetail );
-
 	// Link provider to operation
 	operation.provider().link( getProvider() );
-
 	// Link category to OperationDetail
 	OperationDetail.category().link( getCategory() );
-
 	// Link operation to account
 	getAccount().operations().link( operation );
 
-
-	// Must
-	// * Modify and update prodiver amount
-	// * Modify and update account balance
-	// * Modify and update operation amount
+	// Update amounts and balance
 	operation.addToAmount( getAmount() );
-	getCategory().addToAmount( getAmount() );
-	getCategory().update();
-	// Update account balance
-	getAccount().addToBalance( getAmount() );
-	getAccount().update();
-
-	operation.update();
 
 
 	MPA::getInstance()->getMPAPO().commit();
 
-	//MPA_LOG_TRIVIAL(trace,"");
-
 	// Get account ID
 	ret = string( operation.id );
-
-	MPA_LOG_TRIVIAL(trace,"Category ID added: " + ret);
 
 	// Generate Json output
 	root.push_back(BoostHelper::make_pair("version", operation.version ));
