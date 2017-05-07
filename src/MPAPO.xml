@@ -85,6 +85,9 @@
 		<method name="setAmount">
 			<param type="float" name="amount"/>
 		</method>
+		<method name="addToAmount">
+			<param type="float" name="amount"/>
+		</method>
 		<method name="setAccountBalance">
 			<param type="float" name="balance"/>
 		</method>

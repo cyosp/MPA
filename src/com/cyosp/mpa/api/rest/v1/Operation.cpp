@@ -15,9 +15,13 @@ string Operation::URL_STRING_PATH_IDENTIFIER = "operations";
 Operation::Operation(HttpRequestType httpRequestType, ActionType actionType,
 		const map<string, string>& argvals,
 		vector<std::pair<string, int> > urlPairs) :
-		MPAO(httpRequestType, actionType, argvals, urlPairs)
+		MPAO(httpRequestType, actionType, argvals, urlPairs),
+			account( MPA::getInstance()->getMPAPO() ),
+			provider( MPA::getInstance()->getMPAPO() ),
+			category( MPA::getInstance()->getMPAPO() )
 {
-	accountId = -1;
+	date = "";
+	amount = 0;
 }
 
 bool Operation::isUrlPathValid()
@@ -26,7 +30,9 @@ bool Operation::isUrlPathValid()
 
 	if( urlPairs.size() > 0 && urlPairs[0].first == Account::URL_STRING_PATH_IDENTIFIER	)
 	{
-		accountId = urlPairs[0].second;
+		int accountId = urlPairs[0].second;
+		account = mpa::Account::getAccount( accountId );
+
 		ret = true;
 	}
 
@@ -50,7 +56,20 @@ bool Operation::arePostAddParametersOk()
 			&& argvals.find("provider") != argvals.end()
 			&& argvals.find("amount") != argvals.end()
 			&& argvals.find("category") != argvals.end()
-			&& argvals.find("note") != argvals.end() ) ret = true;
+			&& argvals.find("note") != argvals.end() )
+	{
+		date = argvals.find("date")->second;
+
+		string providerName = argvals.find("provider")->second;
+		provider = mpa::Provider::getProvider( getAccount().id , providerName );
+
+		amount = StrUtil::string2float( argvals.find("amount")->second );
+
+		string categoryName = argvals.find("category")->second;
+		category = mpa::Category::getCategory( getAccount().id , categoryName );
+
+		ret = true;
+	}
 
 	//MPA_LOG_TRIVIAL(trace, "Return: " + StrUtil::bool2string( ret ) );
 
@@ -84,11 +103,10 @@ string Operation::executeGetRequest(ptree & root)
 
 	//MPA_LOG_TRIVIAL(trace, "" );
 
-	int accountId = urlPairs[0].second;
-
 	ptree operationsChildren;
 
-	vector<mpapo::Operation> operations = mpa::Operation::getOperations( accountId );
+	bool orderAsc = true;
+	vector<mpapo::Operation> operations = getAccount().operations().get( mpapo::Operation::Date > getDate() ).orderBy( mpapo::Operation::Date , orderAsc ).all();
 	for (vector<mpapo::Operation>::iterator it = operations.begin(); it != operations.end(); it++)
 	{
 		//MPA_LOG_TRIVIAL(trace, "" );
@@ -154,69 +172,81 @@ string Operation::executePostAddRequest(ptree & root)
 {
 	string ret = MPAO::DEFAULT_JSON_ID;
 
-	string date = argvals.find("date")->second;
-	string providerName = argvals.find("provider")->second;
-	float amount = StrUtil::string2float( argvals.find("amount")->second );
-	string categoryName = argvals.find("category")->second;
 	string note = argvals.find("note")->second;
 
 	// TODO : verify how it works in multithread
 	MPA::getInstance()->getMPAPO().begin();
 
-	// Get account balance
-	float accountBalance = 0;
-	vector<mpapo::Operation> accountOpSize = mpa::Account::getAccount( getAccountId() ).operations().get().all();
-	if( accountOpSize.size() > 0 )	accountBalance = accountOpSize[ accountOpSize.size() -1 ].accountBalance;
+	// Get all operation where balance must be updated
+	bool orderAsc = true;
+	vector<mpapo::Operation> operations = getAccount().operations().get( mpapo::Operation::Date > getDate() ).orderBy( mpapo::Operation::Date , orderAsc ).all();
+	for( vector<mpapo::Operation>::iterator it = operations.begin(); it != operations.end(); it++ )
+	{
+		// Get operation
+		mpapo::Operation operation = ( *it );
+		// Update balance
+		operation.addToBalance( getAmount() );
+		operation.update();
+	}
 
-	// Update account balance
-	accountBalance += amount;
+	// Default case if there is no operation
+	float accountBalance = 0;
+
+	// Get previous operation in order to get previous account balance
+	orderAsc = false;
+
+	DataSource<mpapo::Operation> operationDS = getAccount().operations().get( mpapo::Operation::Date <= getDate() ).orderBy( mpapo::Operation::Date , orderAsc );
+	if( operationDS.count() > 0 )
+	{
+		mpapo::Operation operation = operationDS.one();
+		accountBalance = operation.accountBalance - operation.amount;
+	}
+
+	// Update account balance with operation amount
+	accountBalance += getAmount();
 
 	//MPA_LOG_TRIVIAL(trace,"");
 
 	// Create OperationDetail
 	mpapo::OperationDetail OperationDetail( MPA::getInstance()->getMPAPO() );
 	OperationDetail.initializeVersion();
-	OperationDetail.setAmount( amount );
+	OperationDetail.setAmount( getAmount() );
 	OperationDetail.setNote( note );
 	OperationDetail.update();
 
 	// Create Operation
 	mpapo::Operation operation( MPA::getInstance()->getMPAPO() );
 	operation.initializeVersion();
-	operation.setDate( date );
-	operation.setAmount( amount );
+	operation.setDate( getDate() );
 	operation.setAccountBalance( accountBalance );
 	operation.update();
 
 	// Link OperationDetail to Operation
 	operation.operationDetails().link( OperationDetail );
 
-	// Get provider
-	mpapo::Provider provider = mpa::Provider::getProvider( getAccountId() , providerName );
-	// Update provider amount
-	provider.addToAmount( amount );
-	provider.update();
-
 	// Link provider to operation
-	operation.provider().link( provider );
-
-	// Get category
-	mpapo::Category category = mpa::Category::getCategory( getAccountId() , categoryName );
-	// Update category amount
-	category.addToAmount( amount );
-	category.update();
+	operation.provider().link( getProvider() );
 
 	// Link category to OperationDetail
-	OperationDetail.category().link( category );
-
-	// Get account
-	mpapo::Account account = mpa::Account::getAccount( getAccountId() );
-	// Update account balance
-	account.addToBalance( amount );
-	account.update();
+	OperationDetail.category().link( getCategory() );
 
 	// Link operation to account
-	account.operations().link(operation);
+	getAccount().operations().link( operation );
+
+
+	// Must
+	// * Modify and update prodiver amount
+	// * Modify and update account balance
+	// * Modify and update operation amount
+	operation.addToAmount( getAmount() );
+	getCategory().addToAmount( getAmount() );
+	getCategory().update();
+	// Update account balance
+	getAccount().addToBalance( getAmount() );
+	getAccount().update();
+
+	operation.update();
+
 
 	MPA::getInstance()->getMPAPO().commit();
 
@@ -287,9 +317,30 @@ string Operation::executePostUpdateRequest(ptree & root)
 
 	return ret;
 }
-int Operation::getAccountId()
+
+mpapo::Account & Operation::getAccount()
 {
-	return accountId;
+	return account;
+}
+
+string & Operation::getDate()
+{
+	return date;
+}
+
+mpapo::Provider & Operation::getProvider()
+{
+	return provider;
+}
+
+float Operation::getAmount()
+{
+	return amount;
+}
+
+mpapo::Category & Operation::getCategory()
+{
+	return category;
 }
 
 Operation::~Operation()

@@ -26,7 +26,12 @@ namespace mpa_api_rest_v1
 class Operation: public MPAO
 {
 	private:
-		int accountId;
+		mpapo::Account account;
+
+		string date;
+		mpapo::Provider provider;
+		float amount;
+		mpapo::Category category;
 
 		bool isUrlPathValid();
 
@@ -47,7 +52,12 @@ class Operation: public MPAO
 	public:
 		Operation(HttpRequestType httpRequestType, ActionType actionType, const map<string, string>& argvals, vector<std::pair<string, int> > urlPairs );
 
-		int getAccountId();
+		mpapo::Account & getAccount();
+
+		string & getDate();
+		mpapo::Provider & getProvider();
+		float getAmount();
+		mpapo::Category & getCategory();
 
 		virtual ~Operation();
 };
