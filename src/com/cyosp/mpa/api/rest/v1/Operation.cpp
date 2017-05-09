@@ -68,6 +68,8 @@ bool Operation::arePostAddParametersOk()
 		string categoryName = argvals.find("category")->second;
 		category = mpa::Category::getCategory( getAccount().id , categoryName );
 
+		note = argvals.find("note")->second;
+
 		ret = true;
 	}
 
@@ -172,8 +174,6 @@ string Operation::executePostAddRequest(ptree & root)
 {
 	string ret = MPAO::DEFAULT_JSON_ID;
 
-	string note = argvals.find("note")->second;
-
 	// TODO : verify how it works in multithread
 	MPA::getInstance()->getMPAPO().begin();
 
@@ -183,7 +183,7 @@ string Operation::executePostAddRequest(ptree & root)
 	mpapo::OperationDetail OperationDetail( MPA::getInstance()->getMPAPO() );
 	OperationDetail.initializeVersion();
 	OperationDetail.setAmount( getAmount() );
-	OperationDetail.setNote( note );
+	OperationDetail.setNote( getNote() );
 	OperationDetail.update();
 
 	// Create Operation
@@ -204,7 +204,6 @@ string Operation::executePostAddRequest(ptree & root)
 
 	// Update amounts and balance
 	operation.addToAmount( getAmount() );
-
 
 	MPA::getInstance()->getMPAPO().commit();
 
@@ -295,6 +294,11 @@ float Operation::getAmount()
 mpapo::Category & Operation::getCategory()
 {
 	return category;
+}
+
+string & Operation::getNote()
+{
+	return note;
 }
 
 Operation::~Operation()

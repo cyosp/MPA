@@ -27,7 +27,6 @@ void Operation::setAmount( float amount )
 // * Set date
 void Operation::addToAmount( float amount )
 {
-	// Update account balance
 	litesql::DataSource<mpapo::Account> accountDatasource = account().get();
 	if( accountDatasource.count() > 0 )
 	{

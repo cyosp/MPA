@@ -32,6 +32,7 @@ class Operation: public MPAO
 		mpapo::Provider provider;
 		float amount;
 		mpapo::Category category;
+		string note;
 
 		bool isUrlPathValid();
 
@@ -58,6 +59,7 @@ class Operation: public MPAO
 		mpapo::Provider & getProvider();
 		float getAmount();
 		mpapo::Category & getCategory();
+		string & getNote();
 
 		virtual ~Operation();
 };
