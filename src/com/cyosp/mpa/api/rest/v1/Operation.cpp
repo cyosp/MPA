@@ -177,31 +177,6 @@ string Operation::executePostAddRequest(ptree & root)
 	// TODO : verify how it works in multithread
 	MPA::getInstance()->getMPAPO().begin();
 
-	// Default case if there is no operation
-	float accountBalance = 0;
-
-	// Get all operation where balance must be updated
-	bool firstToGetBalance = false;
-	bool orderAsc = true;
-	vector<mpapo::Operation> operations = getAccount().operations().get( mpapo::Operation::Date > getDate() ).orderBy( mpapo::Operation::Date , orderAsc ).all();
-	for( vector<mpapo::Operation>::iterator it = operations.begin(); it != operations.end(); it++ )
-	{
-		// Get operation
-		mpapo::Operation operation = ( *it );
-		if( ! firstToGetBalance )
-		{
-			accountBalance = operation.accountBalance - operation.amount;
-			firstToGetBalance = true;
-		}
-
-		// Update balance
-		operation.addToBalance( getAmount() );
-		operation.update();
-	}
-
-	// Update account balance with operation amount
-	accountBalance += getAmount();
-
 	//MPA_LOG_TRIVIAL(trace,"");
 
 	// Create OperationDetail
@@ -215,7 +190,6 @@ string Operation::executePostAddRequest(ptree & root)
 	mpapo::Operation operation( MPA::getInstance()->getMPAPO() );
 	operation.initializeVersion();
 	operation.setDate( getDate() );
-	operation.setAccountBalance( accountBalance );
 	// Give operation available
 	operation.update();
 
