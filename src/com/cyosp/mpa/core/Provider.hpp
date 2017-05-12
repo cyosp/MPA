@@ -17,18 +17,19 @@
 namespace mpa
 {
 
-class Provider
-{
-public:
-	static vector<mpapo::Provider> getProviders( int accountId );
-	static void remove( int accountId , int providerId , int version );
-	static int getProviderId( int accountId , string providerName );
-	static mpapo::Provider getProvider( int accountId , string providerName );
-	static mpapo::Provider getProvider( int providerId );
-	static mpapo::Provider rename( int accountId , int providerId, int providerVersion , string newName );
+    class Provider
+    {
+        public:
+            static vector<mpapo::Provider> all(int accountId);
+            static void del(int accountId, int providerId, int version);
+            static mpapo::Provider get(int accountId, string providerName);
+            static mpapo::Provider get(int providerId);
+            static mpapo::Provider rename(int accountId, int providerId, int providerVersion, string newName);
 
-	virtual ~Provider();
-};
+            static int getProviderId(int accountId, string providerName);
+
+            virtual ~Provider();
+    };
 
 }
 

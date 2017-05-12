@@ -16,7 +16,7 @@ bool Account::isAccountAlreadyExisting( string accountName )
 
 	// TODO : try to use BDD facilities
 	// Get accounts list
-	vector<mpapo::Account> accounts = getAccounts();
+	vector<mpapo::Account> accounts = all();
 	// Get accounts iterator
 	vector<mpapo::Account>::iterator it = accounts.begin();
 
@@ -31,34 +31,29 @@ bool Account::isAccountAlreadyExisting( string accountName )
 	return ret;
 }
 
-mpapo::Account & Account::addAccount( string accountName )
+mpapo::Account & Account::add( string accountName )
 {
 	mpapo::Account * ret = NULL;
 
-	// TODO : One insertion at time
-	// Perform a lock
-
-	//getMPAPO().begin();
 	ret = new mpapo::Account( MPA::getInstance()->getMPAPO() );
 	ret->initializeVersion();
 	ret->setName( accountName );
 	//sleep(6);
 	ret->balance = 0;
 	ret->update();
-	//getMPAPO().commit();
 
 	MPA_LOG_TRIVIAL(trace,"Account added, id=" + (* ret).id.value());
 
 	return * ret;
 }
 
-vector<mpapo::Account> Account::getAccounts()
+vector<mpapo::Account> Account::all()
 {
 	return select<mpapo::Account>( MPA::getInstance()->getMPAPO() ).all();	//.orderBy(mpapo::Account::Name).all();
 }
 
 
-bool Account::delAccount(int id , int version )
+bool Account::del(int id , int version )
 {
 	bool ret = false;
 
@@ -66,7 +61,7 @@ bool Account::delAccount(int id , int version )
 
 	try
 	{
-		mpapo::Account accountToDel = getAccount( id );
+		mpapo::Account accountToDel = get( id );
 
 		if( accountToDel.isCorrectVersion( version ) )
 		{
@@ -76,9 +71,7 @@ bool Account::delAccount(int id , int version )
 			if( accountToDel.providers().get().all().size() > 0 ) throw mpa_exception::MsgNotTranslated( IMPOSSIBLE_REMOVE_THERE_ARE_AGAIN_PROVIDERS );
 			if( accountToDel.categories().get().all().size() > 0 ) throw mpa_exception::MsgNotTranslated( IMPOSSIBLE_REMOVE_THERE_ARE_AGAIN_CATEGORIES );
 
-			MPA::getInstance()->getMPAPO().begin();
 			accountToDel.del();
-			MPA::getInstance()->getMPAPO().commit();
 		}
 		else throw mpa_exception::MsgNotTranslated( OPERATION_IMPOSSIBLE_BECAUSE_DATA_HAVE_CHANGED );
 	}
@@ -91,7 +84,7 @@ bool Account::delAccount(int id , int version )
 }
 
 // Get acount by ID
-mpapo::Account Account::getAccount( int id )
+mpapo::Account Account::get( int id )
 {
 	// BOOST_LOG_TRIVIAL(trace) << "Account retrieved" << std::endl;
 	return select<mpapo::Account>( MPA::getInstance()->getMPAPO() , mpapo::Account::Id == id ).one();
@@ -104,7 +97,7 @@ mpapo::Account Account::renameAccount( int accountId , int accountVersionToRenam
 
 	try
 	{
-		mpapo::Account account = getAccount( accountId );
+		mpapo::Account account = get( accountId );
 
 		if( account.isCorrectVersion(  accountVersionToRename ) )
 		{

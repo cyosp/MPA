@@ -20,14 +20,15 @@
 namespace mpa
 {
 
-	class Operation
-	{
-		public:
-			static vector<mpapo::Operation> getOperations( int accountId );
-			static mpapo::Operation getOperation( int operationId );
+    class Operation
+    {
+        public:
+            static vector<mpapo::Operation> all(int accountId);
+            static mpapo::Operation get(int operationId);
+            static bool del(int id, int version);
 
-			virtual ~Operation();
-	};
+            virtual ~Operation();
+    };
 
 } /* namespace mpa */
 

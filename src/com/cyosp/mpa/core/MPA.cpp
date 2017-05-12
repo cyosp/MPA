@@ -46,8 +46,8 @@ namespace expr = boost::log::expressions;
 
 struct addResult
 {
-	int value;
-	string objectId;
+        int value;
+        string objectId;
 };
 
 const string MPA::version = "In progress";
@@ -66,243 +66,202 @@ MPA * MPA::mpa = NULL;
 
 MPA * MPA::getInstance()
 {
-	if (mpa == NULL)
-		mpa = new MPA();
+    if( mpa == NULL )
+        mpa = new MPA();
 
-	return mpa;
+    return mpa;
 }
 
 // get debug mode
 bool MPA::getDebugMode()
 {
-	return debugMode;
+    return debugMode;
 }
 
 // Set debug mode
 void MPA::setDebugMode(bool debugMode)
 {
-	this->debugMode = debugMode;
+    this->debugMode = debugMode;
 }
 
 MPA::MPA()
 {
-	debugMode = false;
-	mpa = NULL;
-	mpapo = NULL;
-	resourceBundle = NULL;
+    debugMode = false;
+    mpa = NULL;
+    mpapo = NULL;
+    resourceBundle = NULL;
 }
 
-void MPA::initDatabase( string dbFilePath )
+void MPA::initDatabase(string dbFilePath)
 {
-	// using SQLite3 as backend
-	mpapo = new MPAPO( "sqlite3" , "database=" + dbFilePath );
+    // using SQLite3 as backend
+    mpapo = new MPAPO("sqlite3", "database=" + dbFilePath);
 
+    // create tables, sequences and indexes
+    // db.verbose = true;
 
-	// create tables, sequences and indexes
-	// db.verbose = true;
-
-	// Update database scheme if needed
-	if( getMPAPO().needsUpgrade() )	getMPAPO().upgrade();
-
-	/*vector<mpapo::User> adminUsers = getAdminUsers();
-	if( adminUsers.size() == 0 )
-	{
-		mpapo->~Database();
-		throw string( "Database started in normal mode without administrator user set in database");
-	}
-	else	registerAdmin();*/
+    // Update database scheme if needed
+    if( getMPAPO().needsUpgrade() )
+        getMPAPO().upgrade();
 }
 
-/*void MPA::initDatabase( string dbFilePath , string adminLogin )
+void MPA::initWWWFilePath(string wwwFilePath)
 {
-	// using SQLite3 as backend
-	mpapo = new MPAPO( "sqlite3" , "database=" + dbFilePath );
-
-	// create tables, sequences and indexes
-	// db.verbose = true;
-
-	// Update database scheme if needed
-	if( getMPAPO().needsUpgrade() )	getMPAPO().upgrade();
-
-	vector<mpapo::User> adminUsers = getAdminUsers();
-	if( adminUsers.size() == 0 )
-	{
-		MPA_LOG_TRIVIAL(info,"No administrator user set in database");
-		addUser( true , adminLogin , DEFAULT_ADMIN_PWD );
-	}
-	// TODO : manage here is there is more than one admin account
-	else
-	{
-		mpapo->~Database();
-		throw string( "Database started with admin login whereas there is already one registered" );
-	}
-}*/
-
-void MPA::initWWWFilePath( string wwwFilePath )
-{
-	this->wwwFilePath = wwwFilePath;
+    this->wwwFilePath = wwwFilePath;
 }
 
-
-void MPA::initLogFilePath( string logFilePath )
+void MPA::initLogFilePath(string logFilePath)
 {
-	boost::shared_ptr< sinks::synchronous_sink< sinks::text_file_backend > > sink =  logging::add_file_log
-	(
-		keywords::file_name = logFilePath,	// "sample_%N.log",
-		// Rotation file every 1Mo or at midnight
-		keywords::rotation_size = 1 * 1024 * 1024,
-		// Rotation file every 1Mo or at midnight
-		keywords::time_based_rotation = sinks::file::rotation_at_time_point(0, 0, 0),
-		keywords::auto_flush = true,
-		keywords::open_mode = (std::ios::out | std::ios::app),
+    boost::shared_ptr<sinks::synchronous_sink<sinks::text_file_backend> > sink = logging::add_file_log(
+            keywords::file_name = logFilePath,    // "sample_%N.log",
+            // Rotation file every 1Mo or at midnight
+            keywords::rotation_size = 1 * 1024 * 1024,
+            // Rotation file every 1Mo or at midnight
+            keywords::time_based_rotation = sinks::file::rotation_at_time_point(0, 0, 0), keywords::auto_flush = true,
+            keywords::open_mode = (std::ios::out | std::ios::app),
 
-		keywords::format =
-		(
-			expr::stream << expr::format_date_time< boost::posix_time::ptime >( "TimeStamp" , "[%Y-%m-%d %H:%M:%S.%f]" )
-						 << " " << logging::trivial::severity
-						 << " : " << expr::smessage
-		)
-		//keywords::format = "%TimeStamp% [%Uptime%] <%Severity%>: %Message%"
-	);
+            keywords::format = (expr::stream
+                    << expr::format_date_time<boost::posix_time::ptime>("TimeStamp", "[%Y-%m-%d %H:%M:%S.%f]") << " "
+                    << logging::trivial::severity << " : " << expr::smessage)
+            //keywords::format = "%TimeStamp% [%Uptime%] <%Severity%>: %Message%"
+                    );
 
-	// The sink will perform character code conversion as needed, according to the locale set with imbue()
-	std::locale loc = boost::locale::generator()("fr_FR.UTF-8");
-	sink->imbue(loc);
+    // The sink will perform character code conversion as needed, according to the locale set with imbue()
+    std::locale loc = boost::locale::generator()("fr_FR.UTF-8");
+    sink->imbue(loc);
 
-	logging::add_common_attributes();
-	//logging::core::get()->add_global_attribute("Uptime", attrs::timer());
+    logging::add_common_attributes();
+    //logging::core::get()->add_global_attribute("Uptime", attrs::timer());
 
-	if( ! getDebugMode() )
-	{
-		logging::core::get()->set_filter
-		(
-			logging::trivial::severity >= logging::trivial::info
-		);
-	}
+    if( !getDebugMode() )
+    {
+        logging::core::get()->set_filter(logging::trivial::severity >= logging::trivial::info);
+    }
 
-	MPA_LOG_TRIVIAL(info,startMsg);
-	MPA_LOG_TRIVIAL(info, "Logging system initialized");
+    MPA_LOG_TRIVIAL(info, startMsg);
+    MPA_LOG_TRIVIAL(info, "Logging system initialized");
 }
 
-void MPA::initI18n( string i18nDirectory )
+void MPA::initI18n(string i18nDirectory)
 {
-	resourceBundle = new ResourceBundle( i18nDirectory );
+    resourceBundle = new ResourceBundle(i18nDirectory);
 }
 
 MPAPO & MPA::getMPAPO()
 {
-	return * mpapo;
+    return *mpapo;
 }
 
 const string & MPA::getWWWFilePath() const
 {
-	return wwwFilePath;
+    return wwwFilePath;
 }
 
 vector<mpapo::User> MPA::getAdminUsers()
 {
-	return select<mpapo::User>( getMPAPO() , mpapo::User::IsAdmin == true ).all();	//.orderBy(mpapo::Account::Name).all();
+    return select<mpapo::User>(getMPAPO(), mpapo::User::IsAdmin == true).all();    //.orderBy(mpapo::Account::Name).all();
 }
 
 vector<mpapo::User> MPA::getUsers()
 {
-	return select<mpapo::User>( getMPAPO() ).all();
+    return select<mpapo::User>(getMPAPO()).all();
 }
 
 // There is an exception if user not found
-mpapo::User MPA::getUser( string login )
+mpapo::User MPA::getUser(string login)
 {
-	return select<mpapo::User>( getMPAPO() , mpapo::User::Login == login ).one();
+    return select<mpapo::User>(getMPAPO(), mpapo::User::Login == login).one();
 }
 
 // Get user by ID
-mpapo::User MPA::getUser( int id )
+mpapo::User MPA::getUser(int id)
 {
-	return select<mpapo::User>( getMPAPO() , mpapo::User::Id == id ).one();
+    return select<mpapo::User>(getMPAPO(), mpapo::User::Id == id).one();
 }
 
-bool MPA::existUser( string login )
+bool MPA::existUser(string login)
 {
-	return select<mpapo::User>( getMPAPO() , mpapo::User::Login == login ).all().size() != 0;
+    return select<mpapo::User>(getMPAPO(), mpapo::User::Login == login).all().size() != 0;
 }
 
 mpapo::User & MPA::addUser(bool isAdmin, string login, string password, string locale)
 {
-	mpapo::User * ret = NULL;
+    mpapo::User * ret = NULL;
 
-	ret = new mpapo::User( getMPAPO() );
-	ret->initializeVersion();
-	ret->setIsAdmin( isAdmin );
-	ret->setLogin(login);
-	ret->setPassword(password);
-	ret->setLocale(locale);
-	ret->update();
+    ret = new mpapo::User(getMPAPO());
+    ret->initializeVersion();
+    ret->setIsAdmin(isAdmin);
+    ret->setLogin(login);
+    ret->setPassword(password);
+    ret->setLocale(locale);
+    ret->update();
 
-	MPA_LOG_TRIVIAL(info,"User added, id=" + (* ret).id.value());
+    MPA_LOG_TRIVIAL(info, "User added, id=" + (*ret).id.value());
 
-	return * ret;
+    return *ret;
 }
 
-bool MPA::delUser(int id , int version )
+bool MPA::delUser(int id, int version)
 {
-	bool ret = false;
+    bool ret = false;
 
-	MPA_LOG_TRIVIAL(trace,"User to delete:" + StrUtil::int2string( id )+" with version: " + StrUtil::int2string(version ));
+    MPA_LOG_TRIVIAL(trace,
+            "User to delete:" + StrUtil::int2string(id) + " with version: " + StrUtil::int2string(version));
 
-	try
-	{
-		mpapo::User userToDel = getUser( id );
+    try
+    {
+        mpapo::User userToDel = getUser(id);
 
-		if( userToDel.isCorrectVersion( version ) )
-		{
-			MPA_LOG_TRIVIAL(trace,"User found");
+        if( userToDel.isCorrectVersion(version) )
+        {
+            MPA_LOG_TRIVIAL(trace, "User found");
 
-			getMPAPO().begin();
-			userToDel.del();
-			getMPAPO().commit();
-		}
-		else throw mpa_exception::MsgNotTranslated( OPERATION_IMPOSSIBLE_BECAUSE_DATA_HAVE_CHANGED );
-	}
-	catch (NotFound & e)
-	{
-		throw mpa_exception::MsgNotTranslated( ACCOUNT_DOESNT_EXIST );
-	}
+            beginTransaction();
+            userToDel.del();
+            commitTransaction();
+        }
+        else
+            throw mpa_exception::MsgNotTranslated(OPERATION_IMPOSSIBLE_BECAUSE_DATA_HAVE_CHANGED);
+    }
+    catch( NotFound & e )
+    {
+        throw mpa_exception::MsgNotTranslated(ACCOUNT_DOESNT_EXIST);
+    }
 
-	return ret;
+    return ret;
 }
 
-//	mpapo::Object a =new mpapo::Object(getMPAPO() );
-//a.getNextObject();
-
-bool MPA::isSecurePwd( const string pwd )
+bool MPA::isSecurePwd(const string pwd)
 {
-	bool ret = false;
+    bool ret = false;
 
-	int pwdSize = pwd.size();
+    int pwdSize = pwd.size();
 
+    if( pwdSize >= MPA::PWD_SECURITY_MIN_SIZE )
+    {
+        int pwdUpperNbr = 0;
+        int pwdNDigitNbr = 0;
+        for(int i = 0 ; i < pwdSize ; i++)
+        {
+            if( isupper(pwd[i]) )
+                pwdUpperNbr++;
+            if( isdigit(pwd[i]) )
+                pwdNDigitNbr++;
+        }
 
-	if( pwdSize >= MPA::PWD_SECURITY_MIN_SIZE )
-	{
-		int pwdUpperNbr = 0;
-		int pwdNDigitNbr = 0;
-		for (int i = 0; i < pwdSize; i++)
-		{
-			if( isupper( pwd[i] ) )	pwdUpperNbr++;
-			if( isdigit( pwd[i] ) ) pwdNDigitNbr++;
-		}
+        if( pwdUpperNbr >= MPA::PWD_SECURITY_UPPER_CASE_NBR && pwdNDigitNbr >= MPA::PWD_SECURITY_DIGIT_NBR )
+            ret = true;
+    }
 
-		if( pwdUpperNbr >= MPA::PWD_SECURITY_UPPER_CASE_NBR && pwdNDigitNbr >= MPA::PWD_SECURITY_DIGIT_NBR ) ret = true;
-	}
-
-	return ret;
+    return ret;
 }
 
 bool MPA::isAdminRegistered() const
 {
-	return MPA::getInstance()->getAdminUsers().size() > 0;
+    return MPA::getInstance()->getAdminUsers().size() > 0;
 }
 
 ResourceBundle & MPA::getResourceBundle()
 {
-	return * resourceBundle;
+    return *resourceBundle;
 }

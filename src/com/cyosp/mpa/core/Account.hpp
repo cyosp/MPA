@@ -14,19 +14,18 @@
 
 namespace mpa
 {
+    class Account
+    {
+        public:
+            static mpapo::Account & add(string accountName);
+            static bool del(int id, int version);
+            static bool isAccountAlreadyExisting(string accountName);
+            static vector<mpapo::Account> all();
+            static mpapo::Account get(int id);
+            static mpapo::Account renameAccount(int accountId, int accountVersionToRename, string newAccountName);
 
-class Account
-{
-	public:
-		static mpapo::Account & addAccount( string accountName );
-		static bool delAccount( int id , int version );
-		static bool isAccountAlreadyExisting( string accountName );
-		static vector<mpapo::Account> getAccounts();
-		static mpapo::Account getAccount( int id );
-		static mpapo::Account renameAccount( int accountId , int accountVersionToRename , string newAccountName );
-
-	virtual ~Account();
-};
+            virtual ~Account();
+    };
 
 } /* namespace mpa */
 

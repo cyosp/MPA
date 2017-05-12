@@ -19,15 +19,26 @@ namespace mpa
 
 class Category
 {
-public:
-	static vector<mpapo::Category> getCategories( int accountId );
-	static void remove( int accountId , int categoryId , int version );
-	static int getCategoryId( int accountId , string categoryName );
-	static mpapo::Category getCategory( int accountId , string categoryName );
-	static mpapo::Category getCategory( int categoryId );
-	static mpapo::Category rename( int accountId , int categoryId, int categoryVersion , string newName );
+	public:
+		//Category( int id );
 
-	virtual ~Category();
+		// Get all entries linked to an account
+		static vector<mpapo::Category> all( int accountId );
+		// Delete an entry
+		static void del( int categoryId , int version );
+
+		// Get an entry and create it if necessary
+		static mpapo::Category get( int accountId , string name );
+		// Get an entry
+		static mpapo::Category get( int id );
+
+
+		static mpapo::Category rename( int accountId , int id , int version , string newName );
+
+		virtual ~Category();
+
+	//private:
+		static int getCategoryId( int accountId , string categoryName );
 };
 
 } /* namespace mpa */

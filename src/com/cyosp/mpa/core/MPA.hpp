@@ -12,7 +12,6 @@
 #include <string>
 #include <fstream>		// std::ofstream
 
-
 #include "litesql.hpp"
 #include "com/cyosp/mpa/po/MPAPO.hpp"
 #include "com/cyosp/helpers/StrUtil.hpp"
@@ -44,11 +43,15 @@ static const int MSG_NO_SYSTEM_ACCOUNT = 25;
 
 static const string ACCOUNT_SAME_NAME_ALREADY_EXIST = "An account with same name already exist";
 static const string ACCOUNT_DOESNT_EXIST = "Account doesn't exist";
-static const string OPERATION_IMPOSSIBLE_BECAUSE_DATA_HAVE_CHANGED = "Operation impossible because data have changed since recovery";
+static const string OPERATION_IMPOSSIBLE_BECAUSE_DATA_HAVE_CHANGED =
+        "Operation impossible because data have changed since recovery";
 static const string CATEGORY_SAME_NAME_ALREADY_EXIST = "A category with same name already exist";
-static const string IMPOSSIBLE_REMOVE_THERE_ARE_AGAIN_OPERATIONS = "Impossible to remove because there are again some operations";
-static const string IMPOSSIBLE_REMOVE_THERE_ARE_AGAIN_PROVIDERS = "Impossible to remove because there are again some providers";
-static const string IMPOSSIBLE_REMOVE_THERE_ARE_AGAIN_CATEGORIES = "Impossible to remove because there are again some categories";
+static const string IMPOSSIBLE_REMOVE_THERE_ARE_AGAIN_OPERATIONS =
+        "Impossible to remove because there are again some operations";
+static const string IMPOSSIBLE_REMOVE_THERE_ARE_AGAIN_PROVIDERS =
+        "Impossible to remove because there are again some providers";
+static const string IMPOSSIBLE_REMOVE_THERE_ARE_AGAIN_CATEGORIES =
+        "Impossible to remove because there are again some categories";
 //mpa_exception::MsgNotTranslated( IMPOSSIBLE_REMOVE_THERE_ARE_AGAIN_OPERATIONS );
 //string locale = MPA::DEFAULT_LOCALE;
 //if( MPA::getInstance()->isAdminRegistered()  )	locale = MPA::getInstance()->getUser( login ).locale;
@@ -56,78 +59,97 @@ static const string IMPOSSIBLE_REMOVE_THERE_ARE_AGAIN_CATEGORIES = "Impossible t
 
 class MPA
 {
-	public:
+    public:
 
-		const static string version;
-		const static string startMsg;
+        const static string version;
+        const static string startMsg;
 
-		const static string DEFAULT_LOCALE;
+        const static string DEFAULT_LOCALE;
 
-		const static int PWD_SECURITY_MIN_SIZE;
-		const static int PWD_SECURITY_UPPER_CASE_NBR;
-		const static int PWD_SECURITY_DIGIT_NBR;
+        const static int PWD_SECURITY_MIN_SIZE;
+        const static int PWD_SECURITY_UPPER_CASE_NBR;
+        const static int PWD_SECURITY_DIGIT_NBR;
 
-		// Number of bad password tried
-		const static int PWD_SECURITY_ERROR_NBR;
+        // Number of bad password tried
+        const static int PWD_SECURITY_ERROR_NBR;
 
-		// Singleton method
-		static MPA * getInstance();
+        // Singleton method
+        static MPA * getInstance();
 
-		// Get debug mode
-		bool getDebugMode();
-		// Set debug mode
-		void setDebugMode(bool debugMode);
+        // Get debug mode
+        bool getDebugMode();
+        // Set debug mode
+        void setDebugMode(bool debugMode);
 
-		// Initialize SQL database
-		void initDatabase( string dbFilePath );
-		void initDatabase( string dbFilePath , string adminLogin );
-		// Initialize www file path
-		void initWWWFilePath( string wwwFilePath );
-		// Initialize log file path
-		void initLogFilePath( string logFilePath);
-		// Initialize locale
-		void initI18n( string i18nDirectory );
+        // Initialize SQL database
+        void initDatabase(string dbFilePath);
+        void initDatabase(string dbFilePath, string adminLogin);
+        // Initialize www file path
+        void initWWWFilePath(string wwwFilePath);
+        // Initialize log file path
+        void initLogFilePath(string logFilePath);
+        // Initialize locale
+        void initI18n(string i18nDirectory);
 
-		// Get persistence object
-		MPAPO & getMPAPO();
-		// Get WWW file path
-		const string & getWWWFilePath() const;
+        // Get persistence object
+        MPAPO & getMPAPO();
+        // Get WWW file path
+        const string & getWWWFilePath() const;
 
-		// Get administrator user
-		vector<mpapo::User> getAdminUsers();
-		// Get users
-		vector<mpapo::User> getUsers();
-		// Get user by login
-		mpapo::User getUser( string login );
-		// Get user by id
-		mpapo::User getUser( int id );
-		// Del an user
-		bool delUser( int id , int version );
-		// Check if user exist by login
-		bool existUser( string login );
-		// Add a user
-		mpapo::User & addUser(bool isAdmin, string login , string password, string locale);
+        //
+        // Allow to manage lock in future
+        //
+        /** begins SQL transaction */
+        void beginTransaction() const
+        {
+            mpapo->begin();
+        }
+        /** commits SQL transaction */
+        void commitTransaction() const
+        {
+            mpapo->commit();
+        }
+        /** cancels active SQL transaction */
+        void rollbackTransaction() const
+        {
+            mpapo->rollback();
+        }
 
-		static bool isSecurePwd( const string pwd );
+        // Get administrator user
+        vector<mpapo::User> getAdminUsers();
+        // Get users
+        vector<mpapo::User> getUsers();
+        // Get user by login
+        mpapo::User getUser(string login);
+        // Get user by id
+        mpapo::User getUser(int id);
+        // Del an user
+        bool delUser(int id, int version);
+        // Check if user exist by login
+        bool existUser(string login);
+        // Add a user
+        mpapo::User & addUser(bool isAdmin, string login, string password, string locale);
 
-		bool isAdminRegistered() const;
+        static bool isSecurePwd(const string pwd);
 
-		ResourceBundle & getResourceBundle();
+        bool isAdminRegistered() const;
 
-	private:
-		// Debug mode
-		bool debugMode;
-		// Singleton member
-		static MPA * mpa;
-		// Singleton constructor
-		MPA();
+        ResourceBundle & getResourceBundle();
 
-		// MPA persistence object
-		MPAPO * mpapo;
-		// WWW file path
-		string wwwFilePath;
+    private:
+        // Debug mode
+        bool debugMode;
+        // Singleton member
+        static MPA * mpa;
+        // Singleton constructor
+        MPA();
 
-		ResourceBundle * resourceBundle;
+        // MPA persistence object
+        MPAPO * mpapo;
+        // WWW file path
+        string wwwFilePath;
+
+        ResourceBundle * resourceBundle;
 };
 
 #endif /* MPA_HPP_ */
