@@ -9,15 +9,13 @@
 
 namespace mpapo
 {
+    void OperationDetail::setAmount(float amount)
+    {
+        this->amount = amount;
+    }
 
-void OperationDetail::setAmount( float amount )
-{
-	this->amount = amount;
-}
-
-void OperationDetail::setNote( string note )
-{
-	this->note = note;
-}
-
+    void OperationDetail::setNote(string note)
+    {
+        this->note = note;
+    }
 }
