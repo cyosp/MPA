@@ -23,47 +23,48 @@
 namespace mpa_api_rest_v1
 {
 
-class Operation: public MPAO
-{
-	private:
-		mpapo::Account account;
+    class Operation : public MPAO
+    {
+        private:
+            mpapo::Account account;
 
-		string date;
-		mpapo::Provider provider;
-		float amount;
-		mpapo::Category category;
-		string note;
+            string date;
+            mpapo::Provider provider;
+            float amount;
+            mpapo::Category category;
+            string note;
 
-		bool isUrlPathValid();
+            bool isUrlPathValid();
 
-	public:
-		static string URL_STRING_PATH_IDENTIFIER;
+        public:
+            static string URL_STRING_PATH_IDENTIFIER;
 
-	protected:
-		bool areGetParametersOk();
-		bool arePostAddParametersOk();
-		bool arePostDeleteParametersOk();
-		bool arePostUpdateParametersOk();
+        protected:
+            bool areGetParametersOk();
+            bool arePostAddParametersOk();
+            bool arePostDeleteParametersOk();
+            bool arePostUpdateParametersOk();
 
-		string executeGetRequest(ptree & root);
-		string executePostAddRequest(ptree & root);
-		string executePostDeleteRequest(ptree & root);
-		string executePostUpdateRequest(ptree & root);
+            string executeGetRequest(ptree & root);
+            string executePostAddRequest(ptree & root);
+            string executePostDeleteRequest(ptree & root);
+            string executePostUpdateRequest(ptree & root);
 
-	public:
-		Operation(HttpRequestType httpRequestType, ActionType actionType, const map<string, string>& argvals, vector<std::pair<string, int> > urlPairs );
+        public:
+            Operation(HttpRequestType httpRequestType, ActionType actionType, const map<string, string>& argvals,
+                    vector<std::pair<string, int> > urlPairs);
 
-		mpapo::Account & getAccount();
+            mpapo::Account & getAccount();
 
-		string & getDate();
-		mpapo::Provider & getProvider();
-		float getAmount();
-		mpapo::Category & getCategory();
-		string & getNote();
+            string & getDate();
+            mpapo::Provider & getProvider();
+            float getAmount();
+            mpapo::Category & getCategory();
+            string & getNote();
 
-		virtual ~Operation();
-};
+            virtual ~Operation();
+    };
 
-} /* namespace mpa */
+}
 
 #endif

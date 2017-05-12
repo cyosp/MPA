@@ -24,8 +24,14 @@ using std::string;
 #include <vector>
 using std::vector;
 
-enum HttpRequestType { GET, POST };
-enum ActionType { NONE, LOGIN, ADD, DELETE, UPDATE };
+enum HttpRequestType
+{
+    GET, POST
+};
+enum ActionType
+{
+    NONE, LOGIN, ADD, DELETE, UPDATE
+};
 
 static const string INVALID_TOKEN = "Invalid token";
 static const string TOKEN_ARGUMENT_NOT_FOUND = "Token argument not found";
@@ -41,54 +47,59 @@ static const string ADMIN_ACCOUNT_NOT_DEFINED = "Administrator account is not de
 namespace mpa_api_rest_v1
 {
 
-class MPAO
-{
+    class MPAO
+    {
 
-public:
-	static string DEFAULT_JSON_ID;
-	static string OK_JSON_ID;
+        public:
+            static string DEFAULT_JSON_ID;
+            static string OK_JSON_ID;
 
-private:
-	HttpRequestType httpRequestType;
+        private:
+            HttpRequestType httpRequestType;
 
-protected:
-	ActionType actionType;
-	// Request parameters received
-	map<string, string> argvals;
-	// URI stored in a vector
-	vector<std::pair<string, int> > urlPairs;
-	bool restrictedAccess;
-	string badParamsMsg;
+        protected:
+            ActionType actionType;
+            // Request parameters received
+            map<string, string> argvals;
+            // URI stored in a vector
+            vector<std::pair<string, int> > urlPairs;
+            bool restrictedAccess;
+            string badParamsMsg;
 
-	string login;
+            string login;
 
-	virtual bool isValidAccess();
+            int version;
 
-	virtual bool areGetParametersOk() = 0;
-	virtual bool arePostLoginParametersOk();
-	virtual bool arePostAddParametersOk() = 0;
-	virtual bool arePostDeleteParametersOk();
-	virtual bool arePostUpdateParametersOk();
+            virtual bool isValidAccess();
 
-	virtual string executeGetRequest(ptree & root) = 0;
-	virtual string executePostLoginRequest(ptree & root);
-	virtual string executePostAddRequest(ptree & root) = 0;
-	virtual string executePostDeleteRequest(ptree & root) = 0;
-	virtual string executePostUpdateRequest(ptree & root) = 0;
+            virtual bool areGetParametersOk() = 0;
+            virtual bool arePostLoginParametersOk();
+            virtual bool arePostAddParametersOk() = 0;
+            virtual bool arePostDeleteParametersOk();
+            virtual bool arePostUpdateParametersOk();
 
-public:
-	MPAO( HttpRequestType httpRequestType, ActionType actionType , const map<string, string>& argvals, vector<std::pair<string, int> > urlPairs );
+            virtual string executeGetRequest(ptree & root) = 0;
+            virtual string executePostLoginRequest(ptree & root);
+            virtual string executePostAddRequest(ptree & root) = 0;
+            virtual string executePostDeleteRequest(ptree & root) = 0;
+            virtual string executePostUpdateRequest(ptree & root) = 0;
 
-	bool areParametersOk();
-	string getBadParamsMsg();
+        public:
+            MPAO(HttpRequestType httpRequestType, ActionType actionType, const map<string, string>& argvals,
+                    vector<std::pair<string, int> > urlPairs);
 
-	string executeRequest(ptree & root);
+            bool areParametersOk();
+            string getBadParamsMsg();
 
-	string & getLogin();
+            string executeRequest(ptree & root);
 
-	virtual ~MPAO();
-};
+            string & getLogin();
 
-} /* namespace mpa */
+            int getVersion();
+
+            virtual ~MPAO();
+    };
+
+}
 
 #endif

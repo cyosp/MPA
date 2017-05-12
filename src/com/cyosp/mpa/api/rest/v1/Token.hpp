@@ -13,27 +13,24 @@
 
 namespace mpa_api_rest_v1
 {
+    class Token
+    {
+        private:
+            // Created timestamp
+            time_t created;
+            // Last token use value
+            time_t updated;
+            // Token value
+            string value;
+            //
+            string userLogin;
 
-	class Token
-	{
-		private:
-			// Created timestamp
-			time_t created;
-			// Last token use value
-			time_t updated;
-			// Token value
-			string value;
-			//
-			string userLogin;
+        public:
+            Token(string userLogin);
+            string & getValue();
+            string & getUserLogin();
 
-
-		public:
-			Token( string userLogin );
-			string & getValue();
-			string & getUserLogin();
-
-	};
-
+    };
 }
 
 #endif

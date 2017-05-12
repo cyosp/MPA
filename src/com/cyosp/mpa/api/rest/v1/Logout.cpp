@@ -10,57 +10,61 @@
 namespace mpa_api_rest_v1
 {
 
-string Logout::URL_STRING_PATH_IDENTIFIER = "logout";
+    string Logout::URL_STRING_PATH_IDENTIFIER = "logout";
 
-Logout::Logout( HttpRequestType httpRequestType, ActionType actionType , const map<string, string>& argvals, vector<std::pair<string, int> > urlPairs ) : MPAO( httpRequestType, actionType, argvals, urlPairs )
-{}
+    Logout::Logout(HttpRequestType httpRequestType, ActionType actionType, const map<string, string>& argvals,
+            vector<std::pair<string, int> > urlPairs) :
+            MPAO(httpRequestType, actionType, argvals, urlPairs)
+    {
+    }
 
-bool Logout::areGetParametersOk()
-{
-	bool ret = false;
+    bool Logout::areGetParametersOk()
+    {
+        bool ret = false;
 
-	if( argvals.find( "token" ) != argvals.end() ) ret = true;
+        if( argvals.find("token") != argvals.end() )
+            ret = true;
 
-	return ret;
+        return ret;
+    }
+
+    bool Logout::arePostAddParametersOk()
+    {
+        return false;
+    }
+
+    string Logout::executeGetRequest(ptree & root)
+    {
+        string ret = MPAO::DEFAULT_JSON_ID;
+
+        map<string, string> & tokenList = MPAOFactory::getInstance()->getTokenList();
+        map<string, string>::iterator tokenIt = tokenList.find(argvals.find("token")->second);
+        if( tokenIt != tokenList.end() )
+        {
+            tokenList.erase(tokenIt);
+            ret = MPAO::OK_JSON_ID;
+        }
+
+        return ret;
+    }
+
+    string Logout::executePostAddRequest(ptree & root)
+    {
+        return MPAO::DEFAULT_JSON_ID;
+    }
+
+    string Logout::executePostDeleteRequest(ptree & root)
+    {
+        return MPAO::DEFAULT_JSON_ID;
+    }
+
+    string Logout::executePostUpdateRequest(ptree & root)
+    {
+        return MPAO::DEFAULT_JSON_ID;
+    }
+
+    Logout::~Logout()
+    {
+    }
+
 }
-
-bool Logout::arePostAddParametersOk()
-{
-	return false;
-}
-
-string Logout::executeGetRequest(ptree & root)
-{
-	string ret = MPAO::DEFAULT_JSON_ID;
-
-	map<string, string> & tokenList = MPAOFactory::getInstance()->getTokenList();
-	map<string, string>::iterator tokenIt = tokenList.find( argvals.find("token")->second );
-	if( tokenIt != tokenList.end() )
-	{
-		tokenList.erase( tokenIt );
-		ret = MPAO::OK_JSON_ID;
-	}
-
-	return ret;
-}
-
-string Logout::executePostAddRequest(ptree & root)
-{
-	return MPAO::DEFAULT_JSON_ID;
-}
-
-string Logout::executePostDeleteRequest(ptree & root)
-{
-	return MPAO::DEFAULT_JSON_ID;
-}
-
-string Logout::executePostUpdateRequest(ptree & root)
-{
-	return MPAO::DEFAULT_JSON_ID;
-}
-
-Logout::~Logout()
-{
-}
-
-} /* namespace mpa */

@@ -16,32 +16,31 @@
 #include "com/cyosp/mpa/api/rest/v1/MPAO.hpp"
 #include "com/cyosp/mpa/po/MPAPO.hpp"
 
-
 namespace mpa_api_rest_v1
 {
+    class Account : public MPAO
+    {
+        public:
+            static string URL_STRING_PATH_IDENTIFIER;
 
-class Account: public MPAO
-{
-	public:
-		static string URL_STRING_PATH_IDENTIFIER;
+        protected:
 
-	protected:
+            bool areGetParametersOk();
+            bool arePostAddParametersOk();
+            bool arePostDeleteParametersOk();
+            bool arePostUpdateParametersOk();
 
-		bool areGetParametersOk();
-		bool arePostAddParametersOk();
-		bool arePostDeleteParametersOk();
-		bool arePostUpdateParametersOk();
+            string executeGetRequest(ptree & root);
+            string executePostAddRequest(ptree & root);
+            string executePostDeleteRequest(ptree & root);
+            string executePostUpdateRequest(ptree & root);
 
-		string executeGetRequest(ptree & root);
-		string executePostAddRequest(ptree & root);
-		string executePostDeleteRequest(ptree & root);
-		string executePostUpdateRequest(ptree & root);
+        public:
+            Account(HttpRequestType httpRequestType, ActionType actionType, const map<string, string>& argvals,
+                    vector<std::pair<string, int> > urlPairs);
 
-	public:
-		Account( HttpRequestType httpRequestType, ActionType actionType, const map<string, string>& argvals, vector<std::pair<string, int> > urlPairs );
-
-	virtual ~Account();
-};
+            virtual ~Account();
+    };
 
 } /* namespace mpa */
 

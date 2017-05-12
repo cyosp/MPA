@@ -14,31 +14,31 @@
 namespace mpa_api_rest_v1
 {
 
-class Info: public MPAO
-{
-	public:
-		static string URL_STRING_PATH_IDENTIFIER;
+    class Info : public MPAO
+    {
+        public:
+            static string URL_STRING_PATH_IDENTIFIER;
 
-protected:
-	bool areGetParametersOk();
-	bool arePostAddParametersOk();
-	bool arePostDeleteParametersOk();
-	bool arePostUpdateParametersOk();
+        protected:
+            bool areGetParametersOk();
+            bool arePostAddParametersOk();
+            bool arePostDeleteParametersOk();
+            bool arePostUpdateParametersOk();
 
-	string executeGetRequest(ptree & root);
-	string executePostAddRequest(ptree & root);
-	string executePostDeleteRequest(ptree & root);
-	string executePostUpdateRequest(ptree & root);
+            string executeGetRequest(ptree & root);
+            string executePostAddRequest(ptree & root);
+            string executePostDeleteRequest(ptree & root);
+            string executePostUpdateRequest(ptree & root);
 
+            bool isObjectAlreadyExisting(string objectName);
 
-	bool isObjectAlreadyExisting( string objectName );
+        public:
+            Info(HttpRequestType httpRequestType, ActionType actionType, const map<string, string>& argvals,
+                    vector<std::pair<string, int> > urlPairs);
 
-public:
-	Info( HttpRequestType httpRequestType, ActionType actionType, const map<string, string>& argvals, vector<std::pair<string, int> > urlPairs );
+            virtual ~Info();
+    };
 
-	virtual ~Info();
-};
-
-} /* namespace mpa */
+}
 
 #endif

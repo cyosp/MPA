@@ -18,39 +18,41 @@
 #include "com/cyosp/mpa/po/MPAPO.hpp"
 #include "com/cyosp/mpa/api/rest/v1/Account.hpp"
 
-
 namespace mpa_api_rest_v1
 {
 
-class Category: public MPAO
-{
-	public:
-		static string URL_STRING_PATH_IDENTIFIER;
+    class Category : public MPAO
+    {
+        public:
+            static string URL_STRING_PATH_IDENTIFIER;
 
-	private:
-		int accountId;
+        private:
+            mpapo::Account account;
+            string name;
+            int id;
 
-		bool isUrlPathValid();
+        protected:
+            bool areGetParametersOk();
+            bool arePostAddParametersOk();
+            bool arePostDeleteParametersOk();
+            bool arePostUpdateParametersOk();
 
-protected:
-	bool areGetParametersOk();
-	bool arePostAddParametersOk();
-	bool arePostDeleteParametersOk();
-	bool arePostUpdateParametersOk();
+            string executeGetRequest(ptree & root);
+            string executePostAddRequest(ptree & root);
+            string executePostDeleteRequest(ptree & root);
+            string executePostUpdateRequest(ptree & root);
 
-	string executeGetRequest(ptree & root);
-	string executePostAddRequest(ptree & root);
-	string executePostDeleteRequest(ptree & root);
-	string executePostUpdateRequest(ptree & root);
+        public:
+            Category(HttpRequestType httpRequestType, ActionType actionType, const map<string, string>& argvals,
+                    vector<std::pair<string, int> > urlPairs);
 
-public:
-	Category(HttpRequestType httpRequestType, ActionType actionType, const map<string, string>& argvals, vector<std::pair<string, int> > urlPairs );
+            mpapo::Account & getAccount();
+            string & getName();
+            int getId();
 
-	int getAccountId();
+            virtual ~Category();
+    };
 
-	virtual ~Category();
-};
-
-} /* namespace mpa */
+}
 
 #endif

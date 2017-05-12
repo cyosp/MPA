@@ -15,29 +15,30 @@
 namespace mpa_api_rest_v1
 {
 
-class Login: public MPAO
-{
-	public:
-		static string URL_STRING_PATH_IDENTIFIER;
+    class Login : public MPAO
+    {
+        public:
+            static string URL_STRING_PATH_IDENTIFIER;
 
-	protected:
+        protected:
 
-		bool areGetParametersOk();
-		bool arePostLoginParametersOk();
-		bool arePostAddParametersOk();
+            bool areGetParametersOk();
+            bool arePostLoginParametersOk();
+            bool arePostAddParametersOk();
 
-		string executeGetRequest(ptree & root);
-		string executePostLoginRequest(ptree & root);
-		string executePostAddRequest(ptree & root);
-		string executePostDeleteRequest(ptree & root);
-		string executePostUpdateRequest(ptree & root);
+            string executeGetRequest(ptree & root);
+            string executePostLoginRequest(ptree & root);
+            string executePostAddRequest(ptree & root);
+            string executePostDeleteRequest(ptree & root);
+            string executePostUpdateRequest(ptree & root);
 
-	public:
-		Login( HttpRequestType httpRequestType, ActionType actionType, const map<string, string>& argvals, vector<std::pair<string, int> > urlPairs );
+        public:
+            Login(HttpRequestType httpRequestType, ActionType actionType, const map<string, string>& argvals,
+                    vector<std::pair<string, int> > urlPairs);
 
-	virtual ~Login();
-};
+            virtual ~Login();
+    };
 
-} /* namespace mpa */
+}
 
 #endif

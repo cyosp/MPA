@@ -34,27 +34,27 @@ using std::string;
 namespace mpa_api_rest_v1
 {
 
-class MPAOFactory
-{
-private:
+    class MPAOFactory
+    {
+        private:
 
-	// Singleton member
-	static MPAOFactory * mpaofactory;
-	MPAOFactory();
+            // Singleton member
+            static MPAOFactory * mpaofactory;
+            MPAOFactory();
 
-	// TODO : protect in multithread ?
-	map<string, string> tokenList;
+            // TODO : protect in multithread ?
+            map<string, string> tokenList;
 
-public:
+        public:
 
-	// Singleton method
-	static MPAOFactory * getInstance();
+            // Singleton method
+            static MPAOFactory * getInstance();
 
-	static mpa_api_rest_v1::MPAO * getMPAO( HttpRequestType requestType, const string& url, const map<string, string>& argvals );
+            static mpa_api_rest_v1::MPAO * getMPAO(HttpRequestType requestType, const string& url,
+                    const map<string, string>& argvals);
 
-	map<string, string> & getTokenList();
-};
-
-} /* namespace mpa */
+            map<string, string> & getTokenList();
+    };
+}
 
 #endif
