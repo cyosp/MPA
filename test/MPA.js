@@ -1,3 +1,5 @@
+// 2017-05-13 V 1.20.0
+// - Add: remove operation
 // 2017-05-03 V 1.19.1
 // - Add operation list checks
 // 2017-05-03 V 1.19.0
@@ -446,9 +448,9 @@ describe( "MPA API" , function()
 		it( "check response integrity" , function( done )
 		{
 			chai.request( host )
-				.post( "/api/rest/v1/accounts/" + accountId + "/categories/add" )
+				.post( "/api/rest/v1/categories/add" )
 				.set( 'content-type', 'application/x-www-form-urlencoded' )
-				.send( {name: categoryName, token: adminToken } )
+				.send( {name: categoryName, accountId: accountId, token: adminToken } )
 			.end( function( error , response , body )
 			{
 				debug( response.text );
@@ -662,6 +664,7 @@ describe( "MPA API" , function()
 	var operationAmount = "-10.5";
 	var operationNote = "This a test operation";
 	accountBalance += parseFloat( operationAmount );
+	var operationId = null;
 	var operationVersion = null;
 	describe( "Create an operation" , function()
 	{
@@ -690,6 +693,14 @@ describe( "MPA API" , function()
 
 					// Check response is 200
 		   			expect( response.statusCode ).to.equal(200);
+		   			
+		   			// Get id
+					operationId = data.id;
+					
+					// Check operation id is a number
+					expect( operationId , 'identifier is not a number' ).to.be.not.NaN;
+					
+					operationId = parseInt( operationId );
 					
 					// Check JSON contains version property
 					assert.property( data , 'version' );
@@ -749,6 +760,78 @@ describe( "MPA API" , function()
 		  	});
 		});
 	});
+
+	describe( "Delete operation" , function()
+	{	
+		it( "check response integrity" , function( done )
+		{
+			chai.request( host )
+				.post( "/api/rest/v1/operations/" + operationId + "/del" )
+				.set( 'content-type', 'application/x-www-form-urlencoded' )
+				.send( {version: operationVersion , token: userToken } )
+			.end( function( error , response , body )
+			{
+				debug( response.text );
+				
+				if( error )	done( error );
+				else
+				{
+					var data = JSON.parse( response.text );
+					
+					// Check response is 200
+		   			expect( response.statusCode ).to.equal(200);
+		   			
+		   			// Check JSON contains id property
+					assert.property( data , 'id' );
+					
+					expect( data.id , 'execution code is not equal to 0' ).to.be.equal( "0" );
+
+					// End test
+		    		done();
+				}
+		  	});
+		});
+	});
+	
+	
+/*describe( "Get list of operations" , function()
+{	
+	it( "check response integrity" , function( done )
+	{
+		chai.request( host )
+			.get( "/api/rest/v1/accounts/" + accountId + "/operations?token=" + userToken )
+			.set( 'content-type', 'application/x-www-form-urlencoded' )
+			.send()
+		.end( function( error , response , body )
+		{
+			debug( response.text );
+			
+			if( error )	done( error );
+			else
+			{
+				var data = JSON.parse( response.text );
+				
+				// Check response is 200
+	   			expect( response.statusCode ).to.equal(200);
+				
+	   			expect( data ).to.have.deep.property( 'operations[0].id' );
+	   			expect( data ).to.have.deep.property( 'operations[0].version'				, '0' );
+				expect( data ).to.have.deep.property( 'operations[0].date'					, operationDate );
+				expect( data ).to.have.deep.property( 'operations[0].provider'				, providerName );
+				expect( data ).to.have.deep.property( 'operations[0].amount'				, operationAmount );
+				expect( data ).to.have.deep.property( 'operations[0].accountBalance'		, accountBalance.toString() );
+				expect( data ).to.have.deep.property( 'operations[0].details[0].id' );
+				expect( data ).to.have.deep.property( 'operations[0].details[0].version'	, '0' );
+				expect( data ).to.have.deep.property( 'operations[0].details[0].category'	, categoryName );
+				expect( data ).to.have.deep.property( 'operations[0].details[0].note'		, operationNote );
+				expect( data ).to.have.deep.property( 'operations[0].details[0].amount'		, operationAmount );
+
+				// End test
+	    		done();
+			}
+	  	});
+	});
+});*/
 	
 	describe( "User logout" , function()
 	{
@@ -838,7 +921,7 @@ describe( "MPA API" , function()
 		it( "check response integrity" , function( done )
 		{
 			chai.request( host )
-				.post( "/api/rest/v1/accounts/" + accountId + "/categories/" + categoryId + "/del" )
+				.post( "/api/rest/v1/categories/" + categoryId + "/del" )
 				.set( 'content-type', 'application/x-www-form-urlencoded' )
 				.send( {version: categoryVersion , token: adminToken } )
 			.end( function( error , response , body )
