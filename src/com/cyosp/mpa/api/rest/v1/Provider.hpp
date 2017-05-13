@@ -27,6 +27,7 @@ namespace mpa_api_rest_v1
 
         private:
             int accountId;
+            int id;
 
             bool isUrlPathValid();
 
@@ -46,6 +47,7 @@ namespace mpa_api_rest_v1
                     vector<std::pair<string, int> > urlPairs);
 
             int getAccountId();
+            int getId();
 
             virtual ~Provider();
     };

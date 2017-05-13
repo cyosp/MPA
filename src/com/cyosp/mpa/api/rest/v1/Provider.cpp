@@ -17,6 +17,7 @@ namespace mpa_api_rest_v1
             MPAO(httpRequestType, actionType, argvals, urlPairs)
     {
         accountId = -1;
+        id = -1;
     }
 
     bool Provider::isUrlPathValid()
@@ -53,8 +54,12 @@ namespace mpa_api_rest_v1
     {
         bool ret = false;
 
-        if( isUrlPathValid() && MPAO::arePostDeleteParametersOk() )
-            ret = true;
+        if( urlPairs.size() > 0 && urlPairs[0].first == Provider::URL_STRING_PATH_IDENTIFIER )
+        {
+            id = urlPairs[0].second;
+            if( MPAO::arePostDeleteParametersOk() )
+                ret = true;
+        }
 
         return ret;
     }
@@ -124,10 +129,7 @@ namespace mpa_api_rest_v1
     {
         string ret = MPAO::DEFAULT_JSON_ID;
 
-        int providerId = urlPairs[1].second;
-        int providerVersion = atoi(argvals.find("version")->second);
-
-        mpa::Provider::del(getAccountId(), providerId, providerVersion);
+        mpa::Provider::del(getAccountId(), getId(), getVersion());
         ret = MPAO::OK_JSON_ID;
 
         return ret;
@@ -157,6 +159,11 @@ namespace mpa_api_rest_v1
     int Provider::getAccountId()
     {
         return accountId;
+    }
+
+    int Provider::getId()
+    {
+        return id;
     }
 
     Provider::~Provider()
