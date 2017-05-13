@@ -22,3 +22,5 @@
 "Account doesn't exist" "Account doesn't exist"
 ; Category
 "A category with same name already exist" "A category with same name already exist"
+; Operation
+"Operation doesn't exist" "Operation doesn't exist"

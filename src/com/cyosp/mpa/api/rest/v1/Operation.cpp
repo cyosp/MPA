@@ -30,8 +30,6 @@ namespace mpa_api_rest_v1
             int accountId = urlPairs[0].second;
             account = mpa::Account::get(accountId);
 
-            int categoryId = urlPairs[1].second;
-
             ret = true;
         }
 
@@ -68,7 +66,7 @@ namespace mpa_api_rest_v1
             ret = true;
         }
 
-        //MPA_LOG_TRIVIAL(trace, "Return: " + StrUtil::bool2string( ret ) );
+        //MPA_LOG_TRIVIAL(trace, "Return: " + StrUtil::bool2string(ret));
 
         return ret;
     }
@@ -77,9 +75,12 @@ namespace mpa_api_rest_v1
     {
         bool ret = false;
 
-        if( isUrlPathValid() && MPAO::arePostDeleteParametersOk() )
+        if( urlPairs.size() > 0 && urlPairs[0].first == Operation::URL_STRING_PATH_IDENTIFIER
+                && MPAO::arePostDeleteParametersOk() )
+        {
+            id = urlPairs[0].second;
             ret = true;
-
+        }
         return ret;
     }
 
@@ -177,37 +178,44 @@ namespace mpa_api_rest_v1
     {
         string ret = MPAO::DEFAULT_JSON_ID;
 
-        MPA::getInstance()->beginTransaction();
-
-        //MPA_LOG_TRIVIAL(trace,"");
-
         // Create OperationDetail
         mpapo::OperationDetail OperationDetail(MPA::getInstance()->getMPAPO());
         OperationDetail.initializeVersion();
         OperationDetail.setAmount(getAmount());
         OperationDetail.setNote(getNote());
-        OperationDetail.update();
 
         // Create Operation
         mpapo::Operation operation(MPA::getInstance()->getMPAPO());
         operation.initializeVersion();
         operation.setDate(getDate());
-        // Give operation available
-        operation.update();
 
-        // Link OperationDetail to Operation
-        operation.operationDetails().link(OperationDetail);
-        // Link provider to operation
-        operation.provider().link(getProvider());
-        // Link category to OperationDetail
-        OperationDetail.category().link(getCategory());
-        // Link operation to account
-        getAccount().operations().link(operation);
+        MPA::getInstance()->beginTransaction();
 
-        // Update amounts and balance
-        operation.addToAmount(getAmount());
+        try
+        {
+            OperationDetail.update();
 
-        MPA::getInstance()->commitTransaction();
+            // Give operation available
+            operation.update();
+
+            // Link OperationDetail to Operation
+            operation.operationDetails().link(OperationDetail);
+            // Link provider to operation
+            operation.provider().link(getProvider());
+            // Link category to OperationDetail
+            OperationDetail.category().link(getCategory());
+            // Link operation to account
+            getAccount().operations().link(operation);
+
+            // Update amounts and balance
+            operation.addToAmount(getAmount());
+
+            MPA::getInstance()->commitTransaction();
+        }
+        catch( Except & e )
+        {
+            MPA::getInstance()->rollbackTransaction();
+        }
 
         // Get account ID
         ret = string(operation.id);
@@ -223,8 +231,7 @@ namespace mpa_api_rest_v1
     {
         string ret = MPAO::DEFAULT_JSON_ID;
 
-        // TODO : manage return
-        //mpa::Operation::del(  , getVersion() );
+        mpa::Operation::del(getId(), getVersion());
         ret = MPAO::OK_JSON_ID;
 
         return ret;
@@ -282,8 +289,12 @@ namespace mpa_api_rest_v1
         return note;
     }
 
+    int Operation::getId()
+    {
+        return id;
+    }
+
     Operation::~Operation()
     {
     }
-
 }

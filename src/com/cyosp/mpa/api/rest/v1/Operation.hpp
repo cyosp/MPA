@@ -34,6 +34,8 @@ namespace mpa_api_rest_v1
             mpapo::Category category;
             string note;
 
+            int id;
+
             bool isUrlPathValid();
 
         public:
@@ -61,6 +63,7 @@ namespace mpa_api_rest_v1
             float getAmount();
             mpapo::Category & getCategory();
             string & getNote();
+            int getId();
 
             virtual ~Operation();
     };

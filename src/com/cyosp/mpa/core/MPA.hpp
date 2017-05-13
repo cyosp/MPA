@@ -43,6 +43,7 @@ static const int MSG_NO_SYSTEM_ACCOUNT = 25;
 
 static const string ACCOUNT_SAME_NAME_ALREADY_EXIST = "An account with same name already exist";
 static const string ACCOUNT_DOESNT_EXIST = "Account doesn't exist";
+static const string OPERATION_DOESNT_EXIST = "Operation doesn't exist";
 static const string OPERATION_IMPOSSIBLE_BECAUSE_DATA_HAVE_CHANGED =
         "Operation impossible because data have changed since recovery";
 static const string CATEGORY_SAME_NAME_ALREADY_EXIST = "A category with same name already exist";

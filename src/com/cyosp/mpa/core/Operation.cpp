@@ -84,8 +84,7 @@ namespace mpa
         }
         catch( NotFound & e )
         {
-            // TODO : manage
-            //throw mpa_exception::MsgNotTranslated( ACCOUNT_DOESNT_EXIST );
+            throw mpa_exception::MsgNotTranslated( OPERATION_DOESNT_EXIST );
         }
 
         return ret;
