@@ -119,20 +119,13 @@ namespace mpa_api_rest_v1
     {
         string ret = MPAO::DEFAULT_JSON_ID;
 
-        //MPA_LOG_TRIVIAL(trace,"");
-
         mpapo::Category category = mpa::Category::get(getAccount().id, getName());
-
-        //MPA_LOG_TRIVIAL(trace,"");
-
-        // Get account ID
-        ret = string(category.id);
-
-        MPA_LOG_TRIVIAL(trace, "Category ID added: " + ret);
 
         // Generate Json output
         root.push_back(BoostHelper::make_pair("version", category.version));
         root.push_back(BoostHelper::make_pair("amount", category.amount));
+
+        ret = string(category.id);
 
         return ret;
     }
@@ -186,5 +179,4 @@ namespace mpa_api_rest_v1
     Category::~Category()
     {
     }
-
 }

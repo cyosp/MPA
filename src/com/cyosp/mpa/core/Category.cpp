@@ -55,13 +55,15 @@ namespace mpa
                 category.update();
                 categoriesHandle.link(category);
                 MPA::getInstance()->commitTransaction();
+
+                categoryId = category.id;
+                MPA_LOG_TRIVIAL(trace, "Category ID added: " + categoryId);
             }
             catch( Except & e )
             {
                 MPA::getInstance()->rollbackTransaction();
             }
 
-            categoryId = category.id;
         }
 
         return get(categoryId);
