@@ -26,10 +26,9 @@ namespace mpa_api_rest_v1
             static string URL_STRING_PATH_IDENTIFIER;
 
         private:
-            int accountId;
+            mpapo::Account account;
+            string name;
             int id;
-
-            bool isUrlPathValid();
 
         protected:
             bool areGetParametersOk();
@@ -46,7 +45,8 @@ namespace mpa_api_rest_v1
             Provider(HttpRequestType httpRequestType, ActionType actionType, const map<string, string>& argvals,
                     vector<std::pair<string, int> > urlPairs);
 
-            int getAccountId();
+            mpapo::Account & getAccount();
+            string & getName();
             int getId();
 
             virtual ~Provider();

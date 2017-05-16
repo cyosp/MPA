@@ -1,3 +1,5 @@
+// 2017-05-16 V 1.20.2
+// - Update delete provider URL
 // 2017-05-13 V 1.20.1
 // - Update delete provider URL
 // 2017-05-13 V 1.20.0
@@ -49,7 +51,7 @@
 // - First version
 
 // Allow to display REST API responses
-var DEBUG_MODE = true;
+var DEBUG_MODE = false;
 
 var chai      = require("chai");
 var request   = require("request");
@@ -541,9 +543,9 @@ describe( "MPA API" , function()
 		it( "check response integrity" , function( done )
 		{
 			chai.request( host )
-				.post( "/api/rest/v1/accounts/" + accountId + "/providers/add" )
+				.post( "/api/rest/v1/providers/add" )
 				.set( 'content-type', 'application/x-www-form-urlencoded' )
-				.send( {name: providerName, token: adminToken } )
+				.send( {name: providerName, accountId: accountId, token: adminToken } )
 			.end( function( error , response , body )
 			{
 				debug( response.text );

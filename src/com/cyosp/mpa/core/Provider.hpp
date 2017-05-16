@@ -21,7 +21,8 @@ namespace mpa
     {
         public:
             static vector<mpapo::Provider> all(int accountId);
-            static void del(int accountId, int providerId, int version);
+            // Delete an entry
+            static void del( int id , int version );
             static mpapo::Provider get(int accountId, string providerName);
             static mpapo::Provider get(int providerId);
             static mpapo::Provider rename(int accountId, int providerId, int providerVersion, string newName);

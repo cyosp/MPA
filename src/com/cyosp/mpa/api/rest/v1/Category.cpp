@@ -24,6 +24,7 @@ namespace mpa_api_rest_v1
             vector<std::pair<string, int> > urlPairs) :
             MPAO(httpRequestType, actionType, argvals, urlPairs), account(MPA::getInstance()->getMPAPO())
     {
+        name = "";
         id = -1;
     }
 

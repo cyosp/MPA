@@ -88,8 +88,6 @@ namespace mpa
 
             if( category.isCorrectVersion(version) )
             {
-                //MPA_LOG_TRIVIAL(trace,"Not found");
-
                 if( category.operationDetails().get().all().size() > 0 )
                     throw mpa_exception::MsgNotTranslated(IMPOSSIBLE_REMOVE_THERE_ARE_AGAIN_OPERATIONS);
 

@@ -78,19 +78,14 @@ namespace mpa
         return select<mpapo::Provider>(MPA::getInstance()->getMPAPO(), mpapo::Provider::Id == providerId).one();
     }
 
-    void Provider::del(int accountId, int providerId, int version)
+    void Provider::del(int id, int version)
     {
         try
         {
-            mpapo::Provider provider = Provider::get(providerId);
+            mpapo::Provider provider = Provider::get(id);
 
             if( provider.isCorrectVersion(version) )
             {
-                //MPA_LOG_TRIVIAL(trace,"Not found");
-
-                if( provider.operations().get().all().size() > 0 )
-                    throw mpa_exception::MsgNotTranslated(IMPOSSIBLE_REMOVE_THERE_ARE_AGAIN_OPERATIONS);
-
                 if( provider.account().get().all().size() > 0 )
                 {
                     mpapo::Account account = provider.account().get().one();
