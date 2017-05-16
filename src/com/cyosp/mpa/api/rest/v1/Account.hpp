@@ -20,6 +20,10 @@ namespace mpa_api_rest_v1
 {
     class Account : public MPAO
     {
+        private:
+            string name;
+            int id;
+
         public:
             static string URL_STRING_PATH_IDENTIFIER;
 
@@ -38,6 +42,9 @@ namespace mpa_api_rest_v1
         public:
             Account(HttpRequestType httpRequestType, ActionType actionType, const map<string, string>& argvals,
                     vector<std::pair<string, int> > urlPairs);
+
+            string & getName();
+            int getId();
 
             virtual ~Account();
     };

@@ -16,11 +16,19 @@ namespace mpa_api_rest_v1
             vector<std::pair<string, int> > urlPairs) :
             MPAO(httpRequestType, actionType, argvals, urlPairs)
     {
+        name = "";
+        id  = -1;
     }
 
     bool Account::areGetParametersOk()
     {
-        bool ret = true;
+        bool ret = false;
+
+        if( urlPairs.size() > 0 && urlPairs[0].first == Account::URL_STRING_PATH_IDENTIFIER )
+        {
+            ret = true;
+        }
+
         return ret;
     }
 
@@ -28,15 +36,27 @@ namespace mpa_api_rest_v1
     {
         bool ret = false;
 
-        if( argvals.find("name") != argvals.end() )
+        const string NAME_PARAM = "name";
+
+        if( argvals.find(NAME_PARAM) != argvals.end() )
+        {
+            name = argvals.find(NAME_PARAM)->second;
             ret = true;
+        }
 
         return ret;
     }
 
     bool Account::arePostDeleteParametersOk()
     {
-        bool ret = MPAO::arePostDeleteParametersOk();
+        bool ret = false;
+
+        if( urlPairs.size() > 0 && urlPairs[0].first == Account::URL_STRING_PATH_IDENTIFIER )
+        {
+            id = urlPairs[0].second;
+            if( MPAO::arePostDeleteParametersOk() )
+                ret = true;
+        }
 
         return ret;
     }
@@ -57,8 +77,6 @@ namespace mpa_api_rest_v1
     string Account::executeGetRequest(ptree & root)
     {
         string ret = MPAO::DEFAULT_JSON_ID;
-
-        //MPA_LOG_TRIVIAL(trace, "" );
 
         ptree accountsChildren;
 
@@ -83,19 +101,13 @@ namespace mpa_api_rest_v1
     {
         string ret = MPAO::DEFAULT_JSON_ID;
 
-        MPA_LOG_TRIVIAL(trace, "Account name to add: " + argvals.find("name")->second);
-
-        mpapo::Account account(MPA::getInstance()->getMPAPO());
-        account = mpa::Account::add(argvals.find("name")->second);
-
-        // Get account ID
-        ret = string(account.id);
-
-        MPA_LOG_TRIVIAL(trace, "Account ID added: " + ret);
+        mpapo::Account account = mpa::Account::add(getName());
 
         // Generate Json output
         root.push_back(BoostHelper::make_pair("version", account.version));
         root.push_back(BoostHelper::make_pair("balance", account.balance));
+
+        ret = string(account.id);
 
         return ret;
     }
@@ -104,7 +116,7 @@ namespace mpa_api_rest_v1
     {
         string ret = MPAO::DEFAULT_JSON_ID;
 
-        mpa::Account::del(urlPairs[0].second, atoi(argvals.find("version")->second));
+        mpa::Account::del(getId(), getVersion());
         ret = MPAO::OK_JSON_ID;
 
         return ret;
@@ -129,6 +141,16 @@ namespace mpa_api_rest_v1
         //MPA_LOG_TRIVIAL( trace , "End" );
 
         return ret;
+    }
+
+    string & Account::getName()
+    {
+        return name;
+    }
+
+    int Account::getId()
+    {
+        return id;
     }
 
     Account::~Account()
