@@ -26,8 +26,7 @@ namespace mpa_api_rest_v1
     class Operation : public MPAO
     {
         private:
-            mpapo::Account account;
-
+            int accountId;
             string date;
             mpapo::Provider provider;
             float amount;
@@ -56,7 +55,8 @@ namespace mpa_api_rest_v1
             Operation(HttpRequestType httpRequestType, ActionType actionType, const map<string, string>& argvals,
                     vector<std::pair<string, int> > urlPairs);
 
-            mpapo::Account & getAccount();
+            int getAccountId();
+            mpapo::Account getAccount();
 
             string & getDate();
             mpapo::Provider & getProvider();

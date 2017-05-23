@@ -116,25 +116,6 @@ class MPA
             mpapo->rollback();
         }
 
-        // Get administrator user
-        vector<mpapo::User> getAdminUsers();
-        // Get users
-        vector<mpapo::User> getUsers();
-        // Get user by login
-        mpapo::User getUser(string login);
-        // Get user by id
-        mpapo::User getUser(int id);
-        // Del an user
-        bool delUser(int id, int version);
-        // Check if user exist by login
-        bool existUser(string login);
-        // Add a user
-        mpapo::User & addUser(bool isAdmin, string login, string password, string locale);
-
-        static bool isSecurePwd(const string pwd);
-
-        bool isAdminRegistered() const;
-
         ResourceBundle & getResourceBundle();
 
     private:

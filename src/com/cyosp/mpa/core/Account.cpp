@@ -36,10 +36,10 @@ mpapo::Account & Account::add( string accountName )
 	mpapo::Account * ret = NULL;
 
 	ret = new mpapo::Account( MPA::getInstance()->getMPAPO() );
-	ret->initializeVersion();
 	ret->setName( accountName );
 	//sleep(6);
 	ret->balance = 0;
+	ret->initializeVersion();
 	ret->update();
 
 	MPA_LOG_TRIVIAL(trace,"Account added, id=" + (* ret).id.value());
@@ -102,7 +102,6 @@ mpapo::Account Account::renameAccount( int accountId , int accountVersionToRenam
 		if( account.isCorrectVersion(  accountVersionToRename ) )
 		{
 			account.setName( newAccountName );
-			account.updateVersion();
 			account.update();
 
 			//MPA_LOG_TRIVIAL( trace , "End" );

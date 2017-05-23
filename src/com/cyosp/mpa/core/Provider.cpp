@@ -42,9 +42,9 @@ namespace mpa
         if( providerId == 0 )
         {
             mpapo::Provider provider(MPA::getInstance()->getMPAPO());
-            provider.initializeVersion();
             provider.setName(accountId, providerName);
             provider.setAmount(0);
+            provider.initializeVersion();
 
             mpapo::Account::ProvidersHandle providersHandle = Account::get(accountId).providers();
 
@@ -124,7 +124,6 @@ namespace mpa
             if( provider.isCorrectVersion(providerVersion) )
             {
                 provider.setName(accountId, newName);
-                provider.updateVersion();
                 provider.update();
 
                 //MPA_LOG_TRIVIAL( trace , "End" );

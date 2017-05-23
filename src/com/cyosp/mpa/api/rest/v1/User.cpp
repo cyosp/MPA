@@ -21,7 +21,7 @@ namespace mpa_api_rest_v1
     bool User::isValidAccess()
     {
         MPA_LOG_TRIVIAL(info, "Start MPAO::isValidAccess");
-        bool ret = MPAO::isValidAccess() || !MPA::getInstance()->isAdminRegistered();
+        bool ret = MPAO::isValidAccess() || !mpa::User::isAdminRegistered();
         MPA_LOG_TRIVIAL(info, "End MPAO::isValidAccess: " + StrUtil::bool2string(ret));
 
         return ret;
@@ -37,14 +37,14 @@ namespace mpa_api_rest_v1
     {
         bool ret = false;
 
-        MPA_LOG_TRIVIAL(trace, "isAdminRegistered " + StrUtil::bool2string(MPA::getInstance()->isAdminRegistered()));
+        MPA_LOG_TRIVIAL(trace, "isAdminRegistered " + StrUtil::bool2string(mpa::User::isAdminRegistered()));
 
         //
         // There is no user defined as long as administrator account is not registered
         //
         string locale = MPA::DEFAULT_LOCALE;
-        if( MPA::getInstance()->isAdminRegistered() )
-            locale = MPA::getInstance()->getUser(login).locale;
+        if( mpa::User::isAdminRegistered() )
+            locale = mpa::User::getUser(login).locale;
         MPA_LOG_TRIVIAL(info, "Locale used:" + locale);
 
         map<string, string>::iterator endIt = argvals.end();
@@ -99,7 +99,7 @@ namespace mpa_api_rest_v1
         string ret = MPAO::DEFAULT_JSON_ID;
 
         // Get user
-        mpapo::User user = MPA::getInstance()->getUser(login);
+        mpapo::User user = mpa::User::getUser(login);
 
         if( user.isAdmin )
         {
@@ -107,7 +107,7 @@ namespace mpa_api_rest_v1
             {
                 ptree usersChildren;
 
-                vector<mpapo::User> users = MPA::getInstance()->getUsers();
+                vector<mpapo::User> users = mpa::User::getUsers();
                 for(vector<mpapo::User>::iterator it = users.begin() ; it != users.end() ; it++)
                 {
                     ptree userPtree;
@@ -133,20 +133,20 @@ namespace mpa_api_rest_v1
 
         string ret = MPAO::DEFAULT_JSON_ID;
 
-        bool isAdminRegistered = MPA::getInstance()->isAdminRegistered();
+        bool isAdminRegistered = mpa::User::isAdminRegistered();
 
-        if( !isAdminRegistered || MPA::getInstance()->getUser(login).isAdmin )
+        if( !isAdminRegistered || mpa::User::getUser(login).isAdmin )
         {
             string login = argvals.find("login")->second;
             string pwd = argvals.find("password")->second;
             string locale = argvals.find("locale")->second;
 
-            if( !MPA::getInstance()->existUser(login) )
+            if( !mpa::User::existUser(login) )
             {
-                if( MPA::isSecurePwd(pwd) )
+                if( mpa::User::isSecurePwd(pwd) )
                 {
                     mpapo::User user(MPA::getInstance()->getMPAPO());
-                    user = MPA::getInstance()->addUser(!isAdminRegistered, login, pwd, locale);
+                    user = mpa::User::addUser(!isAdminRegistered, login, pwd, locale);
 
                     // Get account ID
                     ret = string(user.id);
@@ -181,11 +181,11 @@ namespace mpa_api_rest_v1
         string ret = MPAO::DEFAULT_JSON_ID;
 
         // Get user
-        mpapo::User user = MPA::getInstance()->getUser(login);
+        mpapo::User user = mpa::User::getUser(login);
 
         if( user.isAdmin )
         {
-            MPA::getInstance()->delUser(urlPairs[0].second, atoi(argvals.find("version")->second));
+            mpa::User::delUser(urlPairs[0].second, atoi(argvals.find("version")->second));
             ret = MPAO::OK_JSON_ID;
         }
 

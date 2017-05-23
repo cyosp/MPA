@@ -537,7 +537,7 @@ void HTTPHandler::getFactoryMPAObject(HttpRequestType requestType, const string&
 			}
 			catch(mpa_exception::MsgNotTranslated & e1)
 			{
-				id = MPA::getInstance()->getResourceBundle().translate( e1.what() , MPA::getInstance()->getUser( mpao->getLogin() ).locale );
+				id = MPA::getInstance()->getResourceBundle().translate( e1.what() , mpa::User::getUser( mpao->getLogin() ).locale );
 			}
 			catch(string & e2)
 			{

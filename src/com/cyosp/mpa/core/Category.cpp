@@ -42,9 +42,9 @@ namespace mpa
         if( categoryId == 0 )
         {
             mpapo::Category category(MPA::getInstance()->getMPAPO());
-            category.initializeVersion();
             category.setName(accountId, categoryName);
             category.setAmount(0);
+            category.initializeVersion();
 
             mpapo::Account::CategoriesHandle categoriesHandle = mpa::Account::get(accountId).categories();
 
@@ -130,7 +130,6 @@ namespace mpa
             if( category.isCorrectVersion(categoryVersion) )
             {
                 category.setName(accountId, newName);
-                category.updateVersion();
                 category.update();
 
                 //MPA_LOG_TRIVIAL( trace , "End" );

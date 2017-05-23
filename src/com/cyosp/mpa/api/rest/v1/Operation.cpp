@@ -14,11 +14,13 @@ namespace mpa_api_rest_v1
 
     Operation::Operation(HttpRequestType httpRequestType, ActionType actionType, const map<string, string>& argvals,
             vector<std::pair<string, int> > urlPairs) :
-            MPAO(httpRequestType, actionType, argvals, urlPairs), account(MPA::getInstance()->getMPAPO()), provider(
-                    MPA::getInstance()->getMPAPO()), category(MPA::getInstance()->getMPAPO())
+            MPAO(httpRequestType, actionType, argvals, urlPairs), provider(MPA::getInstance()->getMPAPO()), category(
+                    MPA::getInstance()->getMPAPO())
     {
+        accountId = -1;
         date = "";
         amount = 0;
+        id = -1;
     }
 
     bool Operation::isUrlPathValid()
@@ -27,9 +29,7 @@ namespace mpa_api_rest_v1
 
         if( urlPairs.size() > 0 && urlPairs[0].first == Account::URL_STRING_PATH_IDENTIFIER )
         {
-            int accountId = urlPairs[0].second;
-            account = mpa::Account::get(accountId);
-
+            accountId = urlPairs[0].second;
             ret = true;
         }
 
@@ -54,12 +54,12 @@ namespace mpa_api_rest_v1
             date = argvals.find("date")->second;
 
             string providerName = argvals.find("provider")->second;
-            provider = mpa::Provider::get(getAccount().id, providerName);
+            provider = mpa::Provider::get(getAccountId(), providerName);
 
             amount = StrUtil::string2float(argvals.find("amount")->second);
 
             string categoryName = argvals.find("category")->second;
-            category = mpa::Category::get(getAccount().id, categoryName);
+            category = mpa::Category::get(getAccountId(), categoryName);
 
             note = argvals.find("note")->second;
 
@@ -179,36 +179,38 @@ namespace mpa_api_rest_v1
         string ret = MPAO::DEFAULT_JSON_ID;
 
         // Create OperationDetail
-        mpapo::OperationDetail OperationDetail(MPA::getInstance()->getMPAPO());
-        OperationDetail.initializeVersion();
-        OperationDetail.setAmount(getAmount());
-        OperationDetail.setNote(getNote());
+        mpapo::OperationDetail operationDetail(MPA::getInstance()->getMPAPO());
+        operationDetail.setAmount(getAmount());
+        operationDetail.setNote(getNote());
+        operationDetail.initializeVersion();
 
         // Create Operation
         mpapo::Operation operation(MPA::getInstance()->getMPAPO());
-        operation.initializeVersion();
         operation.setDate(getDate());
 
         MPA::getInstance()->beginTransaction();
 
         try
         {
-            OperationDetail.update();
+            operationDetail.update();
 
             // Give operation available
             operation.update();
 
             // Link OperationDetail to Operation
-            operation.operationDetails().link(OperationDetail);
+            operation.operationDetails().link(operationDetail);
             // Link provider to operation
             operation.provider().link(getProvider());
             // Link category to OperationDetail
-            OperationDetail.category().link(getCategory());
+            operationDetail.category().link(getCategory());
             // Link operation to account
             getAccount().operations().link(operation);
 
             // Update amounts and balance
             operation.addToAmount(getAmount());
+
+            // Initialize version
+            operation.initializeVersion();
 
             MPA::getInstance()->commitTransaction();
         }
@@ -217,12 +219,14 @@ namespace mpa_api_rest_v1
             MPA::getInstance()->rollbackTransaction();
         }
 
-        // Get account ID
+        // Get operation Id
         ret = string(operation.id);
 
         // Generate Json output
         root.push_back(BoostHelper::make_pair("version", operation.version));
-        root.push_back(BoostHelper::make_pair("accountBalance", operation.accountBalance));
+        // Following operation date insertion, operation balance is not account balance
+        // Example: operation date is before last operation date
+        root.push_back(BoostHelper::make_pair("accountBalance", getAccount().balance));
 
         return ret;
     }
@@ -259,9 +263,16 @@ namespace mpa_api_rest_v1
         return ret;
     }
 
-    mpapo::Account & Operation::getAccount()
+    int Operation::getAccountId()
     {
-        return account;
+        return accountId;
+    }
+
+    // User account id to retrieve Account
+    // This allow to have always an Account up to date
+    mpapo::Account Operation::getAccount()
+    {
+        return mpa::Account::get(getAccountId());
     }
 
     string & Operation::getDate()

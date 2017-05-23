@@ -58,11 +58,11 @@ namespace mpa_api_rest_v1
             locale = argvals.find("locale")->second;
 
         // There is an administrator user defined
-        if( MPA::getInstance()->isAdminRegistered() )
+        if( mpa::User::isAdminRegistered() )
         {
             try
             {
-                mpapo::User user = MPA::getInstance()->getUser(login);
+                mpapo::User user = mpa::User::getUser(login);
                 if( user.pwdErrNbr < MPA::PWD_SECURITY_ERROR_NBR )
                 {
                     if( user.password.value().compare(pwd) == 0 )
