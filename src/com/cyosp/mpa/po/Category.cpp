@@ -21,7 +21,10 @@ namespace mpapo
         //MPA_LOG_TRIVIAL(trace,"setName2");
 
         if( categoryId == 0 )
+        {
             this->name = name;
+            updateVersion();
+        }
         else
             throw mpa_exception::MsgNotTranslated(CATEGORY_SAME_NAME_ALREADY_EXIST);
     }
@@ -29,11 +32,13 @@ namespace mpapo
     void Category::setAmount(float amount)
     {
         this->amount = amount;
+        updateVersion();
     }
 
     void Category::addToAmount(float amount)
     {
         this->amount = this->amount + amount;
+        updateVersion();
     }
 
 }

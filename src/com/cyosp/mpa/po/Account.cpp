@@ -21,7 +21,10 @@ namespace mpapo
         //MPA_LOG_TRIVIAL(trace,"setName2");
 
         if( !find )
+        {
             this->name = name;
+            updateVersion();
+        }
         else
             throw mpa_exception::MsgNotTranslated(ACCOUNT_SAME_NAME_ALREADY_EXIST);
     }
@@ -29,6 +32,7 @@ namespace mpapo
     void Account::addToBalance(float balance)
     {
         this->balance = this->balance + balance;
+        updateVersion();
     }
 
 }
