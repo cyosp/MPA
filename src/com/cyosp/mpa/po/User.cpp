@@ -19,13 +19,13 @@ namespace mpapo
     void mpapo::User::setLocale(string locale)
     {
         this->locale = locale;
-        updateVersion();
+        setUpdated();
     }
 
     void mpapo::User::setLogin(string login)
     {
         this->login = login;
-        updateVersion();
+        setUpdated();
     }
 
     // TODO : check password is not empty
@@ -33,19 +33,19 @@ namespace mpapo
     void mpapo::User::setPassword(string password)
     {
         this->password = password;
-        updateVersion();
+        setUpdated();
     }
 
     void mpapo::User::addPwdErr()
     {
         this->pwdErrNbr = this->pwdErrNbr + 1;
-        updateVersion();
+        setUpdated();
     }
 
     void mpapo::User::resetPwdErr()
     {
         this->pwdErrNbr = 0;
-        updateVersion();
+        setUpdated();
     }
 }
 

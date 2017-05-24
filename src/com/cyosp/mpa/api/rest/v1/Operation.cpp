@@ -192,10 +192,10 @@ namespace mpa_api_rest_v1
 
         try
         {
-            operationDetail.update();
+            operationDetail.store();
 
             // Give operation available
-            operation.update();
+            operation.store();
 
             // Link OperationDetail to Operation
             operation.operationDetails().link(operationDetail);
@@ -206,11 +206,10 @@ namespace mpa_api_rest_v1
             // Link operation to account
             getAccount().operations().link(operation);
 
+            operation.initializeVersion();
+
             // Update amounts and balance
             operation.addToAmount(getAmount());
-
-            // Initialize version
-            operation.initializeVersion();
 
             MPA::getInstance()->commitTransaction();
         }

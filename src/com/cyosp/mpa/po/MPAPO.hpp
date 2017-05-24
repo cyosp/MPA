@@ -139,6 +139,8 @@ public:
     litesql::Field<std::string> type;
     static const litesql::FieldType Version;
     litesql::Field<int> version;
+    static const litesql::FieldType Updated;
+    litesql::Field<bool> updated;
     static void initValues();
 protected:
     void defaults();
@@ -150,6 +152,9 @@ public:
     virtual void initializeVersion();
     virtual void updateVersion();
     virtual bool isCorrectVersion(int versionToCheck);
+    virtual void setUpdated();
+    virtual void resetUpdated();
+    virtual void store();
 protected:
     std::string insert(litesql::Record& tables, litesql::Records& fieldRecs, litesql::Records& valueRecs);
     void create();

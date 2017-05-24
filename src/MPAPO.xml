@@ -4,11 +4,18 @@
 
 	<object name="MPAO">
 		<field name="version" type="integer"/>
+		<field name="updated" type="boolean"/>
+		
 		<method name="initializeVersion"/>
 		<method name="updateVersion"/>
 		<method name="isCorrectVersion" returntype="bool">
 			<param type="int" name="versionToCheck"/>
 		</method>
+		
+		<method name="setUpdated"/>
+		<method name="resetUpdated"/>
+		
+		<method name="store"/>
 	</object>
 
 	<object name="User" inherits="MPAO">

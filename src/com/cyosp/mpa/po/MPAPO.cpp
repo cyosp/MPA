@@ -302,21 +302,25 @@ const std::string MPAO::sequence__("MPAO_seq");
 const litesql::FieldType MPAO::Id("id_",A_field_type_integer,table__);
 const litesql::FieldType MPAO::Type("type_",A_field_type_string,table__);
 const litesql::FieldType MPAO::Version("version_",A_field_type_integer,table__);
+const litesql::FieldType MPAO::Updated("updated_",A_field_type_boolean,table__);
 void MPAO::initValues() {
 }
 void MPAO::defaults() {
     id = 0;
     version = 0;
+    updated = 0;
 }
 MPAO::MPAO(const litesql::Database& db)
-     : litesql::Persistent(db), id(Id), type(Type), version(Version) {
+     : litesql::Persistent(db), id(Id), type(Type), version(Version), updated(Updated) {
     defaults();
 }
 MPAO::MPAO(const litesql::Database& db, const litesql::Record& rec)
-     : litesql::Persistent(db, rec), id(Id), type(Type), version(Version) {
+     : litesql::Persistent(db, rec), id(Id), type(Type), version(Version), updated(Updated) {
     defaults();
-    size_t size = (rec.size() > 3) ? 3 : rec.size();
+    size_t size = (rec.size() > 4) ? 4 : rec.size();
     switch(size) {
+    case 4: updated = convert<const std::string&, bool>(rec[3]);
+        updated.setModified(false);
     case 3: version = convert<const std::string&, int>(rec[2]);
         version.setModified(false);
     case 2: type = convert<const std::string&, std::string>(rec[1]);
@@ -326,13 +330,14 @@ MPAO::MPAO(const litesql::Database& db, const litesql::Record& rec)
     }
 }
 MPAO::MPAO(const MPAO& obj)
-     : litesql::Persistent(obj), id(obj.id), type(obj.type), version(obj.version) {
+     : litesql::Persistent(obj), id(obj.id), type(obj.type), version(obj.version), updated(obj.updated) {
 }
 const MPAO& MPAO::operator=(const MPAO& obj) {
     if (this != &obj) {
         id = obj.id;
         type = obj.type;
         version = obj.version;
+        updated = obj.updated;
     }
     litesql::Persistent::operator=(obj);
     return *this;
@@ -350,6 +355,9 @@ std::string MPAO::insert(litesql::Record& tables, litesql::Records& fieldRecs, l
     fields.push_back(version.name());
     values.push_back(version);
     version.setModified(false);
+    fields.push_back(updated.name());
+    values.push_back(updated);
+    updated.setModified(false);
     fieldRecs.push_back(fields);
     valueRecs.push_back(values);
     return litesql::Persistent::insert(tables, fieldRecs, valueRecs, sequence__);
@@ -368,6 +376,7 @@ void MPAO::addUpdates(Updates& updates) {
     updateField(updates, table__, id);
     updateField(updates, table__, type);
     updateField(updates, table__, version);
+    updateField(updates, table__, updated);
 }
 void MPAO::addIDUpdates(Updates& updates) {
 }
@@ -375,6 +384,7 @@ void MPAO::getFieldTypes(std::vector<litesql::FieldType>& ftypes) {
     ftypes.push_back(Id);
     ftypes.push_back(Type);
     ftypes.push_back(Version);
+    ftypes.push_back(Updated);
 }
 void MPAO::delRecord() {
     deleteFromTable(table__, id);
@@ -443,6 +453,7 @@ std::auto_ptr<MPAO> MPAO::upcastCopy() const {
     np->id = id;
     np->type = type;
     np->version = version;
+    np->updated = updated;
     np->inDatabase = inDatabase;
     return auto_ptr<MPAO>(np);
 }
@@ -451,6 +462,7 @@ std::ostream & operator<<(std::ostream& os, MPAO o) {
     os << o.id.name() << " = " << o.id << std::endl;
     os << o.type.name() << " = " << o.type << std::endl;
     os << o.version.name() << " = " << o.version << std::endl;
+    os << o.updated.name() << " = " << o.updated << std::endl;
     os << "-------------------------------------" << std::endl;
     return os;
 }
@@ -475,17 +487,17 @@ User::User(const litesql::Database& db)
 User::User(const litesql::Database& db, const litesql::Record& rec)
      : MPAO(db, rec), isAdmin(IsAdmin), locale(Locale), login(Login), password(Password), pwdErrNbr(PwdErrNbr) {
     defaults();
-    size_t size = (rec.size() > 8) ? 8 : rec.size();
+    size_t size = (rec.size() > 9) ? 9 : rec.size();
     switch(size) {
-    case 8: pwdErrNbr = convert<const std::string&, int>(rec[7]);
+    case 9: pwdErrNbr = convert<const std::string&, int>(rec[8]);
         pwdErrNbr.setModified(false);
-    case 7: password = convert<const std::string&, std::string>(rec[6]);
+    case 8: password = convert<const std::string&, std::string>(rec[7]);
         password.setModified(false);
-    case 6: login = convert<const std::string&, std::string>(rec[5]);
+    case 7: login = convert<const std::string&, std::string>(rec[6]);
         login.setModified(false);
-    case 5: locale = convert<const std::string&, std::string>(rec[4]);
+    case 6: locale = convert<const std::string&, std::string>(rec[5]);
         locale.setModified(false);
-    case 4: isAdmin = convert<const std::string&, bool>(rec[3]);
+    case 5: isAdmin = convert<const std::string&, bool>(rec[4]);
         isAdmin.setModified(false);
     }
 }
@@ -614,6 +626,7 @@ std::ostream & operator<<(std::ostream& os, User o) {
     os << o.id.name() << " = " << o.id << std::endl;
     os << o.type.name() << " = " << o.type << std::endl;
     os << o.version.name() << " = " << o.version << std::endl;
+    os << o.updated.name() << " = " << o.updated << std::endl;
     os << o.isAdmin.name() << " = " << o.isAdmin << std::endl;
     os << o.locale.name() << " = " << o.locale << std::endl;
     os << o.login.name() << " = " << o.login << std::endl;
@@ -693,11 +706,11 @@ Account::Account(const litesql::Database& db)
 Account::Account(const litesql::Database& db, const litesql::Record& rec)
      : MPAO(db, rec), name(Name), balance(Balance) {
     defaults();
-    size_t size = (rec.size() > 5) ? 5 : rec.size();
+    size_t size = (rec.size() > 6) ? 6 : rec.size();
     switch(size) {
-    case 5: balance = convert<const std::string&, float>(rec[4]);
+    case 6: balance = convert<const std::string&, float>(rec[5]);
         balance.setModified(false);
-    case 4: name = convert<const std::string&, std::string>(rec[3]);
+    case 5: name = convert<const std::string&, std::string>(rec[4]);
         name.setModified(false);
     }
 }
@@ -817,6 +830,7 @@ std::ostream & operator<<(std::ostream& os, Account o) {
     os << o.id.name() << " = " << o.id << std::endl;
     os << o.type.name() << " = " << o.type << std::endl;
     os << o.version.name() << " = " << o.version << std::endl;
+    os << o.updated.name() << " = " << o.updated << std::endl;
     os << o.name.name() << " = " << o.name << std::endl;
     os << o.balance.name() << " = " << o.balance << std::endl;
     os << "-------------------------------------" << std::endl;
@@ -875,11 +889,11 @@ Category::Category(const litesql::Database& db)
 Category::Category(const litesql::Database& db, const litesql::Record& rec)
      : MPAO(db, rec), name(Name), amount(Amount) {
     defaults();
-    size_t size = (rec.size() > 5) ? 5 : rec.size();
+    size_t size = (rec.size() > 6) ? 6 : rec.size();
     switch(size) {
-    case 5: amount = convert<const std::string&, float>(rec[4]);
+    case 6: amount = convert<const std::string&, float>(rec[5]);
         amount.setModified(false);
-    case 4: name = convert<const std::string&, std::string>(rec[3]);
+    case 5: name = convert<const std::string&, std::string>(rec[4]);
         name.setModified(false);
     }
 }
@@ -995,6 +1009,7 @@ std::ostream & operator<<(std::ostream& os, Category o) {
     os << o.id.name() << " = " << o.id << std::endl;
     os << o.type.name() << " = " << o.type << std::endl;
     os << o.version.name() << " = " << o.version << std::endl;
+    os << o.updated.name() << " = " << o.updated << std::endl;
     os << o.name.name() << " = " << o.name << std::endl;
     os << o.amount.name() << " = " << o.amount << std::endl;
     os << "-------------------------------------" << std::endl;
@@ -1053,11 +1068,11 @@ Provider::Provider(const litesql::Database& db)
 Provider::Provider(const litesql::Database& db, const litesql::Record& rec)
      : MPAO(db, rec), name(Name), amount(Amount) {
     defaults();
-    size_t size = (rec.size() > 5) ? 5 : rec.size();
+    size_t size = (rec.size() > 6) ? 6 : rec.size();
     switch(size) {
-    case 5: amount = convert<const std::string&, float>(rec[4]);
+    case 6: amount = convert<const std::string&, float>(rec[5]);
         amount.setModified(false);
-    case 4: name = convert<const std::string&, std::string>(rec[3]);
+    case 5: name = convert<const std::string&, std::string>(rec[4]);
         name.setModified(false);
     }
 }
@@ -1173,6 +1188,7 @@ std::ostream & operator<<(std::ostream& os, Provider o) {
     os << o.id.name() << " = " << o.id << std::endl;
     os << o.type.name() << " = " << o.type << std::endl;
     os << o.version.name() << " = " << o.version << std::endl;
+    os << o.updated.name() << " = " << o.updated << std::endl;
     os << o.name.name() << " = " << o.name << std::endl;
     os << o.amount.name() << " = " << o.amount << std::endl;
     os << "-------------------------------------" << std::endl;
@@ -1251,13 +1267,13 @@ Operation::Operation(const litesql::Database& db)
 Operation::Operation(const litesql::Database& db, const litesql::Record& rec)
      : MPAO(db, rec), date(Date), amount(Amount), accountBalance(AccountBalance) {
     defaults();
-    size_t size = (rec.size() > 6) ? 6 : rec.size();
+    size_t size = (rec.size() > 7) ? 7 : rec.size();
     switch(size) {
-    case 6: accountBalance = convert<const std::string&, float>(rec[5]);
+    case 7: accountBalance = convert<const std::string&, float>(rec[6]);
         accountBalance.setModified(false);
-    case 5: amount = convert<const std::string&, float>(rec[4]);
+    case 6: amount = convert<const std::string&, float>(rec[5]);
         amount.setModified(false);
-    case 4: date = convert<const std::string&, std::string>(rec[3]);
+    case 5: date = convert<const std::string&, std::string>(rec[4]);
         date.setModified(false);
     }
 }
@@ -1384,6 +1400,7 @@ std::ostream & operator<<(std::ostream& os, Operation o) {
     os << o.id.name() << " = " << o.id << std::endl;
     os << o.type.name() << " = " << o.type << std::endl;
     os << o.version.name() << " = " << o.version << std::endl;
+    os << o.updated.name() << " = " << o.updated << std::endl;
     os << o.date.name() << " = " << o.date << std::endl;
     os << o.amount.name() << " = " << o.amount << std::endl;
     os << o.accountBalance.name() << " = " << o.accountBalance << std::endl;
@@ -1443,11 +1460,11 @@ OperationDetail::OperationDetail(const litesql::Database& db)
 OperationDetail::OperationDetail(const litesql::Database& db, const litesql::Record& rec)
      : MPAO(db, rec), amount(Amount), note(Note) {
     defaults();
-    size_t size = (rec.size() > 5) ? 5 : rec.size();
+    size_t size = (rec.size() > 6) ? 6 : rec.size();
     switch(size) {
-    case 5: note = convert<const std::string&, std::string>(rec[4]);
+    case 6: note = convert<const std::string&, std::string>(rec[5]);
         note.setModified(false);
-    case 4: amount = convert<const std::string&, float>(rec[3]);
+    case 5: amount = convert<const std::string&, float>(rec[4]);
         amount.setModified(false);
     }
 }
@@ -1563,6 +1580,7 @@ std::ostream & operator<<(std::ostream& os, OperationDetail o) {
     os << o.id.name() << " = " << o.id << std::endl;
     os << o.type.name() << " = " << o.type << std::endl;
     os << o.version.name() << " = " << o.version << std::endl;
+    os << o.updated.name() << " = " << o.updated << std::endl;
     os << o.amount.name() << " = " << o.amount << std::endl;
     os << o.note.name() << " = " << o.note << std::endl;
     os << "-------------------------------------" << std::endl;
@@ -1580,7 +1598,7 @@ std::vector<litesql::Database::SchemaItem> MPAPO::getSchema() const {
     if (backend->supportsSequences()) {
         res.push_back(Database::SchemaItem("MPAO_seq","sequence",backend->getCreateSequenceSQL("MPAO_seq")));
     }
-    res.push_back(Database::SchemaItem("MPAO_","table","CREATE TABLE MPAO_ (id_ " + rowIdType + ",type_ " + backend->getSQLType(A_field_type_string,"") + "" +",version_ " + backend->getSQLType(A_field_type_integer,"") + "" +")"));
+    res.push_back(Database::SchemaItem("MPAO_","table","CREATE TABLE MPAO_ (id_ " + rowIdType + ",type_ " + backend->getSQLType(A_field_type_string,"") + "" +",version_ " + backend->getSQLType(A_field_type_integer,"") + "" +",updated_ " + backend->getSQLType(A_field_type_boolean,"") + "" +")"));
     res.push_back(Database::SchemaItem("User_","table","CREATE TABLE User_ (id_ " + rowIdType + ",isAdmin_ " + backend->getSQLType(A_field_type_boolean,"") + "" +",locale_ " + backend->getSQLType(A_field_type_string,"5") + "" +",login_ " + backend->getSQLType(A_field_type_string,"32") + "" +",password_ " + backend->getSQLType(A_field_type_string,"32") + "" +",pwdErrNbr_ " + backend->getSQLType(A_field_type_integer,"") + "" +")"));
     res.push_back(Database::SchemaItem("Account_","table","CREATE TABLE Account_ (id_ " + rowIdType + ",name_ " + backend->getSQLType(A_field_type_string,"256") + "" +",balance_ " + backend->getSQLType(A_field_type_float,"") + "" +")"));
     res.push_back(Database::SchemaItem("Category_","table","CREATE TABLE Category_ (id_ " + rowIdType + ",name_ " + backend->getSQLType(A_field_type_string,"64") + "" +",amount_ " + backend->getSQLType(A_field_type_float,"") + "" +")"));

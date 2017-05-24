@@ -71,7 +71,7 @@ namespace mpa_api_rest_v1
                         if( user.pwdErrNbr != 0 )
                         {
                             user.resetPwdErr();
-                            user.update();
+                            user.store();
                         }
 
                         // Create and register token
@@ -88,7 +88,7 @@ namespace mpa_api_rest_v1
 
                         // Register this password error
                         user.addPwdErr();
-                        user.update();
+                        user.store();
 
                         ret = MPA::getInstance()->getResourceBundle().translate(BAD_PASSWORD, locale);
                     }

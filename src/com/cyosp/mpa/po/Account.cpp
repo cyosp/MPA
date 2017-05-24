@@ -11,7 +11,6 @@ namespace mpapo
 {
 
     // Check if an account exist with the same name before to set the account name
-    // methode update() must be called manually after this method
     void Account::setName(string name)
     {
         bool find = mpa::Account::isAccountAlreadyExisting(name);
@@ -23,7 +22,7 @@ namespace mpapo
         if( !find )
         {
             this->name = name;
-            updateVersion();
+            setUpdated();
         }
         else
             throw mpa_exception::MsgNotTranslated(ACCOUNT_SAME_NAME_ALREADY_EXIST);
@@ -32,7 +31,7 @@ namespace mpapo
     void Account::addToBalance(float balance)
     {
         this->balance = this->balance + balance;
-        updateVersion();
+        setUpdated();
     }
 
 }

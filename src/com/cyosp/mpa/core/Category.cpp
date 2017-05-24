@@ -52,7 +52,7 @@ namespace mpa
             MPA::getInstance()->beginTransaction();
             try
             {
-                category.update();
+                category.store();
                 categoriesHandle.link(category);
                 MPA::getInstance()->commitTransaction();
 
@@ -130,7 +130,7 @@ namespace mpa
             if( category.isCorrectVersion(categoryVersion) )
             {
                 category.setName(accountId, newName);
-                category.update();
+                category.store();
 
                 //MPA_LOG_TRIVIAL( trace , "End" );
 

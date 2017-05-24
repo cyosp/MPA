@@ -32,6 +32,8 @@ namespace mpa
         {
             mpapo::Operation operation = get(id);
 
+            MPA_LOG_TRIVIAL(trace, "Operation version: " + StrUtil::int2string(operation.version));
+
             if( operation.isCorrectVersion(version) )
             {
                 MPA_LOG_TRIVIAL(trace, "Operation found");

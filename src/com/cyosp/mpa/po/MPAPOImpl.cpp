@@ -12,7 +12,7 @@
 
 void mpapo::MPAO::initializeVersion()
 {
-    this->version = 0;
+    this->version = -1;
 }
 
 void mpapo::MPAO::updateVersion()
@@ -23,6 +23,26 @@ void mpapo::MPAO::updateVersion()
 bool mpapo::MPAO::isCorrectVersion(int versionToCheck)
 {
     return this->version == versionToCheck;
+}
+
+void mpapo::MPAO::setUpdated()
+{
+    this->updated = true;
+}
+
+void mpapo::MPAO::resetUpdated()
+{
+    this->updated = false;
+}
+
+void mpapo::MPAO::store()
+{
+    if( updated )
+    {
+        updateVersion();
+        resetUpdated();
+        update();
+    }
 }
 
 #include <unistd.h>

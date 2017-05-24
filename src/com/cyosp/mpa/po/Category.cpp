@@ -11,7 +11,6 @@ namespace mpapo
 {
 
     // Check if a category exists with the same name before to set the category name
-    // methode update() must be called manually after this method
     void Category::setName(int accountId, string name)
     {
         int categoryId = mpa::Category::getCategoryId(accountId, name);
@@ -23,7 +22,7 @@ namespace mpapo
         if( categoryId == 0 )
         {
             this->name = name;
-            updateVersion();
+            setUpdated();
         }
         else
             throw mpa_exception::MsgNotTranslated(CATEGORY_SAME_NAME_ALREADY_EXIST);
@@ -32,13 +31,13 @@ namespace mpapo
     void Category::setAmount(float amount)
     {
         this->amount = amount;
-        updateVersion();
+        setUpdated();
     }
 
     void Category::addToAmount(float amount)
     {
         this->amount = this->amount + amount;
-        updateVersion();
+        setUpdated();
     }
 
 }

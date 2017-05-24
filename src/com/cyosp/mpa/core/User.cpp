@@ -46,7 +46,7 @@ namespace mpa
         ret->setPassword(password);
         ret->setLocale(locale);
         ret->initializeVersion();
-        ret->update();
+        ret->store();
 
         MPA_LOG_TRIVIAL(info, "User added, id=" + (*ret).id.value());
 

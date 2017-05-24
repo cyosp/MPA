@@ -23,7 +23,7 @@ namespace mpapo
         if( providerId == 0 )
         {
             this->name = name;
-            updateVersion();
+            setUpdated();
         }
         else
             throw mpa_exception::MsgNotTranslated(CATEGORY_SAME_NAME_ALREADY_EXIST);
@@ -32,12 +32,12 @@ namespace mpapo
     void Provider::setAmount(float amount)
     {
         this->amount = amount;
-        updateVersion();
+        setUpdated();
     }
 
     void Provider::addToAmount(float amount)
     {
         this->amount = this->amount + amount;
-        updateVersion();
+        setUpdated();
     }
 }

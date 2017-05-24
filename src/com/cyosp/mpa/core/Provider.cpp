@@ -52,7 +52,7 @@ namespace mpa
             MPA::getInstance()->beginTransaction();
             try
             {
-                provider.update();
+                provider.store();
                 providersHandle.link(provider);
                 MPA::getInstance()->commitTransaction();
             }
@@ -124,7 +124,7 @@ namespace mpa
             if( provider.isCorrectVersion(providerVersion) )
             {
                 provider.setName(accountId, newName);
-                provider.update();
+                provider.store();
 
                 //MPA_LOG_TRIVIAL( trace , "End" );
 

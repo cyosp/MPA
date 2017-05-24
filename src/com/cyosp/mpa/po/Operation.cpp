@@ -13,13 +13,13 @@ namespace mpapo
     void Operation::setDate(string date)
     {
         this->date = date;
-        updateVersion();
+        setUpdated();
     }
 
     void Operation::setAmount(float amount)
     {
         this->amount = amount;
-        updateVersion();
+        setUpdated();
     }
 
     // This method must be call after:
@@ -55,7 +55,7 @@ namespace mpapo
 
                 // Update balance
                 operation.addToBalance(amount);
-                operation.update();
+                operation.store();
             }
 
             // Update account balance with operation amount
@@ -64,8 +64,8 @@ namespace mpapo
             // Update operation amount and account balance
             this->amount = this->amount + amount;
             setAccountBalance(accountBalance);
-            updateVersion();
-            this->update();
+            setUpdated();
+            this->store();
 
             // Update provider amount
             litesql::DataSource<mpapo::Provider> providerDatasource = provider().get();
@@ -73,7 +73,7 @@ namespace mpapo
             {
                 Provider provider = providerDatasource.one();
                 provider.addToAmount(amount);
-                provider.update();
+                provider.store();
             }
 
             // Update category amount
@@ -87,14 +87,14 @@ namespace mpapo
                 {
                     Category category = categoryDatasource.one();
                     category.addToAmount(amount);
-                    category.update();
+                    category.store();
                 }
             }
 
             MPA_LOG_TRIVIAL(trace, "account balance before: "+StrUtil::float2string(account.balance)+" with: "+StrUtil::float2string(amount));
             // Update account balance
             account.addToBalance(amount);
-            account.update();
+            account.store();
 
             MPA_LOG_TRIVIAL(trace, "account balance after: "+StrUtil::float2string(account.balance));
         }
@@ -103,12 +103,12 @@ namespace mpapo
     void Operation::setAccountBalance(float balance)
     {
         this->accountBalance = balance;
-        updateVersion();
+        setUpdated();
     }
 
     void Operation::addToBalance(float amount)
     {
         this->accountBalance = this->accountBalance + amount;
-        updateVersion();
+        setUpdated();
     }
 }

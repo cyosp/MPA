@@ -12,12 +12,12 @@ namespace mpapo
     void OperationDetail::setAmount(float amount)
     {
         this->amount = amount;
-        updateVersion();
+        setUpdated();
     }
 
     void OperationDetail::setNote(string note)
     {
         this->note = note;
-        updateVersion();
+        setUpdated();
     }
 }
