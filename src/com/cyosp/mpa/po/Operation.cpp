@@ -10,9 +10,11 @@
 namespace mpapo
 {
 
+    // Format expected: YYYY-MM-DD
     void Operation::setDate(string date)
     {
-        this->date = date;
+        // Format expected: YYYY-MM-DD HH:MM:SS.SSS
+        this->date = date + " 00:00:00.000";
         setUpdated();
     }
 
@@ -91,12 +93,14 @@ namespace mpapo
                 }
             }
 
-            MPA_LOG_TRIVIAL(trace, "account balance before: "+StrUtil::float2string(account.balance)+" with: "+StrUtil::float2string(amount));
+            MPA_LOG_TRIVIAL(trace,
+                    "account balance before: " + StrUtil::float2string(account.balance) + " with: "
+                            + StrUtil::float2string(amount));
             // Update account balance
             account.addToBalance(amount);
             account.store();
 
-            MPA_LOG_TRIVIAL(trace, "account balance after: "+StrUtil::float2string(account.balance));
+            MPA_LOG_TRIVIAL(trace, "account balance after: " + StrUtil::float2string(account.balance));
         }
     }
 

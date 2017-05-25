@@ -82,8 +82,8 @@
 	</object>
 
 	<object name="Operation" inherits="MPAO">
-		<!-- TODO: set to date format -->
-		<field name="date" type="string" length="10"/>
+		<!-- https://sqlite.org/datatype3.html -->
+		<field name="date" type="string"  length="23"/>
 		<field name="amount" type="float"/>
 		<field name="accountBalance" type="float"/>
 		<method name="setDate">
